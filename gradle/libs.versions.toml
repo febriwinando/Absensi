@@ -35,6 +35,11 @@ converterGson = "3.0.0"
 firebaseBom = "34.7.0"
 swiperefreshlayout = "1.2.0-alpha01"
 
+cameraCore = "1.6.0-alpha02"
+cameraCamera2 = "1.6.0-alpha02"
+cameraLifecycle = "1.6.0-alpha02"
+cameraView = "1.6.0-alpha02"
+
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -70,6 +75,11 @@ shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shi
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converterGson" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
+camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraCamera2" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
+camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

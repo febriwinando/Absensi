@@ -50,10 +50,10 @@ import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import go.pemkott.appsandroidmobiletebingtinggi.DeteksiWajah.DetectorActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.ProfileActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
+import go.pemkott.appsandroidmobiletebingtinggi.camerax.CameraxActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
 import go.pemkott.appsandroidmobiletebingtinggi.dinasluarkantor.perjalanandinas.SppdActivity;
@@ -187,7 +187,7 @@ public class DashboardVersiOne extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 jenisabsensi = 1;
-                startActivity(new Intent(DashboardVersiOne.this, DetectorActivity.class));
+                startActivity(new Intent(DashboardVersiOne.this, CameraxActivity.class));
             }
         });
 
