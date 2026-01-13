@@ -310,9 +310,19 @@ public class AmbilFoto {
 
         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
+        // ==== STEP 2: FIX ROTASI EXIF ====
+        Matrix matrix = getExifRotation(file.getAbsolutePath());
 
+        bitmap = Bitmap.createBitmap(
+                bitmap,
+                0,
+                0,
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                matrix,
+                true
+        );
 
-        // 2. Ulangi kompres sampai hasil ≤ 80 KB
         int quality = 60;  // mulai dari kualitas bagus dulu
 
         while (true) {
@@ -343,6 +353,39 @@ public class AmbilFoto {
 
         return bitmap;
     }
+
+    public byte[] compressToMax80KB(File file) {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 2;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+        Matrix matrix = getExifRotation(file.getAbsolutePath());
+        bitmap = Bitmap.createBitmap(
+                bitmap, 0, 0,
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                matrix, true
+        );
+
+        int quality = 80;
+        ByteArrayOutputStream baos;
+
+        while (true) {
+            baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+
+            int sizeKB = baos.size() / 1024;
+            if (sizeKB <= 80 || quality <= 20) break;
+
+            quality -= 5;
+        }
+
+        bitmap.recycle();
+        return baos.toByteArray();
+    }
+
 
 //    public Bitmap fileBitmapCompress(File file){
 //

@@ -195,11 +195,10 @@ public class CameraxActivity extends AppCompatActivity {
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         runOnUiThread(() -> {
                             if ("kehadiran".equals(aktivitas)) {
-//                                Uri savedUri = outputFileResults.getSavedUri();
-//                                Log.d("lokasi file", savedUri.toString());
                                     Intent intent = new Intent(CameraxActivity.this, AbsensiKehadiranActivity.class);
                                     intent.putExtra("namafile", fileName);
                                     startActivity(intent);
+                                    finish();
                             }
                         });
                     }

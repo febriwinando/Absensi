@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -67,7 +66,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,6 +81,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -190,11 +189,20 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
         String fileName = intent.getStringExtra("namafile");
 
         file = new File(myDir, fileName);
-        Bitmap selectedBitmap = ambilFoto.compressAndFixOrientation(file);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+//        Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(file);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
 
-        ivTaging.setImageBitmap(selectedBitmap);
+        Bitmap preview = BitmapFactory.decodeByteArray(
+                imageBytes, 0, imageBytes.length
+        );
+
+        ivTaging.setImageBitmap(preview);
+
+// upload pakai imageBytes
+
+//        ivTaging.setImageBitmap(selectedBitmap);
 
         title_content.setText("KEHADIRAN");
 
@@ -212,17 +220,17 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
         startLocationUpdates();
     }
 
-    private MultipartBody.Part prepareFilePart(String partName, File file) {
-        RequestBody requestFile =
+    private MultipartBody.Part prepareFilePart(String partName, byte[] imageBytes) {
+        RequestBody requestBody =
                 RequestBody.create(
-                        okhttp3.MediaType.parse("image/jpeg"),
-                        file
+                        imageBytes,
+                        MediaType.parse("image/jpeg")
                 );
 
         return MultipartBody.Part.createFormData(
                 partName,
-                file.getName(),
-                requestFile
+                "fototaging.jpg",
+                requestBody
         );
     }
 
@@ -656,7 +664,8 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
 
-        MultipartBody.Part fotoPart = prepareFilePart("fototaging", file);
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
 
         Call<ResponsePOJO> call =
                 RetroClient.getInstance().getApi().uploadAbsenKehadiranMasuk(
@@ -682,28 +691,6 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
                         textPart(berakhlak)
                 );
 
-
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadAbsenKehadiranMasuk(
-//                encodedImage,
-//                absensi,
-//                eselon,
-//                idpegawai,
-//                timetableid,
-//                tanggal,
-//                jam,
-//                posisi,
-//                status,
-//                lat,
-//                lng,
-//                ket,
-//                terlambat,
-//                eOPD,
-//                jampegawai,
-//                validasi,
-//                rbFakeGPS,
-//                batasWaktu,
-//                berakhlak
-//        );
         call.enqueue(new Callback<ResponsePOJO>() {
             @Override
             public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
@@ -714,7 +701,7 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
                     dialogView.viewNotifKosong(
                             AbsensiKehadiranActivity.this,
                             "Gagal mengisi absensi",
-                            "Silahkan coba kembali."
+                            "Silahkan coba kembali ya gagal terima."
                     );
                     return;
                 }
