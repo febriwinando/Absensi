@@ -227,30 +227,55 @@ public interface ApiAddProduk {
 
     );
 
-    @FormUrlEncoded
+//    @FormUrlEncoded
+//    @POST("tl/masuk")
+//    Call<ResponsePOJO> uploadTLMasuk(
+//            @Field("fototaging") String encodedImage,
+//            @Field("absensi") String absensi,
+//            @Field("eselon") String eselon,
+//            @Field("employee_id") String employee_id,
+//            @Field("timetable_id") String timetable_id,
+//            @Field("tanggal") String tanggal,
+//            @Field("jam_masuk") String jam_masuk,
+//            @Field("posisi_masuk") String posisi_masuk,
+//            @Field("status_masuk") String status_masuk,
+//            @Field("lat_masuk") String lat_masuk,
+//            @Field("lng_masuk") String lng_masuk,
+//            @Field("ket_masuk") String ket_masuk,
+//            @Field("terlambat") int terlambat,
+//            @Field("opd") String opd,
+//            @Field("jam_kantor") String jam_kantor,
+//            @Field("valid_masuk") String valid_masuk,
+//            @Field("lampiran_masuk") String lampiran_masuk,
+//            @Field("ekslampiran") String ekslampiran,
+//            @Field("fakegps") String fakegps,
+//            @Field("batas_waktu") String bataswaktu
+//    );
+
+    @Multipart
     @POST("tl/masuk")
     Call<ResponsePOJO> uploadTLMasuk(
-            @Field("fototaging") String encodedImage,
-            @Field("absensi") String absensi,
-            @Field("eselon") String eselon,
-            @Field("employee_id") String employee_id,
-            @Field("timetable_id") String timetable_id,
-            @Field("tanggal") String tanggal,
-            @Field("jam_masuk") String jam_masuk,
-            @Field("posisi_masuk") String posisi_masuk,
-            @Field("status_masuk") String status_masuk,
-            @Field("lat_masuk") String lat_masuk,
-            @Field("lng_masuk") String lng_masuk,
-            @Field("ket_masuk") String ket_masuk,
-            @Field("terlambat") int terlambat,
-            @Field("opd") String opd,
-            @Field("jam_kantor") String jam_kantor,
-            @Field("valid_masuk") String valid_masuk,
-            @Field("lampiran_masuk") String lampiran_masuk,
-            @Field("ekslampiran") String ekslampiran,
-            @Field("fakegps") String fakegps,
-            @Field("batas_waktu") String bataswaktu
+            @Part MultipartBody.Part fototaging,
+            @Part("absensi") RequestBody absensi,
+            @Part("eselon") RequestBody eselon,
+            @Part("employee_id") RequestBody employee_id,
+            @Part("timetable_id") RequestBody timetable_id,
+            @Part("tanggal") RequestBody tanggal,
+            @Part("jam_masuk") RequestBody jam_masuk,
+            @Part("posisi_masuk") RequestBody posisi_masuk,
+            @Part("status_masuk") RequestBody status_masuk,
+            @Part("lat_masuk") RequestBody lat_masuk,
+            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("ket_masuk") RequestBody ket_masuk,
+            @Part("terlambat") RequestBody terlambat,
+            @Part("opd") RequestBody opd,
+            @Part("jam_kantor") RequestBody jam_kantor,
+            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part MultipartBody.Part lampiran,
+            @Part("fakegps") RequestBody fakegps,
+            @Part("batas_waktu") RequestBody batas_waktu
     );
+
 
 
     @FormUrlEncoded
@@ -300,30 +325,30 @@ public interface ApiAddProduk {
             @Field("batas_waktu") String bataswaktu
     );
 
-    @FormUrlEncoded
-    @POST("tl/pulang")
-    Call<ResponsePOJO> uploadTLPulang(
-            @Field("fototaging") String fototaging,
-            @Field("absensi") String absensi,
-            @Field("eselon") String eselon,
-            @Field("employee_id") String id,
-            @Field("timetable_id") String time,
-            @Field("tanggal") String tanggal,
-            @Field("jam_pulang") String jam_pulang,
-            @Field("posisi_pulang") String posisi_pulang,
-            @Field("status_pulang") String status_pulang,
-            @Field("lat_pulang") String lat_pulang,
-            @Field("lng_pulang") String lng_pulang,
-            @Field("ket_pulang") String ket_pulang,
-            @Field("kecepatan") int kecepatan,
-            @Field("opd") String opd,
-            @Field("jam_kantor") String jam_kantor,
-            @Field("valid_pulang") String valid_pulang,
-            @Field("lampiran_pulang") String lampiran_pulang,
-            @Field("ekslampiran") String ekslampiran,
-            @Field("fakegps") String fakegps,
-            @Field("batas_waktu") String bataswaktu
-    );
+//    @FormUrlEncoded
+//    @POST("tl/pulang")
+//    Call<ResponsePOJO> uploadTLPulang(
+//            @Field("fototaging") String fototaging,
+//            @Field("absensi") String absensi,
+//            @Field("eselon") String eselon,
+//            @Field("employee_id") String id,
+//            @Field("timetable_id") String time,
+//            @Field("tanggal") String tanggal,
+//            @Field("jam_pulang") String jam_pulang,
+//            @Field("posisi_pulang") String posisi_pulang,
+//            @Field("status_pulang") String status_pulang,
+//            @Field("lat_pulang") String lat_pulang,
+//            @Field("lng_pulang") String lng_pulang,
+//            @Field("ket_pulang") String ket_pulang,
+//            @Field("kecepatan") int kecepatan,
+//            @Field("opd") String opd,
+//            @Field("jam_kantor") String jam_kantor,
+//            @Field("valid_pulang") String valid_pulang,
+//            @Field("lampiran_pulang") String lampiran_pulang,
+//            @Field("ekslampiran") String ekslampiran,
+//            @Field("fakegps") String fakegps,
+//            @Field("batas_waktu") String bataswaktu
+//    );
 
     @Multipart
     @POST("tl/pulang")
@@ -334,19 +359,19 @@ public interface ApiAddProduk {
             @Part("employee_id") RequestBody employee_id,
             @Part("timetable_id") RequestBody timetable_id,
             @Part("tanggal") RequestBody tanggal,
-            @Part("jam_masuk") RequestBody jam_masuk,
-            @Part("posisi_masuk") RequestBody posisi_masuk,
-            @Part("status_masuk") RequestBody status_masuk,
-            @Part("lat_masuk") RequestBody lat_masuk,
-            @Part("lng_masuk") RequestBody lng_masuk,
-            @Part("ket_masuk") RequestBody ket_masuk,
-            @Part("terlambat") RequestBody terlambat,
+            @Part("jam_pulang") RequestBody jam_pulang,
+            @Part("posisi_pulang") RequestBody posisi_pulang,
+            @Part("status_pulang") RequestBody status_pulang,
+            @Part("lat_pulang") RequestBody lat_pulang,
+            @Part("lng_pulang") RequestBody lng_pulang,
+            @Part("ket_pulang") RequestBody ket_pulang,
+            @Part("kecepatan") RequestBody terlambat,
             @Part("opd") RequestBody opd,
             @Part("jam_kantor") RequestBody jam_kantor,
-            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part("valid_pulang") RequestBody valid_pulang,
+            @Part MultipartBody.Part lampiran,
             @Part("fakegps") RequestBody fakegps,
-            @Part("batas_waktu") RequestBody batas_waktu,
-            @Part("berakhlak") RequestBody berakhlak
+            @Part("batas_waktu") RequestBody batas_waktu
     );
 
 

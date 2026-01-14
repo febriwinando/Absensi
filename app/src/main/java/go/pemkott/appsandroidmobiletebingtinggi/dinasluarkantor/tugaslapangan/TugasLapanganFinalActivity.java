@@ -444,27 +444,30 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         byte[] imageBytes = ambilFoto.compressToMax80KB(file);
         MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
 
+        byte[] imageBytesLampiran = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part lampiranPart = prepareFilePart("fototaging", imageBytesLampiran);
+
         Call<ResponsePOJO> call =
-                RetroClient.getInstance().getApi().uploadAbsenKehadiranMasuk(
+                RetroClient.getInstance().getApi().uploadTLMasuk(
                         fotoPart,
-                        textPart(absensi),
-                        textPart(eselon),
-                        textPart(idpegawai),
+                        textPart(ketKehadiran),
+                        textPart(eJabatan),
+                        textPart(sEmployeID),
                         textPart(timetableid),
                         textPart(tanggal),
-                        textPart(jam),
+                        textPart(rbJam),
                         textPart(posisi),
                         textPart(status),
-                        textPart(lat),
-                        textPart(lng),
-                        textPart(ket),
-                        textPart(String.valueOf(terlambat)),
+                        textPart(rbLat),
+                        textPart(rbLng),
+                        textPart(rbKet),
+                        textPart(String.valueOf(mins)),
                         textPart(eOPD),
                         textPart(jampegawai),
-                        textPart(validasi),
+                        textPart(valid),
+                        lampiranPart,
                         textPart(rbFakeGPS),
-                        textPart(batasWaktu),
-                        textPart(berakhlak)
+                        textPart(batasWaktu)
                 );
 
 
@@ -512,10 +515,10 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         progressDialog.setCancelable(false);
         progressDialog.show();
         byte[] imageBytes = ambilFoto.compressToMax80KB(file);
-        byte[] imageBytesLampiran = ambilFoto.compressToMax80KB(file);
-
         MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
-        MultipartBody.Part LampiranPart = prepareFilePart("fototaging", imageBytes);
+
+        byte[] imageBytesLampiran = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part lampiranPart = prepareFilePart("fototaging", imageBytesLampiran);
 
 
         Call<ResponsePOJO> call =
@@ -536,7 +539,7 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
                         textPart(eOPD),
                         textPart(jampegawai),
                         textPart(valid),
-                        LampiranPart,
+                        lampiranPart,
                         textPart(rbFakeGPS),
                         textPart(batasWaktu)
                 );
@@ -770,17 +773,17 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
 
             if (requestCode == 1 && resultCode == RESULT_OK) {
 
-                ivFinalKegiatan.setVisibility(View.VISIBLE);
-                File file = new File(currentPhotoPath);
-                Bitmap bitmap = ambilFoto.compressBitmapTo80KB(file);
-                rotationBitmapTag = Bitmap.createBitmap(bitmap, 0,0, bitmap.getWidth(), bitmap.getHeight(), AmbilFoto.exifInterface(currentPhotoPath, 0), true);
-
-                ivFinalKegiatan.setImageBitmap(rotationBitmapTag);
-
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                rotationBitmapTag.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-                byte[] imageInByte = byteArrayOutputStream.toByteArray();
-                fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
+//                ivFinalKegiatan.setVisibility(View.VISIBLE);
+//                File file = new File(currentPhotoPath);
+//                Bitmap bitmap = ambilFoto.compressBitmapTo80KB(file);
+//                rotationBitmapTag = Bitmap.createBitmap(bitmap, 0,0, bitmap.getWidth(), bitmap.getHeight(), AmbilFoto.exifInterface(currentPhotoPath, 0), true);
+//
+//                ivFinalKegiatan.setImageBitmap(rotationBitmapTag);
+//
+//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                rotationBitmapTag.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
+//                byte[] imageInByte = byteArrayOutputStream.toByteArray();
+//                fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
 
                 periksaWaktu();
                 handlerProgressDialog();
