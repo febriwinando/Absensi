@@ -730,55 +730,65 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
     }
 
     public void kirimDataPulang(String absensi, String eselon, String idpegawai, String timetableid, String tanggal, String jam, String posisi, String status, String lat, String lng, String ket, int terlambat, String jampegawai, String validasi, String berakhlak){
-//        Log.d("Response Status Normal", "Mulai");
-//        Dialog dialogproses = new Dialog(AbsensiKehadiranActivity.this, R.style.DialogStyle);
-//        dialogproses.setContentView(R.layout.view_proses);
-//        dialogproses.setCancelable(false);
-//
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadAbsenKehadiranPulang(
-//                encodedImage,
-//                absensi,
-//                eselon,
-//                idpegawai,
-//                timetableid,
-//                tanggal,
-//                jam,
-//                posisi,
-//                status,
-//                lat,
-//                lng,
-//                ket,
-//                terlambat,
-//                eOPD,
-//                jampegawai,
-//                validasi,
-//                rbFakeGPS,
-//                batasWaktu,
-//                berakhlak
-//        );
-//        call.enqueue(new Callback<ResponsePOJO>() {
-//            @Override
-//            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
-//                dialogproses.dismiss();
-//
-//                if (!response.isSuccessful()){
-//                    dialogView.viewNotifKosong(AbsensiKehadiranActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali  iii.");
-//                    return;
-//                }
-//
+        Dialog dialogproses = new Dialog(AbsensiKehadiranActivity.this, R.style.DialogStyle);
+        dialogproses.setContentView(R.layout.view_proses);
+        dialogproses.setCancelable(false);
+
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().uploadAbsenKehadiranPulang(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat)),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(berakhlak)
+                );
+        call.enqueue(new Callback<ResponsePOJO>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
+                dialogproses.dismiss();
+
+                if (!response.isSuccessful()){
+                    dialogView.viewNotifKosong(AbsensiKehadiranActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali  iii.");
+                    return;
+                }
+
 //                Log.d("Response Status Normal", response.body().getRemarks());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
-//                Log.e("Response Status Normal", "Gagal memanggil API absensi: " + t.getMessage(), t);
-//                dialogproses.dismiss();
-//                dialogView.pesanError(AbsensiKehadiranActivity.this);
-//            }
-//        });
-//
-//        dialogproses.show();
+                ResponsePOJO data = response.body();
+
+                if (Objects.requireNonNull(response.body()).isStatus()){
+                    dialogView.viewSukses(AbsensiKehadiranActivity.this, data.getRemarks());
+                }else {
+                    dialogView.viewNotifKosong(AbsensiKehadiranActivity.this, data.getRemarks(),"");
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
+                Log.e("Response Status Normal", "Gagal memanggil API absensi: " + t.getMessage(), t);
+                dialogproses.dismiss();
+                dialogView.pesanError(AbsensiKehadiranActivity.this);
+            }
+        });
+
+        dialogproses.show();
     }
 
     Boolean statusRekam = false;
