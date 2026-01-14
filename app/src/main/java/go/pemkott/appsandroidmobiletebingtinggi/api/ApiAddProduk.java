@@ -325,6 +325,30 @@ public interface ApiAddProduk {
             @Field("batas_waktu") String bataswaktu
     );
 
+    @Multipart
+    @POST("tl/pulang")
+    Call<ResponsePOJO> uploadTLPulang(
+            @Part MultipartBody.Part fototaging,
+            @Part("absensi") RequestBody absensi,
+            @Part("eselon") RequestBody eselon,
+            @Part("employee_id") RequestBody employee_id,
+            @Part("timetable_id") RequestBody timetable_id,
+            @Part("tanggal") RequestBody tanggal,
+            @Part("jam_masuk") RequestBody jam_masuk,
+            @Part("posisi_masuk") RequestBody posisi_masuk,
+            @Part("status_masuk") RequestBody status_masuk,
+            @Part("lat_masuk") RequestBody lat_masuk,
+            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("ket_masuk") RequestBody ket_masuk,
+            @Part("terlambat") RequestBody terlambat,
+            @Part("opd") RequestBody opd,
+            @Part("jam_kantor") RequestBody jam_kantor,
+            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part("fakegps") RequestBody fakegps,
+            @Part("batas_waktu") RequestBody batas_waktu,
+            @Part("berakhlak") RequestBody berakhlak
+    );
+
 
     @FormUrlEncoded
     @POST("dinasluarkantornewsift")

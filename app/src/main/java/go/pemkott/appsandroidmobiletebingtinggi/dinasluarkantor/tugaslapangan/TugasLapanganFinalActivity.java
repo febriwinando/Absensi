@@ -104,6 +104,9 @@ import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFotoLampiran;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import go.pemkott.appsandroidmobiletebingtinggi.viewmodel.LocationViewModel;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -147,7 +150,7 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
     String batasWaktu;
     SimpleDateFormat hari;
 
-    String fotoTaging = null, lampiran = null;
+    String lampiran = null;
     String ekslampiran;
 
     TextView tvKegiatanFinal, tvSuratPerintah, titleDinasLuar, title_content;
@@ -234,17 +237,17 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
 
 
         String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
-        String fileName = intent.getStringExtra("fileName");
+        String fileName = intent.getStringExtra("namafile");
+
         file = new File(myDir, fileName);
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
 
-        Bitmap gambardeteksi = BitmapFactory.decodeFile(file.getAbsolutePath());
-        ivFinalKegiatan.setImageBitmap(gambardeteksi);
-        Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(file);
+        Bitmap preview = BitmapFactory.decodeByteArray(
+                imageBytes, 0, imageBytes.length
+        );
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-        byte[] imageInByte = byteArrayOutputStream.toByteArray();
-        fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
+        ivFinalKegiatan.setImageBitmap(preview);
+
 
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @SuppressLint("Range")
@@ -297,13 +300,6 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         startLocationUpdates();
         rbTanggal = SIMPLE_FORMAT_TANGGAL.format(new Date());
 
-//        boolean checkPresence = databaseHelper.checkPresenceByDate(sEmployeID, rbTanggal);
-//
-//        if (checkPresence){
-//            statuskehadiran = true;
-//        }else{
-//            statuskehadiran = false;
-//        }
     }
 
     public void fokusLokasi(View view){
@@ -317,7 +313,7 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
             dialogView.viewNotifKosong(TugasLapanganFinalActivity.this, "Anda terdeteksi menggunakan Fake GPS.", "Jika ditemukan berulang kali, akun anda akan terblokir otomatis dan tercatat Alpa.");
 
         }else{
-            if (fotoTaging == null || lampiran == null){
+            if (file == null || !file.exists() || file.length() == 0){
                 dialogView.viewNotifKosong(TugasLapanganFinalActivity.this, "Anda harus melampirkan Foto Kegiatan dan Surat Perintah Perjalanan Dinas.", "");
             }
             else {
@@ -420,35 +416,57 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         });
     }
 
+    private MultipartBody.Part prepareFilePart(String partName, byte[] imageBytes) {
+        RequestBody requestBody =
+                RequestBody.create(
+                        imageBytes,
+                        MediaType.parse("image/jpeg")
+                );
+
+        return MultipartBody.Part.createFormData(
+                partName,
+                "fototaging.jpg",
+                requestBody
+        );
+    }
+
+    private RequestBody textPart(String value) {
+        return RequestBody.create(
+                okhttp3.MediaType.parse("text/plain"),
+                value
+        );
+    }
     public void kirimdataMasuk(String valid, String posisi, String status, String ketKehadiran, String jampegawai){
         progressDialog = new ProgressDialog(TugasLapanganFinalActivity.this, R.style.AppCompatAlertDialogStyle);
         progressDialog.setMessage("Sedang memproses...");
         progressDialog.setCancelable(false);
         progressDialog.show();
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
 
-        Log.d("Absensi TL Log", "dimulai");
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadTLMasuk(
-                fotoTaging,
-                ketKehadiran,
-                eJabatan,
-                sEmployeID,
-                timetableid,
-                rbTanggal,
-                rbJam,
-                posisi,
-                status,
-                rbLat,
-                rbLng,
-                rbKet,
-                mins,
-                eOPD,
-                jampegawai,
-                valid,
-                lampiran,
-                ekslampiran,
-                rbFakeGPS,
-                batasWaktu
-        );
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().uploadAbsenKehadiranMasuk(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat)),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(berakhlak)
+                );
+
 
         call.enqueue(new Callback<ResponsePOJO>() {
             @Override
@@ -493,29 +511,35 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         progressDialog.setMessage("Sedang memproses...");
         progressDialog.setCancelable(false);
         progressDialog.show();
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        byte[] imageBytesLampiran = ambilFoto.compressToMax80KB(file);
 
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadTLPulang(
-                fotoTaging,
-                ketKehadiran,
-                eJabatan,
-                sEmployeID,
-                timetableid,
-                rbTanggal,
-                rbJam,
-                posisi,
-                status,
-                rbLat,
-                rbLng,
-                rbKet,
-                mins,
-                eOPD,
-                jampegawai,
-                valid,
-                lampiran,
-                ekslampiran,
-                rbFakeGPS,
-                batasWaktu
-        );
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+        MultipartBody.Part LampiranPart = prepareFilePart("fototaging", imageBytes);
+
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().uploadTLPulang(
+                        fotoPart,
+                        textPart(ketKehadiran),
+                        textPart(eJabatan),
+                        textPart(sEmployeID),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(rbJam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(rbLat),
+                        textPart(rbLng),
+                        textPart(rbKet),
+                        textPart(String.valueOf(mins)),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(valid),
+                        LampiranPart,
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu)
+                );
 
         call.enqueue(new Callback<ResponsePOJO>() {
             @Override

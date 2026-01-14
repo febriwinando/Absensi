@@ -189,9 +189,6 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
         String fileName = intent.getStringExtra("namafile");
 
         file = new File(myDir, fileName);
-//        Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(file);
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
         byte[] imageBytes = ambilFoto.compressToMax80KB(file);
 
         Bitmap preview = BitmapFactory.decodeByteArray(

@@ -35,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 import go.pemkott.appsandroidmobiletebingtinggi.R;
+import go.pemkott.appsandroidmobiletebingtinggi.dinasluarkantor.tugaslapangan.TugasLapanganFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.kehadiran.AbsensiKehadiranActivity;
 
 public class CameraxActivity extends AppCompatActivity {
@@ -199,6 +200,11 @@ public class CameraxActivity extends AppCompatActivity {
                                     intent.putExtra("namafile", fileName);
                                     startActivity(intent);
                                     finish();
+                            } else if ("tugaslapangan".equals(aktivitas)) {
+                                Intent intent = new Intent(CameraxActivity.this, TugasLapanganFinalActivity.class);
+                                intent.putExtra("namafile", fileName);
+                                startActivity(intent);
+                                finish();
                             }
                         });
                     }

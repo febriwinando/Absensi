@@ -108,7 +108,7 @@ public class TugasLapanganActivity extends AppCompatActivity {
         }else {
 
             Intent intentTL = new Intent(TugasLapanganActivity.this, CameraxActivity.class);
-            intentTL.putExtra("aktivitas", 2);
+            intentTL.putExtra("aktivitas", "tugaslapangan");
             intentTL.putExtra("title", "Isi Data Tugas Lapangan");
             startActivity(intentTL);
 
