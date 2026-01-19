@@ -715,20 +715,46 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         });
 
         llKamera.setOnClickListener(v -> {
-//            ambilFoto("surat");
+            Intent intent = new Intent(this, CameraxActivity.class);
+            intent.putExtra("aktivitas", "lampirantl");
+            cameraLauncher.launch(intent);
 
-
-            Intent intent = new Intent(TugasLapanganFinalActivity.this, CameraxActivity.class);
-            intent.putExtra("lampiran", "lampirantl");
-            startActivityForResult(intent, REQUEST_CODE_LAMPIRAN);
             dialogLampiran.dismiss();
         });
-
         ivTutupViewLampiran.setOnClickListener(v -> dialogLampiran.dismiss());
 
         dialogLampiran.show();
     }
-    static final int REQUEST_CODE_LAMPIRAN = 341;
+
+
+    private ActivityResultLauncher<Intent> cameraLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+
+                            String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
+                            String fileName = result.getData().getStringExtra("namafile");
+
+                            File fileLampiran = new File(myDir, fileName);
+                            byte[] imageBytes = ambilFoto.compressToMax80KB(fileLampiran);
+
+                            Bitmap previewLampiran = BitmapFactory.decodeByteArray(
+                                    imageBytes, 0, imageBytes.length
+                            );
+
+
+                            llLampiranDinasLuar.setVisibility(View.VISIBLE);
+                            ivSuratPerintahFinal.setVisibility(View.VISIBLE);
+                            llPdfDinasLuar.setVisibility(View.GONE);
+                            iconLampiran.setVisibility(View.GONE);
+
+                            ivSuratPerintahFinal.setImageBitmap(previewLampiran);
+
+                        }
+                    }
+            );
+
     String fotoFileLampiran;
     private void ambilFoto(String addFoto){
         String filename = "photo";
@@ -845,26 +871,27 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
                     Log.d(TAG, "Exception"+e);
                 }
                 handlerProgressDialog();
-            }else if (requestCode == REQUEST_CODE_LAMPIRAN) {
-
-                llLampiranDinasLuar.setVisibility(View.VISIBLE);
-                ivSuratPerintahFinal.setVisibility(View.VISIBLE);
-                llPdfDinasLuar.setVisibility(View.GONE);
-                iconLampiran.setVisibility(View.GONE);
-
-                fotoFileLampiran = data.getStringExtra("KEY_HASIL");
-
-                String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
-                File filelampiran = new File(myDir, fotoFileLampiran);
-                Bitmap gambarLampiran = BitmapFactory.decodeFile(filelampiran.getAbsolutePath());
-                ivSuratPerintahFinal.setImageBitmap(gambarLampiran);
-                Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(filelampiran);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-                byte[] imageInByte = byteArrayOutputStream.toByteArray();
-                lampiran =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
-
             }
+//            else if (requestCode == REQUEST_CODE_LAMPIRAN) {
+//
+//                llLampiranDinasLuar.setVisibility(View.VISIBLE);
+//                ivSuratPerintahFinal.setVisibility(View.VISIBLE);
+//                llPdfDinasLuar.setVisibility(View.GONE);
+//                iconLampiran.setVisibility(View.GONE);
+//
+//                fotoFileLampiran = data.getStringExtra("KEY_HASIL");
+//
+//                String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
+//                File filelampiran = new File(myDir, fotoFileLampiran);
+//                Bitmap gambarLampiran = BitmapFactory.decodeFile(filelampiran.getAbsolutePath());
+//                ivSuratPerintahFinal.setImageBitmap(gambarLampiran);
+//                Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(filelampiran);
+//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
+//                byte[] imageInByte = byteArrayOutputStream.toByteArray();
+//                lampiran =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
+//
+//            }
         }else {
             progressDialog.dismiss();
         }
