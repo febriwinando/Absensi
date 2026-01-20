@@ -84,6 +84,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
@@ -96,9 +97,11 @@ import java.util.Objects;
 import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.ResponsePOJO;
 import go.pemkott.appsandroidmobiletebingtinggi.api.RetroClient;
+import go.pemkott.appsandroidmobiletebingtinggi.camerax.CameraXLActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.camerax.CameraxActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
+import go.pemkott.appsandroidmobiletebingtinggi.dinasluarkantor.tugaslapangan.TugasLapanganFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFotoLampiran;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
@@ -155,7 +158,7 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
     String dariTanggal, sampaiTanggal;
     SimpleDateFormat hari;
     DatePickerDialog datePickerDialogMulai, datePickerDialogSampai;
-    String lampiran = null;
+
     String ekslampiran;
 
     TextView tvHariMulai, tvBulanTahunMulai, tvHariSampai, tvBulanTahunSampai, tvKegiatanFinal, tvSuratPerintah, titleDinasLuar, title_content;
@@ -177,7 +180,7 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
     FragmentContainerView fragmentContainerView;
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
-    File file;
+    File file, filelampiran;
     @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,21 +252,22 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
         String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
         String fileName = intent.getStringExtra("namafile");
 
-        file = new File(myDir, fileName);
-        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
-
-        Bitmap preview = BitmapFactory.decodeByteArray(
-                imageBytes, 0, imageBytes.length
-        );
-
-
-        ivFinalKegiatan.setImageBitmap(preview);
-//        Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(file);
+//        file = new File(myDir, fileName);
+//        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
 //
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-//        byte[] imageInByte = byteArrayOutputStream.toByteArray();
-//        fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
+//        Bitmap preview = BitmapFactory.decodeByteArray(
+//                imageBytes, 0, imageBytes.length
+//        );
+
+        File originalFile = new File(myDir, fileName);
+        try {
+            file = ambilFoto.compressToFile(this, originalFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Bitmap preview = BitmapFactory.decodeFile(file.getAbsolutePath());
+        ivFinalKegiatan.setImageBitmap(preview);
 
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @SuppressLint("Range")
@@ -413,6 +417,8 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
         Toast.makeText(this, rbKet, Toast.LENGTH_SHORT).show();
         tvKegiatanFinal.setText(rbKet);
     }
+    byte[] imageBytesDokumenPdf;
+
     public String getPDFPath(Uri uri){
         String absolutePath = "";
         try{
@@ -435,18 +441,17 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
                 mPath= Environment.getExternalStorageDirectory().toString() + "absensi-"+sEmployeID+"-"+currentDateandTimes + ".pdf";
             }
 
-            File pdfFile = new File(mPath);
-            OutputStream op = new FileOutputStream(pdfFile);
+            filelampiran = new File(mPath);
+            OutputStream op = new FileOutputStream(filelampiran);
             op.write(pdfInBytes);
 
-            absolutePath = pdfFile.getPath();
+            absolutePath = filelampiran.getPath();
 
-            InputStream finput = new FileInputStream(pdfFile);
-            byte[] imageBytes = new byte[(int)pdfFile.length()];
-            finput.read(imageBytes, 0, imageBytes.length);
+            InputStream finput = new FileInputStream(filelampiran);
+            imageBytesDokumenPdf = new byte[(int)filelampiran.length()];
+            finput.read(imageBytesDokumenPdf, 0, imageBytesDokumenPdf.length);
             finput.close();
             ekslampiran = "pdf";
-            lampiran = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
         }catch (Exception ae){
             ae.printStackTrace();
@@ -494,9 +499,12 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
 
         llKamera.setOnClickListener(v -> {
 
-            Intent intent = new Intent(PerjalananDinasFinalActivity.this, CameraxActivity.class);
-            intent.putExtra("lampiran", 22);
-            startActivityForResult(intent, REQUEST_CODE_LAMPIRAN);
+//            Intent intent = new Intent(PerjalananDinasFinalActivity.this, CameraxActivity.class);
+//            intent.putExtra("lampiran", 22);
+//            startActivityForResult(intent, REQUEST_CODE_LAMPIRAN);
+            Intent intent = new Intent(this, CameraXLActivity.class);
+            intent.putExtra("aktivitas", "perjalanandinas");
+            cameraLauncher.launch(intent);
             dialogLampiran.dismiss();
 
         });
@@ -505,6 +513,35 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
 
         dialogLampiran.show();
     }
+
+
+    private ActivityResultLauncher<Intent> cameraLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+
+                            String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
+                            String fileName = result.getData().getStringExtra("namafile");
+
+                            filelampiran = new File(myDir, fileName);
+                            byte[] imageBytes = ambilFoto.compressToMax80KB(filelampiran);
+
+                            Bitmap previewLampiran = BitmapFactory.decodeByteArray(
+                                    imageBytes, 0, imageBytes.length
+                            );
+
+
+                            llLampiranDinasLuar.setVisibility(View.VISIBLE);
+                            ivSuratPerintahFinal.setVisibility(View.VISIBLE);
+                            llPdfDinasLuar.setVisibility(View.GONE);
+                            iconLampiran.setVisibility(View.GONE);
+                            ekslampiran = "jpg";
+                            ivSuratPerintahFinal.setImageBitmap(previewLampiran);
+
+                        }
+                    }
+            );
     static final int REQUEST_CODE_LAMPIRAN = 341;
 
     String fotoFileLampiran;
@@ -549,7 +586,6 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 rotationBitmapSurat.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
                 byte[] imageInByte = byteArrayOutputStream.toByteArray();
-                lampiran =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
                 ekslampiran = "jpg";
                 handlerProgressDialog();
 
@@ -564,21 +600,17 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
                 llPdfDinasLuar.setVisibility(View.GONE);
                 iconLampiran.setVisibility(View.GONE);
 
-
-
                 Uri selectedImageUri = data.getData();
                 String FilePath2  = getDriveFilePath(selectedImageUri, PerjalananDinasFinalActivity.this);
+                File originalLampiran = new File(FilePath2);
+                try {
+                    filelampiran = ambilFoto.compressToFile(this, originalLampiran);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Bitmap preview = BitmapFactory.decodeFile(filelampiran.getAbsolutePath());
+                ivSuratPerintahFinal.setImageBitmap(preview);
 
-                File file1 = new File(FilePath2);
-                Bitmap bitmap = ambilFoto.compressBitmapTo80KB(file1);
-                rotationBitmapSurat = Bitmap.createBitmap(bitmap, 0,0, bitmap.getWidth(), bitmap.getHeight(), AmbilFoto.exifInterface(FilePath2, 0), true);
-
-                ivSuratPerintahFinal.setImageBitmap(rotationBitmapSurat);
-
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-                byte[] imageInByte = byteArrayOutputStream.toByteArray();
-                lampiran =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
                 ekslampiran = "jpg";
                 handlerProgressDialog();
 
@@ -611,7 +643,6 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 selectedBitmap.compress(Bitmap.CompressFormat.PNG,90, byteArrayOutputStream);
                 byte[] imageInByte = byteArrayOutputStream.toByteArray();
-                lampiran =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
 
             }
         }else {
@@ -821,11 +852,24 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
         Dialog dialogproses = new Dialog(PerjalananDinasFinalActivity.this, R.style.DialogStyle);
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
-        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
-        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
 
-        byte[] imageBytesLampiran = ambilFoto.compressToMax80KB(file);
-        MultipartBody.Part lampiranPart = prepareFilePart("fototaging", imageBytesLampiran);
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart =
+                prepareFilePart("fototaging", imageBytes);
+
+        MultipartBody.Part lampiranPart;
+
+        if ("pdf".equals(ekslampiran)) {
+            lampiranPart =
+                    prepareFilePart("lampiran", imageBytesDokumenPdf);
+            Log.d("TugasLapanganFinalActivity", "PDF");
+        } else {
+            byte[] imageBytesLampiran =
+                    ambilFoto.compressToMax80KB(filelampiran);
+            lampiranPart =
+                    prepareFilePart("lampiran", imageBytesLampiran);
+            Log.d("TugasLapanganFinalActivity", "JPG");
+        }
 
         Call<ResponsePOJO> call =
                 RetroClient.getInstance().getApi().uploadAbsenPerjalananDinas(
@@ -855,6 +899,11 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
                 dialogproses.dismiss();
 
                 if (!response.isSuccessful()) {
+                    try {
+                        Log.e("API_ERROR", response.errorBody().string());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     dialogView.viewNotifKosong(
                             PerjalananDinasFinalActivity.this,
@@ -863,6 +912,7 @@ public class PerjalananDinasFinalActivity extends AppCompatActivity implements O
                     );
                     return;
                 }
+
 
                 ResponsePOJO data = response.body();
 
