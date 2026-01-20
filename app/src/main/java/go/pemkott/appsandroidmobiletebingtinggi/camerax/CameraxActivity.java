@@ -659,10 +659,10 @@ import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.dinasluarkantor.perjalanandinas.PerjalananDinasFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.dinasluarkantor.tugaslapangan.TugasLapanganFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izin.cuti.IzinCutiFinalActivity;
-import go.pemkott.appsandroidmobiletebingtinggi.izin.keperluanpribadi.KeperluanPribadiActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izin.keperluanpribadi.KeperluanPribadiFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izin.sakit.IzinSakitFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.kehadiran.AbsensiKehadiranActivity;
+import go.pemkott.appsandroidmobiletebingtinggi.kehadiransift.AbsenSiftActivity;
 
 public class CameraxActivity extends AppCompatActivity {
 
@@ -1023,6 +1023,8 @@ public class CameraxActivity extends AppCompatActivity {
             i = new Intent(this, KeperluanPribadiFinalActivity.class);
         } else if ("izinsakit".equals(aktivitas)) {
             i = new Intent(this, IzinSakitFinalActivity.class);
+        } else if ("kehadiransift".equals(aktivitas)) {
+            i = new Intent(this, AbsenSiftActivity.class);
         } else {
             i = new Intent();
             i.putExtra("namafile", fileName);

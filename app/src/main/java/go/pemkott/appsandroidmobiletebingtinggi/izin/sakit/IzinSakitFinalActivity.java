@@ -649,8 +649,6 @@ public class IzinSakitFinalActivity extends AppCompatActivity implements OnMapRe
                             "Gagal mengisi absensi",
                             "Silahkan coba kembali."
                     );
-                    Log.d("Log Izin Sakit", "error: tidak menerima response.");
-
                     return;
                 }
 
@@ -670,7 +668,6 @@ public class IzinSakitFinalActivity extends AppCompatActivity implements OnMapRe
             public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
                 progressDialog.dismiss();
                 Log.d("Log Izin Sakit", "error: "+t.getMessage());
-
                 dialogView.viewNotifKosong(IzinSakitFinalActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
             }
         });

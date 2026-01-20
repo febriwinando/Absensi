@@ -376,7 +376,7 @@ public class JadwalSiftActivity extends AppCompatActivity {
 
         txtAbsen.setOnClickListener(view -> {
             Intent absensift = new Intent(JadwalSiftActivity.this, CameraxActivity.class);
-            absensift.putExtra("aktivitas", 11);
+            absensift.putExtra("aktivitas", "kehadiransift");
             startActivity(absensift);
         });
 

@@ -93,118 +93,233 @@ public interface ApiAddProduk {
 //            @Field("berakhlak") String berakhlak
 //    );
 
-    @FormUrlEncoded
+    @Multipart
     @POST("sift/masuk/pagi")
     Call<ResponsePOJO> absensiftMasukPagi(
-            @Field("fototaging") String fototaging,
-            @Field("absensi") String absensi,
-            @Field("eselon") String eselon,
-            @Field("employee_id") String employee_id,
-            @Field("timetable_id") String timetable_id,
-            @Field("tanggal") String tanggal,
-            @Field("jam_masuk") String jam_masuk,
-            @Field("posisi_masuk") String posisi_masuk,
-            @Field("status_masuk") String status_masuk,
-            @Field("lat_masuk") String lat_masuk,
-            @Field("lng_masuk") String lng_masuk,
-            @Field("opd") String opd,
-            @Field("jam_kantor") String jam_kantor,
-            @Field("valid_masuk") String valid_masuk,
-            @Field("fakegps") String fakegps,
-            @Field("batas_waktu") String batas_waktu,
-            @Field("masuksift") String masuksift,
-            @Field("pulangsift") String pulangsift,
-            @Field("inisialsift") String inisialsift,
-            @Field("tipesift") String tipesift,
-            @Field("idsift") String idsift,
-            @Field("keterangan") String keterangan,
-            @Field("terlambat") int terlambat
+            @Part MultipartBody.Part fototaging,
+            @Part("absensi") RequestBody absensi,
+            @Part("eselon") RequestBody eselon,
+            @Part("employee_id") RequestBody employee_id,
+            @Part("timetable_id") RequestBody timetable_id,
+            @Part("tanggal") RequestBody tanggal,
+            @Part("jam_masuk") RequestBody jam_masuk,
+            @Part("posisi_masuk") RequestBody posisi_masuk,
+            @Part("status_masuk") RequestBody status_masuk,
+            @Part("lat_masuk") RequestBody lat_masuk,
+            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("opd") RequestBody opd,
+            @Part("jam_kantor") RequestBody jam_kantor,
+            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part("fakegps") RequestBody fakegps,
+            @Part("batas_waktu") RequestBody batas_waktu,
+            @Part("masuksift") RequestBody masuksift,
+            @Part("pulangsift") RequestBody pulangsift,
+            @Part("inisialsift") RequestBody inisialsift,
+            @Part("tipesift") RequestBody tipesift,
+            @Part("idsift") RequestBody idsift,
+            @Part("keterangan") RequestBody keterangan,
+            @Part("terlambat") RequestBody terlambat
     );
+//    @FormUrlEncoded
+//    @POST("sift/masuk/pagi")
+//    Call<ResponsePOJO> absensiftMasukPagi(
+//            @Field("fototaging") String fototaging,
+//            @Field("absensi") String absensi,
+//            @Field("eselon") String eselon,
+//            @Field("employee_id") String employee_id,
+//            @Field("timetable_id") String timetable_id,
+//            @Field("tanggal") String tanggal,
+//            @Field("jam_masuk") String jam_masuk,
+//            @Field("posisi_masuk") String posisi_masuk,
+//            @Field("status_masuk") String status_masuk,
+//            @Field("lat_masuk") String lat_masuk,
+//            @Field("lng_masuk") String lng_masuk,
+//            @Field("opd") String opd,
+//            @Field("jam_kantor") String jam_kantor,
+//            @Field("valid_masuk") String valid_masuk,
+//            @Field("fakegps") String fakegps,
+//            @Field("batas_waktu") String batas_waktu,
+//            @Field("masuksift") String masuksift,
+//            @Field("pulangsift") String pulangsift,
+//            @Field("inisialsift") String inisialsift,
+//            @Field("tipesift") String tipesift,
+//            @Field("idsift") String idsift,
+//            @Field("keterangan") String keterangan,
+//            @Field("terlambat") int terlambat
+//    );
 
-    @FormUrlEncoded
+
+    @Multipart
     @POST("sift/pulang/pagi")
     Call<ResponsePOJO> absensiftPulangPagi(
-            @Field("fototaging") String fototaging,
-            @Field("absensi") String absensi,
-            @Field("eselon") String eselon,
-            @Field("employee_id") String employee_id,
-            @Field("timetable_id") String timetable_id,
-            @Field("tanggal") String tanggal,
-            @Field("jam_masuk") String jam_masuk,
-            @Field("posisi_masuk") String posisi_masuk,
-            @Field("status_masuk") String status_masuk,
-            @Field("lat_masuk") String lat_masuk,
-            @Field("lng_masuk") String lng_masuk,
-            @Field("opd") String opd,
-            @Field("jam_kantor") String jam_kantor,
-            @Field("valid_masuk") String valid_masuk,
-            @Field("fakegps") String fakegps,
-            @Field("batas_waktu") String batas_waktu,
-            @Field("masuksift") String masuksift,
-            @Field("pulangsift") String pulangsift,
-            @Field("inisialsift") String inisialsift,
-            @Field("tipesift") String tipesift,
-            @Field("idsift") String idsift,
-            @Field("keterangan") String keterangan,
-            @Field("terlambat") int terlambat
-    );
+            @Part MultipartBody.Part fototaging,
+            @Part("absensi") RequestBody absensi,
+            @Part("eselon") RequestBody eselon,
+            @Part("employee_id") RequestBody employee_id,
+            @Part("timetable_id") RequestBody timetable_id,
+            @Part("tanggal") RequestBody tanggal,
+            @Part("jam_masuk") RequestBody jam_masuk,
+            @Part("posisi_masuk") RequestBody posisi_masuk,
+            @Part("status_masuk") RequestBody status_masuk,
+            @Part("lat_masuk") RequestBody lat_masuk,
+            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("opd") RequestBody opd,
+            @Part("jam_kantor") RequestBody jam_kantor,
+            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part("fakegps") RequestBody fakegps,
+            @Part("batas_waktu") RequestBody batas_waktu,
+            @Part("masuksift") RequestBody masuksift,
+            @Part("pulangsift") RequestBody pulangsift,
+            @Part("inisialsift") RequestBody inisialsift,
+            @Part("tipesift") RequestBody tipesift,
+            @Part("idsift") RequestBody idsift,
+            @Part("keterangan") RequestBody keterangan,
+            @Part("terlambat") RequestBody terlambat
+            );
+
+//    @FormUrlEncoded
+//    @POST("sift/pulang/pagi")
+//    Call<ResponsePOJO> absensiftPulangPagi(
+//            @Field("fototaging") String fototaging,
+//            @Field("absensi") String absensi,
+//            @Field("eselon") String eselon,
+//            @Field("employee_id") String employee_id,
+//            @Field("timetable_id") String timetable_id,
+//            @Field("tanggal") String tanggal,
+//            @Field("jam_masuk") String jam_masuk,
+//            @Field("posisi_masuk") String posisi_masuk,
+//            @Field("status_masuk") String status_masuk,
+//            @Field("lat_masuk") String lat_masuk,
+//            @Field("lng_masuk") String lng_masuk,
+//            @Field("opd") String opd,
+//            @Field("jam_kantor") String jam_kantor,
+//            @Field("valid_masuk") String valid_masuk,
+//            @Field("fakegps") String fakegps,
+//            @Field("batas_waktu") String batas_waktu,
+//            @Field("masuksift") String masuksift,
+//            @Field("pulangsift") String pulangsift,
+//            @Field("inisialsift") String inisialsift,
+//            @Field("tipesift") String tipesift,
+//            @Field("idsift") String idsift,
+//            @Field("keterangan") String keterangan,
+//            @Field("terlambat") int terlambat
+//    );
 
 
-    @FormUrlEncoded
+//    @FormUrlEncoded
+//    @POST("sift/masuk/malam")
+//    Call<ResponsePOJO> absensiftMasukMalam(
+//            @Field("fototaging") String fototaging,
+//            @Field("absensi") String absensi,
+//            @Field("eselon") String eselon,
+//            @Field("employee_id") String employee_id,
+//            @Field("timetable_id") String timetable_id,
+//            @Field("tanggal") String tanggal,
+//            @Field("jam_masuk") String jam_masuk,
+//            @Field("posisi_masuk") String posisi_masuk,
+//            @Field("status_masuk") String status_masuk,
+//            @Field("lat_masuk") String lat_masuk,
+//            @Field("lng_masuk") String lng_masuk,
+//            @Field("opd") String opd,
+//            @Field("jam_kantor") String jam_kantor,
+//            @Field("valid_masuk") String valid_masuk,
+//            @Field("fakegps") String fakegps,
+//            @Field("batas_waktu") String batas_waktu,
+//            @Field("masuksift") String masuksift,
+//            @Field("pulangsift") String pulangsift,
+//            @Field("inisialsift") String inisialsift,
+//            @Field("tipesift") String tipesift,
+//            @Field("idsift") String idsift,
+//            @Field("keterangan") String keterangan,
+//            @Field("terlambat") int terlambat
+//    );
+
+    @Multipart
     @POST("sift/masuk/malam")
     Call<ResponsePOJO> absensiftMasukMalam(
-            @Field("fototaging") String fototaging,
-            @Field("absensi") String absensi,
-            @Field("eselon") String eselon,
-            @Field("employee_id") String employee_id,
-            @Field("timetable_id") String timetable_id,
-            @Field("tanggal") String tanggal,
-            @Field("jam_masuk") String jam_masuk,
-            @Field("posisi_masuk") String posisi_masuk,
-            @Field("status_masuk") String status_masuk,
-            @Field("lat_masuk") String lat_masuk,
-            @Field("lng_masuk") String lng_masuk,
-            @Field("opd") String opd,
-            @Field("jam_kantor") String jam_kantor,
-            @Field("valid_masuk") String valid_masuk,
-            @Field("fakegps") String fakegps,
-            @Field("batas_waktu") String batas_waktu,
-            @Field("masuksift") String masuksift,
-            @Field("pulangsift") String pulangsift,
-            @Field("inisialsift") String inisialsift,
-            @Field("tipesift") String tipesift,
-            @Field("idsift") String idsift,
-            @Field("keterangan") String keterangan,
-            @Field("terlambat") int terlambat
-    );
+            @Part MultipartBody.Part fototaging,
+            @Part("absensi") RequestBody absensi,
+            @Part("eselon") RequestBody eselon,
+            @Part("employee_id") RequestBody employee_id,
+            @Part("timetable_id") RequestBody timetable_id,
+            @Part("tanggal") RequestBody tanggal,
+            @Part("jam_masuk") RequestBody jam_masuk,
+            @Part("posisi_masuk") RequestBody posisi_masuk,
+            @Part("status_masuk") RequestBody status_masuk,
+            @Part("lat_masuk") RequestBody lat_masuk,
+            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("opd") RequestBody opd,
+            @Part("jam_kantor") RequestBody jam_kantor,
+            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part("fakegps") RequestBody fakegps,
+            @Part("batas_waktu") RequestBody batas_waktu,
+            @Part("masuksift") RequestBody masuksift,
+            @Part("pulangsift") RequestBody pulangsift,
+            @Part("inisialsift") RequestBody inisialsift,
+            @Part("tipesift") RequestBody tipesift,
+            @Part("idsift") RequestBody idsift,
+            @Part("keterangan") RequestBody keterangan,
+            @Part("terlambat") RequestBody terlambat
+            );
 
-    @FormUrlEncoded
+
+//    @FormUrlEncoded
+//    @POST("sift/pulang/malam")
+//    Call<ResponsePOJO> absensiftPulangMalam(
+//            @Field("fototaging") String fototaging,
+//            @Field("absensi") String absensi,
+//            @Field("eselon") String eselon,
+//            @Field("employee_id") String employee_id,
+//            @Field("timetable_id") String timetable_id,
+//            @Field("tanggal") String tanggal,
+//            @Field("jam_masuk") String jam_masuk,
+//            @Field("posisi_masuk") String posisi_masuk,
+//            @Field("status_masuk") String status_masuk,
+//            @Field("lat_masuk") String lat_masuk,
+//            @Field("lng_masuk") String lng_masuk,
+//            @Field("opd") String opd,
+//            @Field("jam_kantor") String jam_kantor,
+//            @Field("valid_masuk") String valid_masuk,
+//            @Field("fakegps") String fakegps,
+//            @Field("batas_waktu") String batas_waktu,
+//            @Field("masuksift") String masuksift,
+//            @Field("pulangsift") String pulangsift,
+//            @Field("inisialsift") String inisialsift,
+//            @Field("tipesift") String tipesift,
+//            @Field("idsift") String idsift,
+//            @Field("keterangan") String keterangan,
+//            @Field("terlambat") int terlambat
+//    );
+
+
+    @Multipart
     @POST("sift/pulang/malam")
     Call<ResponsePOJO> absensiftPulangMalam(
-            @Field("fototaging") String fototaging,
-            @Field("absensi") String absensi,
-            @Field("eselon") String eselon,
-            @Field("employee_id") String employee_id,
-            @Field("timetable_id") String timetable_id,
-            @Field("tanggal") String tanggal,
-            @Field("jam_masuk") String jam_masuk,
-            @Field("posisi_masuk") String posisi_masuk,
-            @Field("status_masuk") String status_masuk,
-            @Field("lat_masuk") String lat_masuk,
-            @Field("lng_masuk") String lng_masuk,
-            @Field("opd") String opd,
-            @Field("jam_kantor") String jam_kantor,
-            @Field("valid_masuk") String valid_masuk,
-            @Field("fakegps") String fakegps,
-            @Field("batas_waktu") String batas_waktu,
-            @Field("masuksift") String masuksift,
-            @Field("pulangsift") String pulangsift,
-            @Field("inisialsift") String inisialsift,
-            @Field("tipesift") String tipesift,
-            @Field("idsift") String idsift,
-            @Field("keterangan") String keterangan,
-            @Field("terlambat") int terlambat
-    );
+            @Part MultipartBody.Part fototaging,
+            @Part("absensi") RequestBody absensi,
+            @Part("eselon") RequestBody eselon,
+            @Part("employee_id") RequestBody employee_id,
+            @Part("timetable_id") RequestBody timetable_id,
+            @Part("tanggal") RequestBody tanggal,
+            @Part("jam_masuk") RequestBody jam_masuk,
+            @Part("posisi_masuk") RequestBody posisi_masuk,
+            @Part("status_masuk") RequestBody status_masuk,
+            @Part("lat_masuk") RequestBody lat_masuk,
+            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("opd") RequestBody opd,
+            @Part("jam_kantor") RequestBody jam_kantor,
+            @Part("valid_masuk") RequestBody valid_masuk,
+            @Part("fakegps") RequestBody fakegps,
+            @Part("batas_waktu") RequestBody batas_waktu,
+            @Part("masuksift") RequestBody masuksift,
+            @Part("pulangsift") RequestBody pulangsift,
+            @Part("inisialsift") RequestBody inisialsift,
+            @Part("tipesift") RequestBody tipesift,
+            @Part("idsift") RequestBody idsift,
+            @Part("keterangan") RequestBody keterangan,
+            @Part("terlambat") RequestBody terlambat
+            );
+
     @FormUrlEncoded
     @POST("infoabsensitest")
     Call<CheckAbsensi> checkabsensi(

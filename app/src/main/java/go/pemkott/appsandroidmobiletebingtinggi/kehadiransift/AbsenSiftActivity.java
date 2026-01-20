@@ -66,6 +66,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,6 +84,9 @@ import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.TimeFormat;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import go.pemkott.appsandroidmobiletebingtinggi.viewmodel.LocationViewModel;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -148,7 +152,7 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
     LocationRequest locationRequest;
     File file;
     AmbilFoto ambilFoto = new AmbilFoto(AbsenSiftActivity.this);
-    String encodedImage = null;
+
 
     FragmentContainerView fragmentContainerView;
     @SuppressLint("WrongThread")
@@ -198,17 +202,31 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
         String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
         Intent intent = getIntent();
-        String fileName = intent.getStringExtra("fileName");
-        file = new File(myDir, Objects.requireNonNull(fileName));
+        String fileName = intent.getStringExtra("namafile");
 
-        Bitmap gambardeteksi = BitmapFactory.decodeFile(file.getAbsolutePath());
-        ivTaging.setImageBitmap(gambardeteksi);
-        Bitmap selectedBitmap = ambilFoto.compressAndFixOrientation(file);
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-        byte[] imageInByte = byteArrayOutputStream.toByteArray();
-        encodedImage =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
+        File originalFile = new File(myDir, fileName);
+        try {
+            file = ambilFoto.compressToFile(this, originalFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Bitmap preview = BitmapFactory.decodeFile(file.getAbsolutePath());
+        ivTaging.setImageBitmap(preview);
+//        String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
+//        Intent intent = getIntent();
+//        String fileName = intent.getStringExtra("fileName");
+//        file = new File(myDir, Objects.requireNonNull(fileName));
+//
+//        Bitmap gambardeteksi = BitmapFactory.decodeFile(file.getAbsolutePath());
+//        ivTaging.setImageBitmap(gambardeteksi);
+//        Bitmap selectedBitmap = ambilFoto.compressAndFixOrientation(file);
+//
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
+//        byte[] imageInByte = byteArrayOutputStream.toByteArray();
+//        encodedImage =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
         llUpload.setOnClickListener(view -> {
             requestPermission();
             if (mock_location == 1){
@@ -495,7 +513,7 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
     public void uploadImages(){
 
-        if(encodedImage == null || encodedImage.isEmpty() ){
+        if(file == null || !file.exists() || file.length() == 0){
             dialogView.viewNotifKosong(AbsenSiftActivity.this, "Harap melampirkan foto taging anda.", "");
         }else{
             selected = rgKehadiran.getCheckedRadioButtonId();
@@ -837,37 +855,86 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         return R * c;
     }
 
+    private MultipartBody.Part prepareFilePart(String partName, byte[] imageBytes) {
+        RequestBody requestBody =
+                RequestBody.create(
+                        imageBytes,
+                        MediaType.parse("image/jpeg")
+                );
+
+        return MultipartBody.Part.createFormData(
+                partName,
+                "fototaging.jpg",
+                requestBody
+        );
+    }
+
+    private RequestBody textPart(String value) {
+        return RequestBody.create(
+                okhttp3.MediaType.parse("text/plain"),
+                value
+        );
+    }
 
     public void kirimdataMasukPagi(String absensi, String eselon, String idpegawai, String timetableid, String tanggal, String jam, String posisi, String status,  String lat, String lng, String ket, int terlambat, String jampegawai, String validasi ){
         Dialog dialogproses = new Dialog(AbsenSiftActivity.this, R.style.DialogStyle);
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
 
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftMasukPagi(
-                encodedImage,
-                absensi,
-                eselon,
-                idpegawai,
-                timetableid,
-                tanggal,
-                jam,
-                posisi,
-                status,
-                lat,
-                lng,
-                eOPD,
-                jampegawai,
-                validasi,
-                rbFakeGPS,
-                batasWaktu,
-                masuksift,
-                pulangsift,
-                inisialsift,
-                tipesift,
-                idsift,
-                ket,
-                terlambat
-        );
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().absensiftMasukPagi(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(masuksift),
+                        textPart(pulangsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(idsift),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat))
+                );
+//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftMasukPagi(
+//                encodedImage,
+//                absensi,
+//                eselon,
+//                idpegawai,
+//                timetableid,
+//                tanggal,
+//                jam,
+//                posisi,
+//                status,
+//                lat,
+//                lng,
+//                eOPD,
+//                jampegawai,
+//                validasi,
+//                rbFakeGPS,
+//                batasWaktu,
+//                masuksift,
+//                pulangsift,
+//                inisialsift,
+//                tipesift,
+//                idsift,
+//                ket,
+//                terlambat
+//        );
 
         call.enqueue(new Callback<>() {
             @Override
@@ -907,31 +974,60 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
 
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftPulangPagi(
-                encodedImage,
-                absensi,
-                eselon,
-                idpegawai,
-                timetableid,
-                tanggal,
-                jam,
-                posisi,
-                status,
-                lat,
-                lng,
-                eOPD,
-                jampegawai,
-                validasi,
-                rbFakeGPS,
-                batasWaktu,
-                masuksift,
-                pulangsift,
-                inisialsift,
-                tipesift,
-                idsift,
-                ket,
-                terlambat
-        );
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().absensiftPulangPagi(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(masuksift),
+                        textPart(pulangsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(idsift),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat))
+                );
+//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftPulangPagi(
+//                encodedImage,
+//                absensi,
+//                eselon,
+//                idpegawai,
+//                timetableid,
+//                tanggal,
+//                jam,
+//                posisi,
+//                status,
+//                lat,
+//                lng,
+//                eOPD,
+//                jampegawai,
+//                validasi,
+//                rbFakeGPS,
+//                batasWaktu,
+//                masuksift,
+//                pulangsift,
+//                inisialsift,
+//                tipesift,
+//                idsift,
+//                ket,
+//                terlambat
+//        );
 
         call.enqueue(new Callback<>() {
             @Override
@@ -971,31 +1067,61 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
 
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftPulangMalam(
-                encodedImage,
-                absensi,
-                eselon,
-                idpegawai,
-                timetableid,
-                tanggal,
-                jam,
-                posisi,
-                status,
-                lat,
-                lng,
-                eOPD,
-                jampegawai,
-                validasi,
-                rbFakeGPS,
-                batasWaktu,
-                masuksift,
-                pulangsift,
-                inisialsift,
-                tipesift,
-                idsift,
-                ket,
-                terlambat
-        );
+//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftPulangMalam(
+//                encodedImage,
+//                absensi,
+//                eselon,
+//                idpegawai,
+//                timetableid,
+//                tanggal,
+//                jam,
+//                posisi,
+//                status,
+//                lat,
+//                lng,
+//                eOPD,
+//                jampegawai,
+//                validasi,
+//                rbFakeGPS,
+//                batasWaktu,
+//                masuksift,
+//                pulangsift,
+//                inisialsift,
+//                tipesift,
+//                idsift,
+//                ket,
+//                terlambat
+//        );
+
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().absensiftPulangMalam(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(masuksift),
+                        textPart(pulangsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(idsift),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat))
+                );
 
         call.enqueue(new Callback<>() {
             @Override
@@ -1035,31 +1161,61 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
 
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftMasukMalam(
-                encodedImage,
-                absensi,
-                eselon,
-                idpegawai,
-                timetableid,
-                tanggal,
-                jam,
-                posisi,
-                status,
-                lat,
-                lng,
-                eOPD,
-                jampegawai,
-                validasi,
-                rbFakeGPS,
-                batasWaktu,
-                masuksift,
-                pulangsift,
-                inisialsift,
-                tipesift,
-                idsift,
-                ket,
-                terlambat
-        );
+
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().absensiftMasukMalam(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(timetableid),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(masuksift),
+                        textPart(pulangsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(idsift),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat))
+                );
+//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftMasukMalam(
+//                encodedImage,
+//                absensi,
+//                eselon,
+//                idpegawai,
+//                timetableid,
+//                tanggal,
+//                jam,
+//                posisi,
+//                status,
+//                lat,
+//                lng,
+//                eOPD,
+//                jampegawai,
+//                validasi,
+//                rbFakeGPS,
+//                batasWaktu,
+//                masuksift,
+//                pulangsift,
+//                inisialsift,
+//                tipesift,
+//                idsift,
+//                ket,
+//                terlambat
+//        );
 
         call.enqueue(new Callback<>() {
             @Override
