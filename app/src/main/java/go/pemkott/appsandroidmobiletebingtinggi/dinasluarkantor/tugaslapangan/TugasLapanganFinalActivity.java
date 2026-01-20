@@ -475,6 +475,7 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
                         textPart(jampegawai),
                         textPart(valid),
                         lampiranPart,
+                        textPart(ekslampiran),
                         textPart(rbFakeGPS),
                         textPart(batasWaktu)
                 );
@@ -524,17 +525,21 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         progressDialog.setCancelable(false);
         progressDialog.show();
         byte[] imageBytes = ambilFoto.compressToMax80KB(file);
-        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+        MultipartBody.Part fotoPart =
+                prepareFilePart("fototaging", imageBytes);
 
         MultipartBody.Part lampiranPart;
 
-        if (ekslampiran.equals("pdf")){
-
-            lampiranPart = prepareFilePart("fototaging", imageBytesDokumenPdf);
-
-        }else{
-            byte[] imageBytesLampiran = ambilFoto.compressToMax80KB(filelampiran);
-            lampiranPart = prepareFilePart("fototaging", imageBytesLampiran);
+        if ("pdf".equals(ekslampiran)) {
+            lampiranPart =
+                    prepareFilePart("lampiran", imageBytesDokumenPdf);
+            Log.d("TugasLapanganFinalActivity", "PDF");
+        } else {
+            byte[] imageBytesLampiran =
+                    ambilFoto.compressToMax80KB(filelampiran);
+            lampiranPart =
+                    prepareFilePart("lampiran", imageBytesLampiran);
+            Log.d("TugasLapanganFinalActivity", "JPG");
         }
 
         Call<ResponsePOJO> call =
@@ -556,6 +561,7 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
                         textPart(jampegawai),
                         textPart(valid),
                         lampiranPart,
+                        textPart(ekslampiran),
                         textPart(rbFakeGPS),
                         textPart(batasWaktu)
                 );

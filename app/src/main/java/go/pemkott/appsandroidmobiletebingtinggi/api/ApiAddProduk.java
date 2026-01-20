@@ -272,6 +272,7 @@ public interface ApiAddProduk {
             @Part("jam_kantor") RequestBody jam_kantor,
             @Part("valid_masuk") RequestBody valid_masuk,
             @Part MultipartBody.Part lampiran,
+            @Part("ekslampiran") RequestBody ekslampiran,
             @Part("fakegps") RequestBody fakegps,
             @Part("batas_waktu") RequestBody batas_waktu
     );
@@ -370,6 +371,7 @@ public interface ApiAddProduk {
             @Part("jam_kantor") RequestBody jam_kantor,
             @Part("valid_pulang") RequestBody valid_pulang,
             @Part MultipartBody.Part lampiran,
+            @Part("ekslampiran") RequestBody ekslampiran,
             @Part("fakegps") RequestBody fakegps,
             @Part("batas_waktu") RequestBody batas_waktu
     );
