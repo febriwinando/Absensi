@@ -639,7 +639,7 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
                             if (tagingTime.getTime() < jamPulangDate.getTime()) {
                                 dialogView.viewNotifKosong(AbsenSiftActivity.this, "Anda belum dapat mengisi absensi pulang,", "silahkan lanjutkan kembali aktivitas kantor anda ya.");
                             } else {
-                                    kirimdataPulangPagi("pulang", eselon, sEmployId, timetableid, rbTanggal, rbJam, rbPosisi, "hadir", rbLat, rbLng, rbKet, 0, pulangsift, rbValid);
+                                    kirimdataPulangPagi("pulang", eselon, sEmployId, rbTanggal, rbJam, rbPosisi, "hadir", rbLat, rbLng, rbKet, 0, pulangsift, rbValid);
                             }
 
                     }
@@ -884,31 +884,31 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
         byte[] imageBytes = ambilFoto.compressToMax80KB(file);
         MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
-        Log.d("ABSEN_MASUK_PAGI", "===== REQUEST PARAMETER =====");
-        Log.d("ABSEN_MASUK_PAGI", "absensi      : " + String.valueOf(absensi));
-        Log.d("ABSEN_MASUK_PAGI", "eselon       : " + String.valueOf(eselon));
-        Log.d("ABSEN_MASUK_PAGI", "idpegawai    : " + String.valueOf(idpegawai));
-        Log.d("ABSEN_MASUK_PAGI", "timetableid  : " + String.valueOf(timetableid));
-        Log.d("ABSEN_MASUK_PAGI", "tanggal      : " + String.valueOf(tanggal));
-        Log.d("ABSEN_MASUK_PAGI", "jam          : " + String.valueOf(jam));
-        Log.d("ABSEN_MASUK_PAGI", "posisi       : " + String.valueOf(posisi));
-        Log.d("ABSEN_MASUK_PAGI", "status       : " + String.valueOf(status));
-        Log.d("ABSEN_MASUK_PAGI", "lat          : " + String.valueOf(lat));
-        Log.d("ABSEN_MASUK_PAGI", "lng          : " + String.valueOf(lng));
-        Log.d("ABSEN_MASUK_PAGI", "eOPD         : " + String.valueOf(eOPD));
-        Log.d("ABSEN_MASUK_PAGI", "jampegawai   : " + String.valueOf(jampegawai));
-        Log.d("ABSEN_MASUK_PAGI", "validasi     : " + String.valueOf(validasi));
-        Log.d("ABSEN_MASUK_PAGI", "rbFakeGPS    : " + String.valueOf(rbFakeGPS));
-        Log.d("ABSEN_MASUK_PAGI", "batasWaktu   : " + String.valueOf(batasWaktu));
-        Log.d("ABSEN_MASUK_PAGI", "masuksift    : " + String.valueOf(masuksift));
-        Log.d("ABSEN_MASUK_PAGI", "pulangsift   : " + String.valueOf(pulangsift));
-        Log.d("ABSEN_MASUK_PAGI", "inisialsift  : " + String.valueOf(inisialsift));
-        Log.d("ABSEN_MASUK_PAGI", "tipesift     : " + String.valueOf(tipesift));
-        Log.d("ABSEN_MASUK_PAGI", "idsift       : " + String.valueOf(idsift));
-        Log.d("ABSEN_MASUK_PAGI", "ket          : " + String.valueOf(ket));
-        Log.d("ABSEN_MASUK_PAGI", "terlambat    : " + String.valueOf(terlambat));
-        Log.d("ABSEN_MASUK_PAGI", "fotoPart     : " + (fotoPart != null ? "ADA" : "NULL"));
-        Log.d("ABSEN_MASUK_PAGI", "==============================");
+//        Log.d("ABSEN_MASUK_PAGI", "===== REQUEST PARAMETER =====");
+//        Log.d("ABSEN_MASUK_PAGI", "absensi      : " + String.valueOf(absensi));
+//        Log.d("ABSEN_MASUK_PAGI", "eselon       : " + String.valueOf(eselon));
+//        Log.d("ABSEN_MASUK_PAGI", "idpegawai    : " + String.valueOf(idpegawai));
+//        Log.d("ABSEN_MASUK_PAGI", "timetableid  : " + String.valueOf(timetableid));
+//        Log.d("ABSEN_MASUK_PAGI", "tanggal      : " + String.valueOf(tanggal));
+//        Log.d("ABSEN_MASUK_PAGI", "jam          : " + String.valueOf(jam));
+//        Log.d("ABSEN_MASUK_PAGI", "posisi       : " + String.valueOf(posisi));
+//        Log.d("ABSEN_MASUK_PAGI", "status       : " + String.valueOf(status));
+//        Log.d("ABSEN_MASUK_PAGI", "lat          : " + String.valueOf(lat));
+//        Log.d("ABSEN_MASUK_PAGI", "lng          : " + String.valueOf(lng));
+//        Log.d("ABSEN_MASUK_PAGI", "eOPD         : " + String.valueOf(eOPD));
+//        Log.d("ABSEN_MASUK_PAGI", "jampegawai   : " + String.valueOf(jampegawai));
+//        Log.d("ABSEN_MASUK_PAGI", "validasi     : " + String.valueOf(validasi));
+//        Log.d("ABSEN_MASUK_PAGI", "rbFakeGPS    : " + String.valueOf(rbFakeGPS));
+//        Log.d("ABSEN_MASUK_PAGI", "batasWaktu   : " + String.valueOf(batasWaktu));
+//        Log.d("ABSEN_MASUK_PAGI", "masuksift    : " + String.valueOf(masuksift));
+//        Log.d("ABSEN_MASUK_PAGI", "pulangsift   : " + String.valueOf(pulangsift));
+//        Log.d("ABSEN_MASUK_PAGI", "inisialsift  : " + String.valueOf(inisialsift));
+//        Log.d("ABSEN_MASUK_PAGI", "tipesift     : " + String.valueOf(tipesift));
+//        Log.d("ABSEN_MASUK_PAGI", "idsift       : " + String.valueOf(idsift));
+//        Log.d("ABSEN_MASUK_PAGI", "ket          : " + String.valueOf(ket));
+//        Log.d("ABSEN_MASUK_PAGI", "terlambat    : " + String.valueOf(terlambat));
+//        Log.d("ABSEN_MASUK_PAGI", "fotoPart     : " + (fotoPart != null ? "ADA" : "NULL"));
+//        Log.d("ABSEN_MASUK_PAGI", "==============================");
 
         Call<ResponsePOJO> call =
                 RetroClient.getInstance().getApi().absensiftMasukPagi(
@@ -970,7 +970,74 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
-    public void kirimdataPulangPagi(String absensi, String eselon, String idpegawai, String timetableid, String tanggal, String jam, String posisi, String status,  String lat, String lng, String ket, int terlambat, String jampegawai, String validasi ){
+    public void kirimdataPulangPagi(String absensi, String eselon, String idpegawai, String tanggal, String jam, String posisi, String status,  String lat, String lng, String ket, int terlambat, String jampegawai, String validasi ){
+        Dialog dialogproses = new Dialog(AbsenSiftActivity.this, R.style.DialogStyle);
+        dialogproses.setContentView(R.layout.view_proses);
+        dialogproses.setCancelable(false);
+
+        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
+        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
+
+        Call<ResponsePOJO> call =
+                RetroClient.getInstance().getApi().absensiftPulangPagi(
+                        fotoPart,
+                        textPart(absensi),
+                        textPart(eselon),
+                        textPart(idpegawai),
+                        textPart(tanggal),
+                        textPart(jam),
+                        textPart(posisi),
+                        textPart(status),
+                        textPart(lat),
+                        textPart(lng),
+                        textPart(eOPD),
+                        textPart(jampegawai),
+                        textPart(validasi),
+                        textPart(rbFakeGPS),
+                        textPart(batasWaktu),
+                        textPart(masuksift),
+                        textPart(pulangsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(idsift),
+                        textPart(ket),
+                        textPart(String.valueOf(terlambat))
+                );
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
+
+                if (!response.isSuccessful()) {
+
+                    dialogView.viewNotifKosong(AbsenSiftActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
+                    dialogproses.dismiss();
+                    return;
+                }
+
+                if (response.body().isStatus()) {
+                    ResponsePOJO data = response.body();
+                    dialogproses.dismiss();
+                    dialogView.viewSukses(AbsenSiftActivity.this, data.getRemarks());
+                } else {
+                    dialogproses.dismiss();
+                    dialogView.viewNotifKosong(AbsenSiftActivity.this, response.body().getRemarks(), "");
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
+                dialogproses.dismiss();
+                dialogView.pesanError(AbsenSiftActivity.this);
+            }
+        });
+
+        dialogproses.show();
+    }
+
+
+    public void kirimdataMasukMalam(String absensi, String eselon, String idpegawai, String timetableid, String tanggal, String jam, String posisi, String status,  String lat, String lng, String ket, int terlambat, String jampegawai, String validasi ){
         Dialog dialogproses = new Dialog(AbsenSiftActivity.this, R.style.DialogStyle);
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
@@ -1004,181 +1071,61 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         Log.d("ABSEN_MASUK_PAGI", "fotoPart     : " + (fotoPart != null ? "ADA" : "NULL"));
         Log.d("ABSEN_MASUK_PAGI", "==============================");
 
-        Call<ResponsePOJO> call =
-                RetroClient.getInstance().getApi().absensiftPulangPagi(
-                        fotoPart,
-                        textPart(absensi),
-                        textPart(eselon),
-                        textPart(idpegawai),
-                        textPart(timetableid),
-                        textPart(tanggal),
-                        textPart(jam),
-                        textPart(posisi),
-                        textPart(status),
-                        textPart(lat),
-                        textPart(lng),
-                        textPart(eOPD),
-                        textPart(jampegawai),
-                        textPart(validasi),
-                        textPart(rbFakeGPS),
-                        textPart(batasWaktu),
-                        textPart(masuksift),
-                        textPart(pulangsift),
-                        textPart(inisialsift),
-                        textPart(tipesift),
-                        textPart(idsift),
-                        textPart(ket),
-                        textPart(String.valueOf(terlambat))
-                );
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftPulangPagi(
-//                encodedImage,
-//                absensi,
-//                eselon,
-//                idpegawai,
-//                timetableid,
-//                tanggal,
-//                jam,
-//                posisi,
-//                status,
-//                lat,
-//                lng,
-//                eOPD,
-//                jampegawai,
-//                validasi,
-//                rbFakeGPS,
-//                batasWaktu,
-//                masuksift,
-//                pulangsift,
-//                inisialsift,
-//                tipesift,
-//                idsift,
-//                ket,
-//                terlambat
-//        );
-
-        call.enqueue(new Callback<>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
-
-                if (!response.isSuccessful()) {
-
-                    dialogView.viewNotifKosong(AbsenSiftActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
+//        Call<ResponsePOJO> call =
+//                RetroClient.getInstance().getApi().absensiftMasukMalam(
+//                        fotoPart,
+//                        textPart(absensi),
+//                        textPart(eselon),
+//                        textPart(idpegawai),
+//                        textPart(tanggal),
+//                        textPart(jam),
+//                        textPart(posisi),
+//                        textPart(status),
+//                        textPart(lat),
+//                        textPart(lng),
+//                        textPart(eOPD),
+//                        textPart(jampegawai),
+//                        textPart(validasi),
+//                        textPart(rbFakeGPS),
+//                        textPart(batasWaktu),
+//                        textPart(masuksift),
+//                        textPart(pulangsift),
+//                        textPart(inisialsift),
+//                        textPart(tipesift),
+//                        textPart(idsift),
+//                        textPart(ket),
+//                        textPart(String.valueOf(terlambat))
+//                );
+//
+//        call.enqueue(new Callback<>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
+//
+//                if (!response.isSuccessful()) {
+//
+//                    dialogView.viewNotifKosong(AbsenSiftActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
+//                    dialogproses.dismiss();
+//                    return;
+//                }
+//
+//                if (response.body().isStatus()) {
+//                    dialogproses.dismiss();
+//                    viewSukses(AbsenSiftActivity.this);
+//                } else {
                     dialogproses.dismiss();
-                    return;
-                }
-
-                if (response.body().isStatus()) {
-                    dialogproses.dismiss();
-                    viewSukses(AbsenSiftActivity.this);
-                } else {
-                    dialogproses.dismiss();
-
-                    dialogView.viewNotifKosong(AbsenSiftActivity.this, response.body().getRemarks(), "");
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
-                dialogproses.dismiss();
-                dialogView.pesanError(AbsenSiftActivity.this);
-            }
-        });
-
-        dialogproses.show();
-    }
-
-
-    public void kirimdataMasukMalam(String absensi, String eselon, String idpegawai, String timetableid, String tanggal, String jam, String posisi, String status,  String lat, String lng, String ket, int terlambat, String jampegawai, String validasi ){
-        Dialog dialogproses = new Dialog(AbsenSiftActivity.this, R.style.DialogStyle);
-        dialogproses.setContentView(R.layout.view_proses);
-        dialogproses.setCancelable(false);
-
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().absensiftPulangMalam(
-//                encodedImage,
-//                absensi,
-//                eselon,
-//                idpegawai,
-//                timetableid,
-//                tanggal,
-//                jam,
-//                posisi,
-//                status,
-//                lat,
-//                lng,
-//                eOPD,
-//                jampegawai,
-//                validasi,
-//                rbFakeGPS,
-//                batasWaktu,
-//                masuksift,
-//                pulangsift,
-//                inisialsift,
-//                tipesift,
-//                idsift,
-//                ket,
-//                terlambat
-//        );
-
-        byte[] imageBytes = ambilFoto.compressToMax80KB(file);
-        MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
-
-        Call<ResponsePOJO> call =
-                RetroClient.getInstance().getApi().absensiftPulangMalam(
-                        fotoPart,
-                        textPart(absensi),
-                        textPart(eselon),
-                        textPart(idpegawai),
-                        textPart(timetableid),
-                        textPart(tanggal),
-                        textPart(jam),
-                        textPart(posisi),
-                        textPart(status),
-                        textPart(lat),
-                        textPart(lng),
-                        textPart(eOPD),
-                        textPart(jampegawai),
-                        textPart(validasi),
-                        textPart(rbFakeGPS),
-                        textPart(batasWaktu),
-                        textPart(masuksift),
-                        textPart(pulangsift),
-                        textPart(inisialsift),
-                        textPart(tipesift),
-                        textPart(idsift),
-                        textPart(ket),
-                        textPart(String.valueOf(terlambat))
-                );
-
-        call.enqueue(new Callback<>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
-
-                if (!response.isSuccessful()) {
-
-                    dialogView.viewNotifKosong(AbsenSiftActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
-                    dialogproses.dismiss();
-                    return;
-                }
-
-                if (response.body().isStatus()) {
-                    dialogproses.dismiss();
-                    viewSukses(AbsenSiftActivity.this);
-                } else {
-                    dialogproses.dismiss();
-
-                    dialogView.viewNotifKosong(AbsenSiftActivity.this, response.body().getRemarks(), "");
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
-                dialogproses.dismiss();
-                dialogView.pesanError(AbsenSiftActivity.this);
-            }
-        });
-
+//
+//                    dialogView.viewNotifKosong(AbsenSiftActivity.this, response.body().getRemarks(), "");
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
+//                dialogproses.dismiss();
+//                dialogView.pesanError(AbsenSiftActivity.this);
+//            }
+//        });
+//
         dialogproses.show();
     }
 
@@ -1193,12 +1140,12 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
 
         Call<ResponsePOJO> call =
-                RetroClient.getInstance().getApi().absensiftMasukMalam(
+                RetroClient.getInstance().getApi().absensiftPulangMalam(
                         fotoPart,
                         textPart(absensi),
                         textPart(eselon),
                         textPart(idpegawai),
-                        textPart(timetableid),
+//                        textPart(timetableid),
                         textPart(tanggal),
                         textPart(jam),
                         textPart(posisi),

@@ -155,13 +155,13 @@ public interface ApiAddProduk {
             @Part("absensi") RequestBody absensi,
             @Part("eselon") RequestBody eselon,
             @Part("employee_id") RequestBody employee_id,
-            @Part("timetable_id") RequestBody timetable_id,
+//            @Part("timetable_id") RequestBody timetable_id,
             @Part("tanggal") RequestBody tanggal,
-            @Part("jam_masuk") RequestBody jam_masuk,
-            @Part("posisi_masuk") RequestBody posisi_masuk,
-            @Part("status_masuk") RequestBody status_masuk,
-            @Part("lat_masuk") RequestBody lat_masuk,
-            @Part("lng_masuk") RequestBody lng_masuk,
+            @Part("jam_pulang") RequestBody jam_pulang,
+            @Part("posisi_pulang") RequestBody posisi_pulang,
+            @Part("status_pulang") RequestBody status_pulang,
+            @Part("lat_pulang") RequestBody lat_pulang,
+            @Part("lng_pulang") RequestBody lng_pulang,
             @Part("opd") RequestBody opd,
             @Part("jam_kantor") RequestBody jam_kantor,
             @Part("valid_masuk") RequestBody valid_masuk,
@@ -172,7 +172,7 @@ public interface ApiAddProduk {
             @Part("inisialsift") RequestBody inisialsift,
             @Part("tipesift") RequestBody tipesift,
             @Part("idsift") RequestBody idsift,
-            @Part("keterangan") RequestBody keterangan,
+            @Part("ket_pulang") RequestBody ket_pulang,
             @Part("terlambat") RequestBody terlambat
             );
 
@@ -240,7 +240,6 @@ public interface ApiAddProduk {
             @Part("absensi") RequestBody absensi,
             @Part("eselon") RequestBody eselon,
             @Part("employee_id") RequestBody employee_id,
-            @Part("timetable_id") RequestBody timetable_id,
             @Part("tanggal") RequestBody tanggal,
             @Part("jam_masuk") RequestBody jam_masuk,
             @Part("posisi_masuk") RequestBody posisi_masuk,
@@ -257,7 +256,7 @@ public interface ApiAddProduk {
             @Part("inisialsift") RequestBody inisialsift,
             @Part("tipesift") RequestBody tipesift,
             @Part("idsift") RequestBody idsift,
-            @Part("keterangan") RequestBody keterangan,
+            @Part("ket_masuk") RequestBody ket_masuk,
             @Part("terlambat") RequestBody terlambat
             );
 
@@ -298,7 +297,7 @@ public interface ApiAddProduk {
             @Part("absensi") RequestBody absensi,
             @Part("eselon") RequestBody eselon,
             @Part("employee_id") RequestBody employee_id,
-            @Part("timetable_id") RequestBody timetable_id,
+//            @Part("timetable_id") RequestBody timetable_id,
             @Part("tanggal") RequestBody tanggal,
             @Part("jam_masuk") RequestBody jam_masuk,
             @Part("posisi_masuk") RequestBody posisi_masuk,

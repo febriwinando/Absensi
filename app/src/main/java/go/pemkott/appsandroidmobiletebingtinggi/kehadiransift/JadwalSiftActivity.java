@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -274,7 +275,7 @@ public class JadwalSiftActivity extends AppCompatActivity {
             public void onItemClicked(String s) {
 
                 tanggalSift = s;
-
+                Log.d("ABSEN_MASUK_PAGI", s);
                 for (int i=0 ;i<listJadwalSift.size();i++){
                     if (tanggalJadwal.get(i).equals(s)){
                         for (int j = 0 ; j<idSift.size();j++){
@@ -285,10 +286,19 @@ public class JadwalSiftActivity extends AppCompatActivity {
                                 masuksift = masukSift.get(j);
                                 pulangsift = pulangSift.get(j);
 
+                                Log.d("ABSEN_MASUK_PAGI", idsift );
+                                Log.d("ABSEN_MASUK_PAGI", inisialsift);
+                                Log.d("ABSEN_MASUK_PAGI", tipesift);
+                                Log.d("ABSEN_MASUK_PAGI", masuksift);
+                                Log.d("ABSEN_MASUK_PAGI", pulangsift);
+
                             }
                         }
                     }
                 }
+
+
+
                 String tanggal = SIMPLE_FORMAT_TANGGAL.format(new Date());
                 Date hariini = null;
                 try {
@@ -297,11 +307,11 @@ public class JadwalSiftActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(hariini);
-                calendar.add(Calendar.DAY_OF_YEAR, -1);
-                Date newDate = calendar.getTime();
-                String infoJadwalhariini = SIMPLE_FORMAT_TANGGAL.format(newDate);
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime(hariini);
+//                calendar.add(Calendar.DAY_OF_YEAR, -1);
+//                Date newDate = calendar.getTime();
+                String infoJadwalhariini = SIMPLE_FORMAT_TANGGAL.format(new Date());
 
                 String jamSekarangString = SIMPLE_FORMAT_JAM.format(new Date());
                 Date jamSekarang = null, batasJamAbsenMalam = null, jadwalAbsensetelah = null;
@@ -313,42 +323,45 @@ public class JadwalSiftActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                if (infoJadwalhariini.equals(s)){
+                Log.d("ABSEN_MASUK_PAGI", "TANGGAL HARI INI: "+infoJadwalhariini);
 
-                    if (tipesift.equals("malam")){
-
-                        if (jamSekarang.getTime()> batasJamAbsenMalam.getTime()){
-                            Toast.makeText(JadwalSiftActivity.this, "Batas waktu melakukan absen sift malam telah lewat", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if (jam_masuk != null && jam_pulang != null){
-                                dialogView.viewNotifKosong(JadwalSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
-                            }else{
-                                viewinfo();
-                            }
-                        }
-                    }
-
-                }else if(jadwalAbsensetelah.getTime() > hariini.getTime()){
-                    Toast.makeText(JadwalSiftActivity.this, "Belum dapat melakukan absen", Toast.LENGTH_SHORT).show();
-                }else if(tanggal.equals(s)){
-                    if (tipesift.equals("malam")) {
-                        if (jamSekarang.getTime() >= batasJamAbsenMalam.getTime()) {
-                            if (jam_masuk != null && jam_pulang != null){
-                                dialogView.viewNotifKosong(JadwalSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
-                            }else{
-                                viewinfo( );
-                            }
-                        } else {
-                            dialogView.viewNotifKosong(JadwalSiftActivity.this, "Sesi jadwal malam tanggal " + infoJadwalhariini + " masih berlangsung sampai pukul 12:00.", "");
-                        }
-                    } else {
-                        if (jam_masuk != null && jam_pulang != null){
-                            dialogView.viewNotifKosong(JadwalSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
-                        }else{
-                            viewinfo();
-                        }
-                    }
-                }
+//                if (jamSekarangString.equals(s)){
+//
+//                    if (tipesift.equals("malam")){
+//
+//                        if (jamSekarang.getTime()> batasJamAbsenMalam.getTime()){
+//                            Toast.makeText(JadwalSiftActivity.this, "Batas waktu melakukan absen sift malam telah lewat", Toast.LENGTH_SHORT).show();
+//                        }else{
+//                            if (jam_masuk != null && jam_pulang != null){
+//                                dialogView.viewNotifKosong(JadwalSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
+//                            }else{
+//                                viewinfo();
+//                            }
+//                        }
+//                    }
+//
+//                }else if(jadwalAbsensetelah.getTime() > hariini.getTime()){
+//                    Toast.makeText(JadwalSiftActivity.this, "Belum dapat melakukan absen", Toast.LENGTH_SHORT).show();
+//                }else if(tanggal.equals(s)){
+//                    if (tipesift.equals("malam")) {
+////                        Log.d("ABSEN_MASUK_PAGI", jamSekarang+ " - " + batasJamAbsenMalam);
+//                        if (jamSekarang.getTime() >= batasJamAbsenMalam.getTime()) {
+//                            if (jam_masuk != null && jam_pulang != null){
+//                                dialogView.viewNotifKosong(JadwalSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
+//                            }else{
+//                                viewinfo( );
+//                            }
+//                        } else {
+//                            dialogView.viewNotifKosong(JadwalSiftActivity.this, "Sesi jadwal malam tanggal " + infoJadwalhariini + " masih berlangsung sampai pukul 12:00.", "");
+//                        }
+//                    } else {
+//                        if (jam_masuk != null && jam_pulang != null){
+//                            dialogView.viewNotifKosong(JadwalSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
+//                        }else{
+//                            viewinfo();
+//                        }
+//                    }
+//                }
             }
         });
 
