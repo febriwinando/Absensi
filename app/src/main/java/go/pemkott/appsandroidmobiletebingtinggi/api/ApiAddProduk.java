@@ -97,17 +97,16 @@ public interface ApiAddProduk {
     @POST("sift/masuk/pagi")
     Call<ResponsePOJO> absensiftMasukPagi(
             @Part MultipartBody.Part fototaging,
-            @Part("absensi") RequestBody absensi,
-            @Part("eselon") RequestBody eselon,
+//            @Part("absensi") RequestBody absensi,
+//            @Part("eselon") RequestBody eselon,
             @Part("employee_id") RequestBody employee_id,
-//            @Part("timetable_id") RequestBody timetable_id,
             @Part("tanggal") RequestBody tanggal,
             @Part("jam_masuk") RequestBody jam_masuk,
             @Part("posisi_masuk") RequestBody posisi_masuk,
             @Part("status_masuk") RequestBody status_masuk,
             @Part("lat_masuk") RequestBody lat_masuk,
             @Part("lng_masuk") RequestBody lng_masuk,
-            @Part("opd") RequestBody opd,
+//            @Part("opd") RequestBody opd,
             @Part("jam_kantor") RequestBody jam_kantor,
             @Part("valid_masuk") RequestBody valid_masuk,
             @Part("fakegps") RequestBody fakegps,
@@ -117,7 +116,7 @@ public interface ApiAddProduk {
             @Part("inisialsift") RequestBody inisialsift,
             @Part("tipesift") RequestBody tipesift,
             @Part("idsift") RequestBody idsift,
-            @Part("keterangan") RequestBody keterangan,
+            @Part("ket_masuk") RequestBody ket_masuk,
             @Part("terlambat") RequestBody terlambat
     );
 //    @FormUrlEncoded
