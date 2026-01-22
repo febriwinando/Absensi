@@ -633,13 +633,9 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
         });
     }
 
-
-
-
     public void hitungjarak(){
 
         if(NetworkUtils.isConnected(this)){
-
             latitudeSaya = latGMap;
             longitudeSaya = lngGMap;
 
