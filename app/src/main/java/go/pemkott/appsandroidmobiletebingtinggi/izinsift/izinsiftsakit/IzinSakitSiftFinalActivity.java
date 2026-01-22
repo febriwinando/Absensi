@@ -339,29 +339,13 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
                 }
 
 
-                if (jam_masuk == null){
+                if (targetDate.after(today)) {
+                    kirimdataMasuk(rbValid, rbStatus, "masuk", masuksift);
+                } else if (targetDate.before(today)) {
+                    kirimdataMasuk(rbValid, rbStatus, "masuk", masuksift);
 
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(hariini);
-                    calendar.add(Calendar.DAY_OF_YEAR, -1);
-                    Date newDate = calendar.getTime();
-                    String infoJadwalhariini = SIMPLE_FORMAT_TANGGAL.format(newDate);
-
-                    if (tanggal.equals(rbTanggal)){
-                        kirimdata(rbValid, rbStatus, "masuk", masuksift);
-                    }else if (infoJadwalhariini.equals(rbTanggal)){
-                        if (tagingTime.getTime()> jamPulangDate.getTime()){
-                            dialogView.viewNotifKosong(IzinSakitSiftFinalActivity.this, "Anda tidak dapat melakukan absensi masuk pada jam pulang kerja.", "");
-                        }else{
-                            kirimdata(rbValid, rbStatus, "masuk", masuksift);
-
-                        }
-                    }
-
-                }else{
-                    dialogView.viewNotifKosong(IzinSakitSiftFinalActivity.this, "Anda sudah mengisi absensi masuk.", "");
                 }
+
             }else{
 
                 if (tanggal.equals(rbTanggal)){
@@ -380,9 +364,9 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
 
 
                             if(jam_masuk == null ){
-                                kirimdata(rbValid, rbStatus, "masukpulang", pulangsift);
+                                kirimdataPulang(rbValid, rbStatus, "masukpulang", pulangsift);
                             }else{
-                                kirimdata(rbValid, rbStatus, "pulang", pulangsift);
+                                kirimdataPulang(rbValid, rbStatus, "pulang", pulangsift);
                             }
                         }else{
                             dialogView.viewNotifKosong(IzinSakitSiftFinalActivity.this, "Batas melakukan absen telah lewat.", "Batas melakukan absen adalah pukul 12:00.");
@@ -416,7 +400,7 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
                     if (tagingTimePeriksa.getTime() >= pulangPeriksa.getTime()){
                         showMessage("Peringatan", "Anda tidak dapat melakukan absensi masuk pada jam pulang kerja.");
                     }else{
-                        kirimdata(rbValid,  rbStatus, "masuk", masuksift);
+                        kirimdataMasuk(rbValid,  rbStatus, "masuk", masuksift);
                     }
 
                 }else{
@@ -429,9 +413,9 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
                 if (jam_pulang == null){
 
                     if(jam_masuk == null ){
-                        kirimdata(rbValid, rbStatus, "masukpulang", pulangsift);
+                        kirimdataPulang(rbValid, rbStatus, "masukpulang", pulangsift);
                     }else{
-                        kirimdata(rbValid, rbStatus, "pulang", pulangsift);
+                        kirimdataPulang(rbValid, rbStatus, "pulang", pulangsift);
                     }
 
                 }else{
