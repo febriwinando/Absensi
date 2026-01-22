@@ -25,10 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import go.pemkott.appsandroidmobiletebingtinggi.NewDashboard.DashboardVersiOne;
 import go.pemkott.appsandroidmobiletebingtinggi.R;
@@ -38,6 +40,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.izinsiftcuti.CutiSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.izinsiftpribadi.KeperluanPribadiSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.izinsiftsakit.SakitSiftActivity;
+import go.pemkott.appsandroidmobiletebingtinggi.kehadiransift.JadwalSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.TimeFormat;
 import go.pemkott.appsandroidmobiletebingtinggi.model.JadwalSift;
 import go.pemkott.appsandroidmobiletebingtinggi.model.WaktuSift;
@@ -290,64 +293,122 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
                         }
                     }
                 }
-                String tanggal = SIMPLE_FORMAT_TANGGAL.format(new Date());
-                Date hariini = null;
+//                String tanggal = SIMPLE_FORMAT_TANGGAL.format(new Date());
+//                Date hariini = null;
+//                try {
+//                    hariini = SIMPLE_FORMAT_TANGGAL.parse(tanggal);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime(hariini);
+//                calendar.add(Calendar.DAY_OF_YEAR, -1);
+//                Date newDate = calendar.getTime();
+//                String infoJadwalhariini = SIMPLE_FORMAT_TANGGAL.format(newDate);
+//
+//                String jamSekarangString = SIMPLE_FORMAT_JAM.format(new Date());
+//                Date jamSekarang = null, batasJamAbsenMalam = null, jadwalAbsensetelah = null;
+//                try {
+//                    batasJamAbsenMalam = SIMPLE_FORMAT_JAM.parse("12:00");
+//                    jamSekarang = SIMPLE_FORMAT_JAM.parse(jamSekarangString);
+//                    jadwalAbsensetelah = SIMPLE_FORMAT_TANGGAL.parse(s);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                if (infoJadwalhariini.equals(s)) {
+//                    if (tipesift.equals("malam")) {
+//                        if (jamSekarang.getTime() > batasJamAbsenMalam.getTime()) {
+//                            Toast.makeText(JadwalIzinSiftActivity.this, "Batas waktu melakukan absen sift malam telah lewat", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            if (jam_masuk != null && jam_pulang != null){
+//                                dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
+//                            }else{
+//                                viewinfo();
+//                            }
+//                        }
+//
+//                    }
+//
+//                } else if (jadwalAbsensetelah.getTime() > hariini.getTime()) {
+//                    Toast.makeText(JadwalIzinSiftActivity.this, "Belum dapat melakukan absen", Toast.LENGTH_SHORT).show();
+//                } else if (tanggal.equals(s)) {
+//                    if (tipesift.equals("malam")) {
+//                        if (jamSekarang.getTime() >= batasJamAbsenMalam.getTime()) {
+//                            if (jam_masuk != null && jam_pulang != null){
+//                                dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
+//                            }else{
+//                                viewinfo();
+//                            }
+//                        } else {
+//                            dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Sesi jadwal malam tanggal " + infoJadwalhariini + " masih berlangsung sampai pukul 12:00.", "");
+//                        }
+//                    } else {
+//                        if (jam_masuk != null && jam_pulang != null){
+//                            dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
+//                        }else{
+//                            viewinfo();
+//                        }
+//                    }
+//                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+                // tanggal hari ini
+                Date today = null;
                 try {
-                    hariini = SIMPLE_FORMAT_TANGGAL.parse(tanggal);
+                    today = sdf.parse(sdf.format(new Date()));
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(hariini);
-                calendar.add(Calendar.DAY_OF_YEAR, -1);
-                Date newDate = calendar.getTime();
-                String infoJadwalhariini = SIMPLE_FORMAT_TANGGAL.format(newDate);
-
-                String jamSekarangString = SIMPLE_FORMAT_JAM.format(new Date());
-                Date jamSekarang = null, batasJamAbsenMalam = null, jadwalAbsensetelah = null;
+                // tanggal yang mau dibandingkan
+                Date targetDate = null;
                 try {
-                    batasJamAbsenMalam = SIMPLE_FORMAT_JAM.parse("12:00");
-                    jamSekarang = SIMPLE_FORMAT_JAM.parse(jamSekarangString);
-                    jadwalAbsensetelah = SIMPLE_FORMAT_TANGGAL.parse(s);
+                    targetDate = sdf.parse(s);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
 
-                if (infoJadwalhariini.equals(s)) {
-                    if (tipesift.equals("malam")) {
-                        if (jamSekarang.getTime() > batasJamAbsenMalam.getTime()) {
-                            Toast.makeText(JadwalIzinSiftActivity.this, "Batas waktu melakukan absen sift malam telah lewat", Toast.LENGTH_SHORT).show();
-                        } else {
-                            if (jam_masuk != null && jam_pulang != null){
-                                dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
-                            }else{
-                                viewinfo();
-                            }
-                        }
-
+                if (targetDate.after(today)) {
+                    try {
+                        dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda belum dapat melakukan absensi masuk untuk jadwal pada "+TimeFormat.formatBahasaIndonesia(s),"");
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
                     }
 
-                } else if (jadwalAbsensetelah.getTime() > hariini.getTime()) {
-                    Toast.makeText(JadwalIzinSiftActivity.this, "Belum dapat melakukan absen", Toast.LENGTH_SHORT).show();
-                } else if (tanggal.equals(s)) {
-                    if (tipesift.equals("malam")) {
-                        if (jamSekarang.getTime() >= batasJamAbsenMalam.getTime()) {
-                            if (jam_masuk != null && jam_pulang != null){
-                                dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
-                            }else{
-                                viewinfo();
-                            }
-                        } else {
-                            dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Sesi jadwal malam tanggal " + infoJadwalhariini + " masih berlangsung sampai pukul 12:00.", "");
-                        }
-                    } else {
-                        if (jam_masuk != null && jam_pulang != null){
-                            dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Anda Sudah mengisi absen masuk dan absen pulang untuk jadwal tanggal "+s,"");
-                        }else{
+                } else if (targetDate.before(today)) {
+
+                    try {
+                        Date tanggalDB = SIMPLE_FORMAT_TANGGAL.parse(s);
+                        Date harinini = SIMPLE_FORMAT_TANGGAL.parse(
+                                SIMPLE_FORMAT_TANGGAL.format(new Date())
+                        );
+
+                        long diffDay = (harinini.getTime() - tanggalDB.getTime())
+                                / (1000 * 60 * 60 * 24);
+
+                        if (diffDay == 0) {
                             viewinfo();
+                        }else if (diffDay == 1){
+
+                            Calendar calendar = Calendar.getInstance();
+                            int currentHour = calendar.get(Calendar.HOUR_OF_DAY); // 0–23
+
+                            if (currentHour >= 22) {
+                                dialogView.viewNotifKosong(JadwalIzinSiftActivity.this, "Kami informasikan bahwa waktu absensi untuk shift malam pada "+TimeFormat.formatBahasaIndonesia(s)+" tersebut telah terlewati","");
+                            } else {
+                                viewinfo();
+                            }
+
                         }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
+
+                } else {
+                    viewinfo();
                 }
 
             }

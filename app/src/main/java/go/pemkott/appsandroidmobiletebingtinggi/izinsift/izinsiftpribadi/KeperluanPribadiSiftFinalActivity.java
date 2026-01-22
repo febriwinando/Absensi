@@ -15,6 +15,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -55,6 +57,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -277,7 +280,7 @@ File file;
         String infoJadwalhariini = SIMPLE_FORMAT_TANGGAL.format(newDate);
 
         if (tipesift.equals("malam")){
-            if (radioSelectedKehadiran.getText().toString().equals("Masuk")){
+            if (radioSelectedKehadiran.getText().toString().equals("MASUK")){
                 if(jam_masuk == null){
 
                     if (tanggal.equals(rbTanggal)){
@@ -791,6 +794,36 @@ File file;
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.map = googleMap;
+        try {
+            boolean success = false;
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            switch (nightModeFlags) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    // Mode tema gelap aktif
+                    success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    this, R.raw.style_json_dark));
+                    break;
+                case Configuration.UI_MODE_NIGHT_NO:
+                    // Mode tema terang aktif
+                    success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    this, R.raw.style_json));
+                    break;
+                case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                    // Mode tema tidak ditentukan
+                    success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    this, R.raw.style_json));
+                    break;
+            }
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
         this.map.addMarker(new MarkerOptions().position(defaultLocation).icon(bitmapDescriptorFromVector(this, R.drawable.asn_lk)));
         this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 defaultLocation, 10));

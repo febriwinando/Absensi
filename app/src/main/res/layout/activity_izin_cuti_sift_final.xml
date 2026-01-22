@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     tools:context=".izinsift.izinsiftcuti.IzinCutiSiftFinalActivity">
 
 
@@ -26,8 +27,9 @@
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/todo"
                 android:elevation="10dp"
-                android:layout_marginEnd="10dp"
-                app:srcCompat="@drawable/one_left" />
+                android:outlineAmbientShadowColor="@color/font_highlight"
+                android:outlineSpotShadowColor="@color/font_highlight"
+                app:srcCompat="@drawable/one_left"/>
 
         <TextView
             android:id="@+id/title_contentCuti"
@@ -272,10 +274,11 @@
                 />
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_marginTop="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -300,30 +303,32 @@
                     android:id="@+id/tvHariMulai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="-"
+                    android:textColor="@color/biru"
                     android:textSize="14dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:text="/"/>
+                    android:text="/"
+                    android:textColor="@color/font_highlight" />
 
                 <TextView
                     android:id="@+id/tvBulanTahunMulai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="-"
-                    android:textSize="14sp" />
+                    android:textColor="@color/font_highlight"
+                    android:textSize="14sp"
+                    />
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:text="s.d."
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/font_highlight" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -342,13 +347,17 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:text="-"
+
+                    android:textColor="@color/biru"
                     android:id="@+id/tvHariSampai"
                     />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/"/>
+                    android:text="/"
+
+                    android:textColor="@color/font_highlight"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -356,11 +365,10 @@
 
                     android:text="-"
                     android:textSize="14sp"
+                    android:textColor="@color/font_highlight"
                     android:id="@+id/tvBulanTahunSampai"/>
             </LinearLayout>
         </LinearLayout>
-
-
 
         <LinearLayout
             android:layout_marginTop="10dp"

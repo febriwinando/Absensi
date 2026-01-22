@@ -363,7 +363,7 @@ public class IzinSakitFinalActivity extends AppCompatActivity implements OnMapRe
         }
     };
 
-    public void kirimDataDinasLuar(View view){
+    public void kirimdataizincuti(View view){
         requestPermission();
 
         if (mock_location == 1){

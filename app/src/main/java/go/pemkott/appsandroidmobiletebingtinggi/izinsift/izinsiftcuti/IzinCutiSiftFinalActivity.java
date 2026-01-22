@@ -20,6 +20,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -72,6 +74,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -94,6 +97,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.NewDashboard.DashboardVersiOne;
 import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.ResponsePOJO;
 import go.pemkott.appsandroidmobiletebingtinggi.api.RetroClient;
+import go.pemkott.appsandroidmobiletebingtinggi.camerax.CameraXLActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.camerax.CameraxActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
@@ -101,6 +105,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.izin.cuti.IzinCutiFinalActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.JadwalIzinSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.izinsiftsakit.IzinSakitSiftFinalActivity;
 
+import go.pemkott.appsandroidmobiletebingtinggi.kehadiran.AbsensiKehadiranActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFotoLampiran;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
@@ -309,19 +314,6 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
         Bitmap preview = BitmapFactory.decodeFile(file.getAbsolutePath());
         ivFinalKegiatan.setImageBitmap(preview);
 
-//        String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
-//        String fileName = intent.getStringExtra("fileName");
-//        file = new File(myDir, fileName);
-//
-//        Bitmap gambardeteksi = BitmapFactory.decodeFile(file.getAbsolutePath());
-//        ivFinalKegiatan.setImageBitmap(gambardeteksi);
-//        Bitmap selectedBitmap = ambilFoto.fileBitmapCompress(file);
-//
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        selectedBitmap.compress(Bitmap.CompressFormat.PNG,75, byteArrayOutputStream);
-//        byte[] imageInByte = byteArrayOutputStream.toByteArray();
-//        fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
-
         startLocationUpdates();
     }
 
@@ -392,9 +384,12 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
         }
     }
 
+
     String rbValid;
     public void uploadImages(){
 
+        periksaWaktu();
+        hitungjarak();
         if (eJabatan.equals("2")){
             rbValid = "2";
         }else{
@@ -468,6 +463,26 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
             Log.d("TugasLapanganFinalActivity", "JPG");
         }
 
+
+        Log.d("ABSEN_MASUK_PAGI", "===== REQUEST PARAMETER =====");
+        Log.d("ABSEN_MASUK_PAGI", "tanggal      : " + String.valueOf(tanggal));
+        Log.d("ABSEN_MASUK_PAGI", "posisi       : " + String.valueOf(posisi));
+        Log.d("ABSEN_MASUK_PAGI", "status       : " + String.valueOf(status));
+        Log.d("ABSEN_MASUK_PAGI", "lat          : " + String.valueOf(rbLat));
+        Log.d("ABSEN_MASUK_PAGI", "lng          : " + String.valueOf(rbLng));
+        Log.d("ABSEN_MASUK_PAGI", "eOPD         : " + String.valueOf(eOPD));
+        Log.d("ABSEN_MASUK_PAGI", "jampegawai   : " + String.valueOf(dariTanggal));
+        Log.d("ABSEN_MASUK_PAGI", "validasi     : " + String.valueOf(sampaiTanggal));
+        Log.d("ABSEN_MASUK_PAGI", "rbFakeGPS    : " + String.valueOf(rbFakeGPS));
+        Log.d("ABSEN_MASUK_PAGI", "masuksift    : " + String.valueOf(masuksift));
+        Log.d("ABSEN_MASUK_PAGI", "pulangsift   : " + String.valueOf(pulangsift));
+        Log.d("ABSEN_MASUK_PAGI", "inisialsift  : " + String.valueOf(inisialsift));
+        Log.d("ABSEN_MASUK_PAGI", "tipesift     : " + String.valueOf(tipesift));
+        Log.d("ABSEN_MASUK_PAGI", "idsift       : " + String.valueOf(idsift));
+        Log.d("ABSEN_MASUK_PAGI", "fotoPart     : " + (fotoPart != null ? "ADA" : "NULL"));
+        Log.d("ABSEN_MASUK_PAGI", "==============================");
+
+
         Call<ResponsePOJO> call =
                 RetroClient.getInstance().getApi().uploadAbsenIzinCutiShift(
                         fotoPart,
@@ -524,15 +539,13 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
 
     public void hitungjarak(){
 
-
-
         if(NetworkUtils.isConnected(this)){
 
             latitudeSaya = latGMap;
             longitudeSaya = lngGMap;
 
-            rbLat = String.valueOf(latitudeSaya);
-            rbLng = String.valueOf(longitudeSaya);
+            rbLat = String.valueOf(latGMap);
+            rbLng = String.valueOf(lngGMap);
         }else{
             dialogView.viewNotifKosong(IzinCutiSiftFinalActivity.this, "Pastikan anda telah terhubung internet.", "");
         }
@@ -633,9 +646,9 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
         });
 
         llKamera.setOnClickListener(v -> {
-            Intent intent = new Intent(IzinCutiSiftFinalActivity.this, CameraxActivity.class);
-            intent.putExtra("aktivitas", 15);
-            startActivityForResult(intent, REQUEST_CODE_LAMPIRAN);
+            Intent intent = new Intent(IzinCutiSiftFinalActivity.this, CameraXLActivity.class);
+            intent.putExtra("aktivitas", "lampirancutisift");
+            cameraLauncher.launch(intent);
             dialogLampiran.dismiss();
         });
 
@@ -644,6 +657,33 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
         dialogLampiran.show();
     }
     static final int REQUEST_CODE_LAMPIRAN = 341;
+    private ActivityResultLauncher<Intent> cameraLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+
+                            String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
+                            String fileName = result.getData().getStringExtra("namafile");
+
+                            filelampiran = new File(myDir, fileName);
+                            byte[] imageBytes = ambilFoto.compressToMax80KB(filelampiran);
+
+                            Bitmap previewLampiran = BitmapFactory.decodeByteArray(
+                                    imageBytes, 0, imageBytes.length
+                            );
+
+
+                            llLampiranDinasLuar.setVisibility(View.VISIBLE);
+                            ivSuratPerintahFinal.setVisibility(View.VISIBLE);
+                            llPdfDinasLuar.setVisibility(View.GONE);
+                            iconLampiran.setVisibility(View.GONE);
+                            ekslampiran = "jpg";
+                            ivSuratPerintahFinal.setImageBitmap(previewLampiran);
+
+                        }
+                    }
+            );
 
     private void ambilFoto(String addFoto){
         String filename = "photo";
@@ -861,6 +901,7 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
 
     private void datePickerMulai(){
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, tahun, bulan, hari) -> {
+
             bulan = bulan + 1;
             String date = makeDateString(tahun, bulan);
 
@@ -875,6 +916,7 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
             tvHariMulai.setText(String.valueOf(hari));
             tvBulanTahunMulai.setText(date);
             sTglMulai = tahun+"-"+bulan+"-"+hari;
+
         };
 
         Calendar calendar = Calendar.getInstance();
@@ -886,16 +928,18 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
         Date today = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(today);
-        c.add( Calendar.MONTH, 3);
+        c.add( Calendar.MONTH, 0);
         long maxDate = c.getTime().getTime();
 
         Calendar d = Calendar.getInstance();
         d.setTime(today);
-        d.add( Calendar.MONTH, -3);
+        d.add( Calendar.MONTH, -1);
         long minDate = d.getTime().getTime();
+
         datePickerDialogMulai = new DatePickerDialog(this, style, dateSetListener, tahun, bulan, hari);
-        datePickerDialogMulai.getDatePicker().setMinDate(minDate);
         datePickerDialogMulai.getDatePicker().setMaxDate(maxDate);
+        datePickerDialogMulai.getDatePicker().setMinDate(minDate);
+
     }
 
     private void datePickerSampai(){
@@ -925,16 +969,17 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
         Date today = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(today);
-        c.add( Calendar.MONTH, 3);
+        c.add( Calendar.MONTH, 1);
         long maxDate = c.getTime().getTime();
 
         Calendar d = Calendar.getInstance();
         d.setTime(today);
-        d.add( Calendar.MONTH, -3);
+        d.add( Calendar.MONTH, 0);
         long minDate = d.getTime().getTime();
         datePickerDialogSampai = new DatePickerDialog(this, style, dateSetListener, tahun, bulan, hari);
-        datePickerDialogSampai.getDatePicker().setMinDate(minDate);
         datePickerDialogSampai.getDatePicker().setMaxDate(maxDate);
+        datePickerDialogSampai.getDatePicker().setMinDate(minDate);
+
     }
 
     public void llSampaiDinasLuar(View view){
@@ -985,24 +1030,30 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
     ArrayList<Location> locationArrayList = new ArrayList<>();
     private void plotMarkers(Location locationObj) {
 
-
         if(map != null){
-
             map.clear();
             map.addMarker(new MarkerOptions().position(new LatLng(locationObj.getLatitude(), locationObj.getLongitude())).icon(bitmapDescriptorFromVector(this, R.drawable.asn_lk)).title(lokasi.getAddress(IzinCutiSiftFinalActivity.this, locationObj.getLatitude(), locationObj.getLongitude())));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(locationObj.getLatitude(), locationObj.getLongitude()), 19f));
-            map.getUiSettings().setMyLocationButtonEnabled(true);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationObj.getLatitude(), locationObj.getLongitude()), 18f));
             latGMap = locationObj.getLatitude();
             lngGMap = locationObj.getLongitude();
 
-
             locationArrayList.add(locationObj);
 
+            //Draw Line
+            LatLng singleLatLong = null;
+            ArrayList<LatLng> pnts = new ArrayList<LatLng>();
+            if(locationArrayList != null) {
+                for(int i = 0 ; i < locationArrayList.size(); i++) {
+                    double routePoint1Lat = locationArrayList.get(i).getLatitude();
+                    double routePoint2Long = locationArrayList.get(i).getLongitude();
+                    singleLatLong = new LatLng(routePoint1Lat,
+                            routePoint2Long);
+                    pnts.add(singleLatLong);
+                }
+            }
 
         }else{
 
-            assert false;
             map.moveCamera(CameraUpdateFactory
                     .newLatLngZoom(defaultLocation, 19f));
             map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -1039,6 +1090,36 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.map = googleMap;
+        try {
+            boolean success = false;
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            switch (nightModeFlags) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    // Mode tema gelap aktif
+                    success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    this, R.raw.style_json_dark));
+                    break;
+                case Configuration.UI_MODE_NIGHT_NO:
+                    // Mode tema terang aktif
+                    success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    this, R.raw.style_json));
+                    break;
+                case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                    // Mode tema tidak ditentukan
+                    success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    this, R.raw.style_json));
+                    break;
+            }
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
         this.map.addMarker(new MarkerOptions().position(defaultLocation).icon(bitmapDescriptorFromVector(this, R.drawable.asn_lk)));
         this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 defaultLocation, 10));

@@ -308,7 +308,6 @@
                     android:id="@+id/tvHariMulai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="-"
                     android:textColor="@color/biru"
                     android:textSize="14dp"/>
@@ -316,7 +315,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="/"
                     android:textColor="@color/font_highlight" />
 
@@ -324,10 +322,10 @@
                     android:id="@+id/tvBulanTahunMulai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:text="-"
                     android:textColor="@color/font_highlight"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    />
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
@@ -392,7 +390,7 @@
             android:paddingEnd="10dp"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:onClick="kirimDataDinasLuar"
+            android:onClick="kirimdataizincuti"
             android:layout_marginBottom="50dp"
             android:gravity="center_vertical"
             android:focusable="true">

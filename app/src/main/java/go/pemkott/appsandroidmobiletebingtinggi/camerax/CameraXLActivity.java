@@ -222,6 +222,12 @@ public class CameraXLActivity extends AppCompatActivity {
                                 setResult(RESULT_OK, resultIntent);
 
                                 finish();
+                            } else if ("lampirancutisift".equals(aktivitas)) {
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("namafile", fileName);
+                                setResult(RESULT_OK, resultIntent);
+
+                                finish();
                             }
                         });
                     }
