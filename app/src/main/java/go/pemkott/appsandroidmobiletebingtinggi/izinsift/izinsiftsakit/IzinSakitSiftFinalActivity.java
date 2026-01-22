@@ -494,7 +494,12 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
                         textPart(valid),
                         lampiranPart,
                         textPart(ekslampiran),
-                        textPart(rbFakeGPS)
+                        textPart(rbFakeGPS),
+                        textPart(idsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(masuksift),
+                        textPart(pulangsift)
                 );
 
 
@@ -537,7 +542,6 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
     }
 
 
-
     public void kirimdataPulang(String valid, String status, String ketKehadiran, String jampegawai){
         Log.d("Log Izin Sakit", "mulai");
 
@@ -566,7 +570,7 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
         }
 
         Call<ResponsePOJO> call =
-                RetroClient.getInstance().getApi().uploadizinsakitpulang(
+                RetroClient.getInstance().getApi().uploadizinsakitsiftpulang(
                         fotoPart,
                         textPart(ketKehadiran),
                         textPart(eJabatan),
@@ -585,7 +589,12 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
                         textPart(valid),
                         lampiranPart,
                         textPart(ekslampiran),
-                        textPart(rbFakeGPS)
+                        textPart(rbFakeGPS),
+                        textPart(idsift),
+                        textPart(inisialsift),
+                        textPart(tipesift),
+                        textPart(masuksift),
+                        textPart(pulangsift)
                 );
 
         call.enqueue(new Callback<ResponsePOJO>() {
@@ -624,59 +633,6 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
         });
     }
 
-
-//    public void kirimdata(String valid, String status, String ketKehadiran, String jampegawai){
-//
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadizinsakitsiftmasuk(
-//                fotoTaging,
-//                ketKehadiran,
-//                eJabatan,
-//                sEmployeID,
-//                timetableid,
-//                rbTanggal,
-//                rbJam,
-//                "sk",
-//                status,
-//                rbLat,
-//                rbLng,
-//                rbKet,
-//                mins,
-//                eOPD,
-//                jampegawai,
-//                valid,
-//                lampiran,
-//                ekslampiran,
-//                rbFakeGPS,
-//                idsift,
-//                inisialsift,
-//                tipesift,
-//                masuksift,
-//                pulangsift
-//        );
-//
-//        call.enqueue(new Callback<ResponsePOJO>() {
-//            @Override
-//            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
-//                if (!response.isSuccessful()){
-//                    dialogView.viewNotifKosong(IzinSakitSiftFinalActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
-//                    return;
-//                }
-//
-//                assert response.body() != null;
-//                if(response.body().isStatus()){
-//                    viewSukses(IzinSakitSiftFinalActivity.this, response.body().getRemarks(), "");
-//                }else{
-//                    dialogView.viewNotifKosong(IzinSakitSiftFinalActivity.this, response.body().getRemarks(), "");
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
-//                dialogView.viewNotifKosong(IzinSakitSiftFinalActivity.this, "Gagal mengisi absensi,", "silahkan coba kembali.");
-//            }
-//        });
-//    }
 
 
 
