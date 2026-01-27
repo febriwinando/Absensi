@@ -81,6 +81,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -139,7 +140,8 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
     int mock_location = 0;
     File file;
 
-//    boolean statuskehadiran;
+    SessionManager session;
+    int pegawaiId;
 
     @SuppressLint("WrongThread")
     @Override
@@ -150,6 +152,10 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kehadiran_one);
+
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
+
         databaseHelper = new DatabaseHelper(this);
         databases();
 
@@ -288,7 +294,7 @@ public class AbsensiKehadiranActivity extends AppCompatActivity implements OnMap
 
     public void databases(){
 
-        Cursor tUser = databaseHelper.getAllData22();
+        Cursor tUser = databaseHelper.getAllData22(pegawaiId);
         while (tUser.moveToNext()){
             sEmployId = tUser.getString(1);
         }

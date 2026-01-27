@@ -83,6 +83,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.kehadiran.AbsensiKehadiranActivi
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.TimeFormat;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import go.pemkott.appsandroidmobiletebingtinggi.viewmodel.LocationViewModel;
 import okhttp3.MediaType;
@@ -155,6 +156,8 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
     AmbilFoto ambilFoto = new AmbilFoto(AbsenSiftActivity.this);
 
 
+    SessionManager session;
+    int pegawaiId;
     FragmentContainerView fragmentContainerView;
     @SuppressLint("WrongThread")
     @Override
@@ -165,6 +168,8 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.biru));
         setContentView(R.layout.activity_absen_sift);
         mContext = AbsenSiftActivity.this;
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
         databaseHelper = new DatabaseHelper(mContext);
         databases();
@@ -279,7 +284,7 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
     public void databases(){
 
-        Cursor tUser = databaseHelper.getAllData22();
+        Cursor tUser = databaseHelper.getAllData22(pegawaiId);
         while (tUser.moveToNext()){
             sEmployId = tUser.getString(1);
         }

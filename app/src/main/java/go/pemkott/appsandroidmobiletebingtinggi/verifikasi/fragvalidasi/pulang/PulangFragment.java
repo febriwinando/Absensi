@@ -33,6 +33,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.RekapPulangFragment;
 import go.pemkott.appsandroidmobiletebingtinggi.model.RekapPulangKeduaFragment;
 import go.pemkott.appsandroidmobiletebingtinggi.model.ValidasiModel;
@@ -56,11 +57,16 @@ public class PulangFragment extends Fragment {
     TextView tvv1, tvv2;
     ImageView ivBackValidasi;
 
+    SessionManager session;
+    int pegawaiId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_pulang, container, false);
+        session = new SessionManager(getContext());
+        pegawaiId = session.getPegawaiId();
 
 
         rvRekapPulangFragment = view.findViewById(R.id.rvRekapPulangragment);
@@ -96,7 +102,7 @@ public class PulangFragment extends Fragment {
 
         if (NetworkUtils.isConnected(getContext())){
 
-            Cursor res = databaseHelper.getAllData22();
+            Cursor res = databaseHelper.getAllData22(pegawaiId);
             if (res.getCount()==0){
                 return;
             }

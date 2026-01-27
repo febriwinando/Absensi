@@ -101,6 +101,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.geolocation.GetLocation;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFotoLampiran;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import go.pemkott.appsandroidmobiletebingtinggi.viewmodel.LocationViewModel;
 import okhttp3.MediaType;
@@ -177,6 +178,8 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     File file, filelampiran;
+    SessionManager session;
+    int pegawaiId;
     @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +190,9 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));
         setContentView(R.layout.activity_tugas_lapangan_one);
 
+
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
         databaseHelper = new DatabaseHelper(this);
         tvKegiatanFinal = findViewById(R.id.tvKegiatanFinal);
@@ -634,7 +640,7 @@ public class TugasLapanganFinalActivity extends AppCompatActivity implements OnM
     }
 
     private void datauser(){
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount()==0){
             showMessage("Error", "Nothing found");
             return;

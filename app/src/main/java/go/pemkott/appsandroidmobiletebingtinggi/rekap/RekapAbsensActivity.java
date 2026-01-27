@@ -46,6 +46,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.RekapServer;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import retrofit2.Call;
@@ -72,6 +73,8 @@ public class RekapAbsensActivity extends AppCompatActivity {
     ImageView ivBack;
 
     DialogView dialogFragment = new DialogView(RekapAbsensActivity.this);
+    SessionManager session;
+    int pegawaiId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,10 @@ public class RekapAbsensActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));
 
         setContentView(R.layout.activity_rekap_absens);
+
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
@@ -202,7 +209,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
 
     private void dataUser() {
 
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount()==0){
             return;
         }

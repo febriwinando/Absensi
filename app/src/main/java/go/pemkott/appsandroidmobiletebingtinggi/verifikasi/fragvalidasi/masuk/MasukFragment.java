@@ -33,6 +33,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.RekapMasukFragment;
 import go.pemkott.appsandroidmobiletebingtinggi.model.RekapMasukKeduaFragment;
 import go.pemkott.appsandroidmobiletebingtinggi.model.ValidasiModel;
@@ -55,11 +56,19 @@ public class MasukFragment extends Fragment {
     TextView tvv1, tvv2;
     ImageView ivBackValidasi;
 
+    SessionManager session;
+    int pegawaiId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_masuk, container, false);
+
+        session = new SessionManager(getContext());
+        pegawaiId = session.getPegawaiId();
+
+
         rvRekapMasukFragment = view.findViewById(R.id.rvRekapMasukFragment);
         rvVerivikatorKedua = view.findViewById(R.id.rvVerivikatorKedua);
         tvv1 = view.findViewById(R.id.tvv1);
@@ -91,7 +100,7 @@ public class MasukFragment extends Fragment {
 
         if (NetworkUtils.isConnected(getContext())){
 
-            Cursor res = databaseHelper.getAllData22();
+            Cursor res = databaseHelper.getAllData22(pegawaiId);
             if (res.getCount()==0){
                 return;
             }

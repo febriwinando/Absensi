@@ -38,6 +38,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.camerax.CameraxActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.TimeFormat;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.JadwalSift;
 import go.pemkott.appsandroidmobiletebingtinggi.model.WaktuSift;
 import retrofit2.Call;
@@ -72,7 +73,8 @@ public class JadwalSiftActivity extends AppCompatActivity {
     HttpService holderAPI;
 
     public static String tanggalSift=  null, inisialsift = null, tipesift = null, masuksift = null, pulangsift = null, idsift = null;
-
+SessionManager session;
+int pegawaiId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,8 @@ public class JadwalSiftActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));
 
         setContentView(R.layout.activity_jadwal_sift);
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
 
         jadwalSiftActivity = this;
@@ -173,7 +177,7 @@ public class JadwalSiftActivity extends AppCompatActivity {
         pulangSift.clear();
         listJadwalSift.clear();
 
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount() == 0) {
             return;
         }
