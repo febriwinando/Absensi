@@ -34,6 +34,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.JadwalSift;
 import go.pemkott.appsandroidmobiletebingtinggi.model.WaktuSift;
 import retrofit2.Call;
@@ -68,6 +69,8 @@ public class CalendarJadwalSiftActivity extends AppCompatActivity {
     String bulan = BULAN.format(new Date());
     String tahun = TAHUN.format(new Date());
 
+    SessionManager session;
+    int pegawaiId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,8 @@ public class CalendarJadwalSiftActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));
         setContentView(R.layout.activity_calendar_jadwal_sift);
 
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
 
         jadwalSiftActivity = this;
@@ -196,7 +201,7 @@ public class CalendarJadwalSiftActivity extends AppCompatActivity {
         pulangSift.clear();
         listJadwalSift.clear();
 
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount() == 0) {
             return;
         }

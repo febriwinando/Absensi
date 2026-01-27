@@ -85,6 +85,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.izin.keperluanpribadi.KeperluanP
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.JadwalIzinSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.ClsGlobal;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import go.pemkott.appsandroidmobiletebingtinggi.viewmodel.LocationViewModel;
@@ -154,6 +155,8 @@ public class KeperluanPribadiSiftFinalActivity extends AppCompatActivity  implem
     private boolean mockLocationsEnabled;
     int mock_location = 0;
     String inisialsift, tipesift, masuksift, pulangsift, idsift;
+    SessionManager session;
+    int pegawaiId;
 File file;
     @SuppressLint("WrongThread")
     @Override
@@ -161,6 +164,8 @@ File file;
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_keperluan_pribadi_sift_final);
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
         databaseHelper = new DatabaseHelper(this);
         tvKegiatanFinal = findViewById(R.id.tvKegiatanFinal);
@@ -436,7 +441,7 @@ File file;
     }
 
     private void datauser(){
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount()==0){
             showMessage("Error", "Nothing found");
             return;

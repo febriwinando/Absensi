@@ -42,6 +42,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.izinsift.izinsiftpribadi.Keperlu
 import go.pemkott.appsandroidmobiletebingtinggi.izinsift.izinsiftsakit.SakitSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.kehadiransift.JadwalSiftActivity;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.TimeFormat;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.JadwalSift;
 import go.pemkott.appsandroidmobiletebingtinggi.model.WaktuSift;
 import retrofit2.Call;
@@ -75,6 +76,9 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
     ImageView ivSyncJadwalSift;
     String bulan = BULAN.format(new Date());
     String tahun = TAHUN.format(new Date());
+    SessionManager session;
+
+    int pegawaiId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +86,8 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.background_color));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));;
         setContentView(R.layout.activity_jadwal_izin_sift);
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
         jadwalIzinSiftActivity = this;
         Retrofit retrofit = new Retrofit.Builder()
@@ -163,7 +169,7 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
         pulangSift.clear();
         listJadwalSift.clear();
 
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount() == 0) {
             return;
         }
