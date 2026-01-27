@@ -103,6 +103,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.dinasluarkantor.perjalanandinas.
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFoto;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.AmbilFotoLampiran;
 import go.pemkott.appsandroidmobiletebingtinggi.konstanta.Lokasi;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
 import go.pemkott.appsandroidmobiletebingtinggi.viewmodel.LocationViewModel;
 import okhttp3.MediaType;
@@ -171,6 +172,8 @@ public class IzinCutiFinalActivity extends AppCompatActivity implements OnMapRea
     LocationRequest locationRequest;
 
     File file, filelampiran;
+    SessionManager session;
+    int pegawaiId;
     @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +183,9 @@ public class IzinCutiFinalActivity extends AppCompatActivity implements OnMapRea
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.background_color));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));
         setContentView(R.layout.activity_izin_cuti_final);
+
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
 
         databaseHelper = new DatabaseHelper(this);
@@ -488,7 +494,7 @@ public class IzinCutiFinalActivity extends AppCompatActivity implements OnMapRea
 
 
     private void datauser() {
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
         if (res.getCount() == 0) {
             showMessage("Error", "Nothing found");
             return;

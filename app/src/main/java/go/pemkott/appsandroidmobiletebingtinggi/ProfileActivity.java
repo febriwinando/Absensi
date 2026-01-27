@@ -31,6 +31,7 @@ import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
 import go.pemkott.appsandroidmobiletebingtinggi.login.LoginActivity;
+import go.pemkott.appsandroidmobiletebingtinggi.login.SessionManager;
 import go.pemkott.appsandroidmobiletebingtinggi.model.Updatep;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,11 +53,16 @@ public class ProfileActivity extends AppCompatActivity {
     LinearLayout llKeluarProfil;
     CircleImageView civProfilPegawai;
     ImageView ivBack;
+    SessionManager session;
+    int pegawaiId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
+
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
         civProfilPegawai = findViewById(R.id.civProfilPegawai);
         tvNamaPegawai = findViewById(R.id.tvNamaPegawai);
@@ -136,7 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void dataEmployee(){
 
-        Cursor res = databaseHelper.getAllData22();
+        Cursor res = databaseHelper.getAllData22(pegawaiId);
 
         while (res.moveToNext()){
             sEmployee_id = res.getString(1);

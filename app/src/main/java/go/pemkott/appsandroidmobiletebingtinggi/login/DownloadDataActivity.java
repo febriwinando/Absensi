@@ -65,10 +65,15 @@ public class DownloadDataActivity extends AppCompatActivity {
     private final AtomicInteger stepIndex = new AtomicInteger(0);
     private final int TOTAL_STEPS = 6; // used for progress calculation (exclude initial read local)
 
+    SessionManager session;
+    int pegawaiId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download_data);
+
+        session = new SessionManager(this);
+        pegawaiId = session.getPegawaiId();
 
         // init
         databaseHelper = new DatabaseHelper(this);
@@ -106,7 +111,7 @@ public class DownloadDataActivity extends AppCompatActivity {
     }
 
     private void readLocalUserAndStart() {
-        Cursor tUser = databaseHelper.getAllData22();
+        Cursor tUser = databaseHelper.getAllData22(pegawaiId);
         int dataUser = 0;
         while (tUser.moveToNext()) {
             dataUser++;

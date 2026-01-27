@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     AppUpdateManager appUpdateManager ;
     SessionManager session;
     NetworkConnectionMonitor connectionMonitor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(getResources().getColor(R.color.background_color));
         setContentView(R.layout.activity_login);
         appUpdateManager = AppUpdateManagerFactory.create(LoginActivity.this);
+
 
 
         session = new SessionManager(this);
@@ -128,17 +130,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void datauser(){
-        Cursor res = databaseHelper.getAllData22();
-        if (res.getCount() > 0 ){
 
-            Intent dashboardActivity = new Intent(LoginActivity.this, DashboardVersiOne.class);
-            dashboardActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(dashboardActivity);
-            finish();
-
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -230,6 +222,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    
+
 
 }
