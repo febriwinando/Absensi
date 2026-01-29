@@ -3,7 +3,6 @@ package go.pemkott.appsandroidmobiletebingtinggi.login;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,10 +32,14 @@ import java.util.Objects;
 import go.pemkott.appsandroidmobiletebingtinggi.NewDashboard.DashboardVersiOne;
 import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
+import go.pemkott.appsandroidmobiletebingtinggi.api.ResponsePOJO;
+import go.pemkott.appsandroidmobiletebingtinggi.api.RetroClient;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
-import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkConnectionMonitor;
 import go.pemkott.appsandroidmobiletebingtinggi.utils.NetworkUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -59,8 +64,6 @@ public class LoginActivity extends AppCompatActivity {
     AppUpdateManager appUpdateManager ;
     SessionManager session;
 
-    String userId;
-    NetworkConnectionMonitor connectionMonitor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,11 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                             databaseHelper.insertDataUserLogin(sId, sEmployee_id, sUsername, sAkses, sActive, sToken, sVerifikator);
 
                             dialogproses.dismiss();
-
-                            Intent openDashbord = new Intent(LoginActivity.this, DownloadDataActivity.class);
-                            openDashbord.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(openDashbord);
-                            finish();
+                            sendFcmTokenToServer();
 
                         }else{
                             dialogproses.dismiss();
@@ -225,6 +224,55 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
         dialogproses.show();
 
+    }
+
+    private void sendFcmTokenToServer() {
+
+        SessionManager session = new SessionManager(this);
+
+        String pegawaiId = session.getPegawaiId();
+        String fcmToken  = session.getFcmToken();
+
+        if (pegawaiId == null || fcmToken == null) {
+            Log.w("FCM ABCS", "Token / Pegawai ID kosong ");
+            return;
+        }
+        Log.w("FCM ABCS", pegawaiId+" "+fcmToken);
+
+        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().updateFcmToken(
+                pegawaiId,
+                fcmToken
+        );
+        call.enqueue(new Callback<ResponsePOJO>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
+
+
+                if (!response.isSuccessful()) {
+
+                    dialogView.viewNotifKosong(
+                            LoginActivity.this,
+                            "Gagal update token",
+                            "Silahkan coba kembali."
+                    );
+                    return;
+                }
+
+                ResponsePOJO data = response.body();
+
+                if (Objects.requireNonNull(response.body()).isStatus()){
+                    Intent openDashbord = new Intent(LoginActivity.this, DownloadDataActivity.class);
+                    openDashbord.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(openDashbord);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
+                dialogView.pesanError(LoginActivity.this);
+            }
+        });
     }
 
 }

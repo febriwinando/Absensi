@@ -1,5 +1,7 @@
 package go.pemkott.appsandroidmobiletebingtinggi.api;
 
+import com.squareup.okhttp.ResponseBody;
+
 import go.pemkott.appsandroidmobiletebingtinggi.model.CheckAbsensi;
 import go.pemkott.appsandroidmobiletebingtinggi.model.DataEmployee;
 import okhttp3.MultipartBody;
@@ -14,6 +16,12 @@ import retrofit2.http.Part;
 
 public interface ApiAddProduk {
 
+    @FormUrlEncoded
+    @POST("update-fcm-token")
+    Call<ResponsePOJO> updateFcmToken(
+            @Field("pegawai_id") String pegawaiId,
+            @Field("fcm_token") String fcmToken
+    );
     @FormUrlEncoded
     @POST("baseee")
     Call<ResponsePOJO> uploadImage(

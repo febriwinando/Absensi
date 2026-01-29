@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="go.pemkott.appsandroidmobiletebingtinggi" />
+                  <option name="mobileSdkAppId" value="1:459319720893:android:cd567324e789472e6d70d4" />
+                  <option name="projectId" value="apppemko" />
+                  <option name="projectNumber" value="459319720893" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
