@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import org.json.JSONArray;
@@ -199,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
                             databaseHelper.insertDataUserLogin(sId, sEmployee_id, sUsername, sAkses, sActive, sToken, sVerifikator);
 
                             dialogproses.dismiss();
-                            sendFcmTokenToServer();
+                            fetchFcmTokenAndSend();
 
                         }else{
                             dialogproses.dismiss();
@@ -226,6 +227,22 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void fetchFcmTokenAndSend() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e("FCM", "Gagal ambil token", task.getException());
+                        openNextPage(); // tetap lanjut
+                        return;
+                    }
+
+                    String token = task.getResult();
+                    SessionManager session = new SessionManager(this);
+                    session.saveFcmToken(token);
+
+                    sendFcmTokenToServer();
+                });
+    }
     private void sendFcmTokenToServer() {
 
         SessionManager session = new SessionManager(this);
@@ -234,45 +251,36 @@ public class LoginActivity extends AppCompatActivity {
         String fcmToken  = session.getFcmToken();
 
         if (pegawaiId == null || fcmToken == null) {
-            Log.w("FCM ABCS", "Token / Pegawai ID kosong ");
+            Log.w("FCM", "Token belum ada, lanjut tanpa update");
+            openNextPage();
             return;
         }
-        Log.w("FCM ABCS", pegawaiId+" "+fcmToken);
 
-        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().updateFcmToken(
-                pegawaiId,
-                fcmToken
-        );
+        Call<ResponsePOJO> call = RetroClient.getInstance()
+                .getApi()
+                .updateFcmToken(pegawaiId, fcmToken);
+
         call.enqueue(new Callback<ResponsePOJO>() {
             @Override
-            public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
-
-
-                if (!response.isSuccessful()) {
-
-                    dialogView.viewNotifKosong(
-                            LoginActivity.this,
-                            "Gagal update token",
-                            "Silahkan coba kembali."
-                    );
-                    return;
-                }
-
-                ResponsePOJO data = response.body();
-
-                if (Objects.requireNonNull(response.body()).isStatus()){
-                    Intent openDashbord = new Intent(LoginActivity.this, DownloadDataActivity.class);
-                    openDashbord.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(openDashbord);
-                    finish();
-                }
+            public void onResponse(Call<ResponsePOJO> call, Response<ResponsePOJO> response) {
+                openNextPage();
             }
 
             @Override
-            public void onFailure(@NonNull Call<ResponsePOJO> call, @NonNull Throwable t) {
-                dialogView.pesanError(LoginActivity.this);
+            public void onFailure(Call<ResponsePOJO> call, Throwable t) {
+                openNextPage();
             }
         });
     }
+
+
+    private void openNextPage() {
+        Intent intent = new Intent(LoginActivity.this, DownloadDataActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+
 
 }
