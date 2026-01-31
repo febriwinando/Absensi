@@ -31,6 +31,16 @@ private static final String BASE_URL="https://absensi.tebingtinggikota.go.id/api
 
     public ApiAddProduk getApi(){
         return retrofit.create(ApiAddProduk.class);
+    }
 
+    public static synchronized RetroClient getInstance2(){
+        if (myClient==null){
+            myClient=new RetroClient();
+        }
+        return myClient;
+    }
+
+    public HttpService getApi2(){
+        return retrofit.create(HttpService.class);
     }
 }

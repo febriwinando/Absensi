@@ -6,6 +6,7 @@ import java.util.List;
 
 import go.pemkott.appsandroidmobiletebingtinggi.login.Logout;
 import go.pemkott.appsandroidmobiletebingtinggi.model.CheckUpdate;
+import go.pemkott.appsandroidmobiletebingtinggi.model.DataEmployee;
 import go.pemkott.appsandroidmobiletebingtinggi.model.Employee;
 import go.pemkott.appsandroidmobiletebingtinggi.model.FileModel;
 import go.pemkott.appsandroidmobiletebingtinggi.model.HasilValidasi;
@@ -30,6 +31,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -40,6 +42,12 @@ import retrofit2.http.Url;
 
 public interface HttpService {
 
+    @FormUrlEncoded
+    @POST("dataEmployee")
+    Call<DataEmployee> dataEmployee(
+            @Field("id") String id
+
+    );
     // UPLOAD
     @Multipart
     @POST("upload_file/RestApi/upload_api.php")
