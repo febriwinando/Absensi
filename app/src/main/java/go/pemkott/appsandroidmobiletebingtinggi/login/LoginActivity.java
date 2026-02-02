@@ -183,6 +183,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         session.saveToken("Bearer " + sToken);
                         session.savePegawaiId(sId);
+                        session.saveEmployeeId(sEmployee_id);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

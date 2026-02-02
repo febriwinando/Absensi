@@ -68,7 +68,7 @@ public class DownloadDataActivity extends AppCompatActivity {
 
     private int progressStep = 0;
     private static final int MAX_STEP = 5;
-
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +81,7 @@ public class DownloadDataActivity extends AppCompatActivity {
         dialogView = new DialogView(this);
         executor = Executors.newSingleThreadExecutor();
 
-        SessionManager session = new SessionManager(this);
+        session = new SessionManager(this);
         userId = session.getPegawaiId();
 
         api = RetroClient.getInstance2().getApi2();

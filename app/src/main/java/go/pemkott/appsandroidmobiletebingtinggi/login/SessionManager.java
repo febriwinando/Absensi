@@ -9,6 +9,7 @@ public class SessionManager {
     private static final String KEY_PEGAWAI_ID = "PEGAWAI_ID";
     private static final String KEY_JABTAN = "JABATAN";
     private static final String KEY_FCM_TOKEN = "FCM_TOKEN";
+    private static final String KEY_EMPLOYEE_ID = "KEY_EMPLOYEE_ID";
 
     private final SharedPreferences prefs;
 
@@ -63,5 +64,12 @@ public class SessionManager {
 
     public String getFcmToken() {
         return prefs.getString(KEY_FCM_TOKEN, null);
+    }
+    public void saveEmployeeId(String token) {
+        prefs.edit().putString(KEY_EMPLOYEE_ID, token).apply();
+    }
+
+    public String getEmployeeId() {
+        return prefs.getString(KEY_EMPLOYEE_ID, null);
     }
 }

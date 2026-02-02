@@ -405,14 +405,19 @@ public class DashboardVersiOne extends AppCompatActivity {
 
     private void checkAppUpdate() {
 
-        appUpdateManager = AppUpdateManagerFactory.create(this);
+        AppUpdateManager appUpdateManager =
+                AppUpdateManagerFactory.create(this);
+
+        Log.d("UPDATE Versi Aplikasi", "checkAppUpdate DIPANGGIL");
 
         appUpdateManager.getAppUpdateInfo()
                 .addOnSuccessListener(appUpdateInfo -> {
 
-                    Log.d("UPDATE Versi aplikasi",
-                            "Availability: " + appUpdateInfo.updateAvailability()
-                                    + " | InstallStatus: " + appUpdateInfo.installStatus());
+                    Log.d("UPDATE Versi Aplikasi",
+                            "Availability=" + appUpdateInfo.updateAvailability()
+                                    + " | InstallStatus=" + appUpdateInfo.installStatus()
+                    );
+
                     if (appUpdateInfo.updateAvailability()
                             == UpdateAvailability.UPDATE_AVAILABLE
                             && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
@@ -421,15 +426,26 @@ public class DashboardVersiOne extends AppCompatActivity {
                             appUpdateManager.startUpdateFlowForResult(
                                     appUpdateInfo,
                                     AppUpdateType.IMMEDIATE,
-                                    this,
+                                    DashboardVersiOne.this,
                                     REQ_UPDATE
                             );
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                         }
                     }
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UPDATE Versi Aplikasi", "Gagal cek update", e);
+
+                    Toast.makeText(
+                            DashboardVersiOne.this,
+                            "Gagal cek update",
+                            Toast.LENGTH_SHORT
+                    ).show();
                 });
     }
+
 
 
     @Override
