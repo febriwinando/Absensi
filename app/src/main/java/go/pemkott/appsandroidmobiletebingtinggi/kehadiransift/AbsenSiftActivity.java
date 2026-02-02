@@ -527,7 +527,7 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
 
             periksaWaktu();
-            hitungjarak();
+            hitungJarakAbsensi();
 
             if (eJabatan.equals("2")){
                 totalJarak = 1;
@@ -657,192 +657,303 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
 
     }
+//
+//    public void hitungjarak(){
+//
+//        double latitudeSaya;
+//        double longitudeSaya;
+//        if (NetworkUtils.isConnectedMobile(AbsenSiftActivity.this) || NetworkUtils.isConnectedWifi(AbsenSiftActivity.this)){
+//            if(NetworkUtils.isConnected(AbsenSiftActivity.this)){
+//
+//                latitudeSaya = latGMap;
+//                longitudeSaya = lngGMap;
+//
+//                rbLat = String.valueOf(latGMap);
+//                rbLng = String.valueOf(lngGMap);
+//
+//
+//                SimpleDateFormat today = new SimpleDateFormat("EEE", localeID);
+//                String hariini = today.format(new Date());
+//
+//                String lat, lng;
+//
+////            Menghitung Jarak CallTaker
+//                if (eKelompok.equals("ct")){
+//
+//                    int totalLokasi = 0;
+//                    double jarak = 0;
+//
+//                    for (int i = 0 ; i  < latList.size(); i++){
+//
+//                        lat = latList.get(i);
+//                        lng = lngList.get(i);
+//                        double latitudeTujuan = Double.parseDouble(lat);
+//                        double longitudeTujuan = Double.parseDouble(lng);
+//                        jarak = getDistance(latitudeTujuan, longitudeTujuan, latitudeSaya, longitudeSaya);
+//
+//                        if ((int)jarak <= 150){
+//                            break;
+//                        }else{
+//
+//                            totalLokasi = totalLokasi + 1;
+//                        }
+//                    }
+//
+//                    if (totalLokasi ==  latList.size()){
+//
+//                        double jarakExc = 0;
+//                        int totalJarakExc = 0;
+//
+//                        if (latListExc.size() <=0 ){
+//                            jarakExc = 151;
+//                        }else{
+//
+//                            for (int j = 0; j< latListExc.size(); j++){
+//
+//                                jarakExc = getDistance(Double.parseDouble(latListExc.get(j)), Double.parseDouble(lngListExc.get(j)), latitudeSaya, longitudeSaya);
+//                                if ((int) jarakExc <= 200) {
+//                                    break;
+//                                } else {
+//                                    totalJarakExc = totalJarakExc + 1;
+//                                }
+//
+//                            }
+//
+//                        }
+//
+//                        if (totalJarakExc == latListExc.size()){
+//                            totalJarak = 151;
+//                        }else{
+//                            totalJarak = jarakExc;
+//                        }
+//                    }else{
+//                        totalJarak = jarak;
+//                    }
+//
+//                }
+//
+////            Menghitung Jarak Pegawai
+//                else{
+////                Menghitung Jarak Pada Hari Senin
+//                    if (hariini.equals("Sen") ||  hariini.equals("Mon")){
+//                        int totalLokasi = 0;
+//                        double jarak = 0;
+//
+//                        for (int i = 0 ; i  < latList.size(); i++){
+//                            lat = latList.get(i);
+//                            lng = lngList.get(i);
+//                            double latitudeTujuan = Double.parseDouble(lat);
+//                            double longitudeTujuan = Double.parseDouble(lng);
+//                            jarak = getDistance(latitudeTujuan, longitudeTujuan, latitudeSaya, longitudeSaya);
+//
+//                            if (jarak <= 200){
+//                                break;
+//                            }else{
+//                                totalLokasi = totalLokasi + 1;
+//                            }
+//
+//                        }
+//
+//                        if (totalLokasi ==  latList.size()){
+//
+//                            double jarakExc = 0;
+//                            int totalJarakExc = 0;
+//
+//                            if (latListExc.size() <=0){
+//                                jarakExc = 151;
+//                            }else{
+//
+//
+//                                for (int j = 0; j< latListExc.size(); j++){
+//
+//                                    jarakExc = getDistance(Double.parseDouble(latListExc.get(j)), Double.parseDouble(lngListExc.get(j)), latitudeSaya, longitudeSaya);
+//                                    if ((int) jarakExc <= 200) {
+//                                        break;
+//                                    } else {
+//                                        totalJarakExc = totalJarakExc + 1;
+//                                    }
+//
+//                                }
+//                            }
+//
+//
+//                            if (totalJarakExc == latListExc.size()){
+//                                totalJarak = 151;
+//                            }else{
+//                                totalJarak = jarakExc;
+//                            }
+//                        }else{
+//                            totalJarak = jarak;
+//                        }
+//
+//                    }
+//
+////                Menghitung Jarak Pada Hari Lainnya
+//                    else{
+//
+//                        double latitudeTujuan = Double.parseDouble(latList.get(0));
+//                        double longitudeTujuan = Double.parseDouble(lngList.get(0));
+//
+//                        double jarak = getDistance(latitudeTujuan, longitudeTujuan, latitudeSaya, longitudeSaya);
+//                        if (jarak <= 150){
+//
+//                            totalJarak = jarak;
+//
+//                        }
+//                        else{
+//
+//                            double jarakExc = 0;
+//                            int totalJarakExc = 0;
+//
+//                            if (latListExc.size() <= 0 ) {
+//                                jarakExc = 151;
+//                            }else{
+//
+//                                for (int j = 0; j< latListExc.size(); j++){
+//
+//                                    jarakExc = getDistance(Double.parseDouble(latListExc.get(j)), Double.parseDouble(lngListExc.get(j)), latitudeSaya, longitudeSaya);
+//                                    if ((int) jarakExc <= 150) {
+//                                        break;
+//                                    } else {
+//                                        totalJarakExc = totalJarakExc + 1;
+//                                    }
+//
+//                                }
+//                            }
+//
+//                            if (totalJarakExc == latListExc.size()){
+//                                totalJarak = 151;
+//                            }else{
+//                                totalJarak = jarakExc;
+//                            }
+//
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//            else{
+//                dialogView.viewNotifKosong(AbsenSiftActivity.this, "Pastikan anda telah terhubung ke internet.", "");
+//
+//            }
+//        }else{
+//            dialogView.viewNotifKosong(AbsenSiftActivity.this, "Pastikan anda telah terhubung ke internet.", "");
+//        }
+//
+//
+//    }
 
-    public void hitungjarak(){
+private static final double RADIUS_NORMAL = 150.0;
+    private static final double RADIUS_SENIN = 200.0;
+    private static final double JARAK_TIDAK_VALID = -1;
+private boolean isHariSenin() {
+    SimpleDateFormat sdf = new SimpleDateFormat("EEE", localeID);
+    String hari = sdf.format(new Date());
+    return "Sen".equals(hari) || "Mon".equals(hari);
+}
+    private double getRadiusAbsensi(String kelompok) {
 
-        double latitudeSaya;
-        double longitudeSaya;
-        if (NetworkUtils.isConnectedMobile(AbsenSiftActivity.this) || NetworkUtils.isConnectedWifi(AbsenSiftActivity.this)){
-            if(NetworkUtils.isConnected(AbsenSiftActivity.this)){
-
-                latitudeSaya = latGMap;
-                longitudeSaya = lngGMap;
-
-                rbLat = String.valueOf(latGMap);
-                rbLng = String.valueOf(lngGMap);
-
-
-                SimpleDateFormat today = new SimpleDateFormat("EEE", localeID);
-                String hariini = today.format(new Date());
-
-                String lat, lng;
-
-//            Menghitung Jarak CallTaker
-                if (eKelompok.equals("ct")){
-
-                    int totalLokasi = 0;
-                    double jarak = 0;
-
-                    for (int i = 0 ; i  < latList.size(); i++){
-
-                        lat = latList.get(i);
-                        lng = lngList.get(i);
-                        double latitudeTujuan = Double.parseDouble(lat);
-                        double longitudeTujuan = Double.parseDouble(lng);
-                        jarak = getDistance(latitudeTujuan, longitudeTujuan, latitudeSaya, longitudeSaya);
-
-                        if ((int)jarak <= 150){
-                            break;
-                        }else{
-
-                            totalLokasi = totalLokasi + 1;
-                        }
-                    }
-
-                    if (totalLokasi ==  latList.size()){
-
-                        double jarakExc = 0;
-                        int totalJarakExc = 0;
-
-                        if (latListExc.size() <=0 ){
-                            jarakExc = 151;
-                        }else{
-
-                            for (int j = 0; j< latListExc.size(); j++){
-
-                                jarakExc = getDistance(Double.parseDouble(latListExc.get(j)), Double.parseDouble(lngListExc.get(j)), latitudeSaya, longitudeSaya);
-                                if ((int) jarakExc <= 200) {
-                                    break;
-                                } else {
-                                    totalJarakExc = totalJarakExc + 1;
-                                }
-
-                            }
-
-                        }
-
-                        if (totalJarakExc == latListExc.size()){
-                            totalJarak = 151;
-                        }else{
-                            totalJarak = jarakExc;
-                        }
-                    }else{
-                        totalJarak = jarak;
-                    }
-
-                }
-
-//            Menghitung Jarak Pegawai
-                else{
-//                Menghitung Jarak Pada Hari Senin
-                    if (hariini.equals("Sen") ||  hariini.equals("Mon")){
-                        int totalLokasi = 0;
-                        double jarak = 0;
-
-                        for (int i = 0 ; i  < latList.size(); i++){
-                            lat = latList.get(i);
-                            lng = lngList.get(i);
-                            double latitudeTujuan = Double.parseDouble(lat);
-                            double longitudeTujuan = Double.parseDouble(lng);
-                            jarak = getDistance(latitudeTujuan, longitudeTujuan, latitudeSaya, longitudeSaya);
-
-                            if (jarak <= 200){
-                                break;
-                            }else{
-                                totalLokasi = totalLokasi + 1;
-                            }
-
-                        }
-
-                        if (totalLokasi ==  latList.size()){
-
-                            double jarakExc = 0;
-                            int totalJarakExc = 0;
-
-                            if (latListExc.size() <=0){
-                                jarakExc = 151;
-                            }else{
-
-
-                                for (int j = 0; j< latListExc.size(); j++){
-
-                                    jarakExc = getDistance(Double.parseDouble(latListExc.get(j)), Double.parseDouble(lngListExc.get(j)), latitudeSaya, longitudeSaya);
-                                    if ((int) jarakExc <= 200) {
-                                        break;
-                                    } else {
-                                        totalJarakExc = totalJarakExc + 1;
-                                    }
-
-                                }
-                            }
-
-
-                            if (totalJarakExc == latListExc.size()){
-                                totalJarak = 151;
-                            }else{
-                                totalJarak = jarakExc;
-                            }
-                        }else{
-                            totalJarak = jarak;
-                        }
-
-                    }
-
-//                Menghitung Jarak Pada Hari Lainnya
-                    else{
-
-                        double latitudeTujuan = Double.parseDouble(latList.get(0));
-                        double longitudeTujuan = Double.parseDouble(lngList.get(0));
-
-                        double jarak = getDistance(latitudeTujuan, longitudeTujuan, latitudeSaya, longitudeSaya);
-                        if (jarak <= 150){
-
-                            totalJarak = jarak;
-
-                        }
-                        else{
-
-                            double jarakExc = 0;
-                            int totalJarakExc = 0;
-
-                            if (latListExc.size() <= 0 ) {
-                                jarakExc = 151;
-                            }else{
-
-                                for (int j = 0; j< latListExc.size(); j++){
-
-                                    jarakExc = getDistance(Double.parseDouble(latListExc.get(j)), Double.parseDouble(lngListExc.get(j)), latitudeSaya, longitudeSaya);
-                                    if ((int) jarakExc <= 150) {
-                                        break;
-                                    } else {
-                                        totalJarakExc = totalJarakExc + 1;
-                                    }
-
-                                }
-                            }
-
-                            if (totalJarakExc == latListExc.size()){
-                                totalJarak = 151;
-                            }else{
-                                totalJarak = jarakExc;
-                            }
-
-                        }
-                    }
-
-                }
-
-            }
-            else{
-                dialogView.viewNotifKosong(AbsenSiftActivity.this, "Pastikan anda telah terhubung ke internet.", "");
-
-            }
-        }else{
-            dialogView.viewNotifKosong(AbsenSiftActivity.this, "Pastikan anda telah terhubung ke internet.", "");
+        // CT selalu 150
+        if ("ct".equalsIgnoreCase(kelompok)) {
+            return RADIUS_NORMAL;
         }
 
+        // Pegawai
+        if (isHariSenin()) {
+            return RADIUS_SENIN;
+        }
 
+        return RADIUS_NORMAL;
     }
+
+    private double cariJarakTerdekat(
+            ArrayList<String> latList,
+            ArrayList<String> lngList,
+            double latUser,
+            double lngUser
+    ) {
+        if (latList == null || lngList == null || latList.isEmpty()) {
+            return JARAK_TIDAK_VALID;
+        }
+
+        double minJarak = Double.MAX_VALUE;
+
+        for (int i = 0; i < latList.size(); i++) {
+            double lat = Double.parseDouble(latList.get(i));
+            double lng = Double.parseDouble(lngList.get(i));
+
+            double jarak = getDistance(lat, lng, latUser, lngUser);
+            if (jarak < minJarak) {
+                minJarak = jarak;
+            }
+        }
+
+        return minJarak;
+    }
+
+    private boolean isInternetValid() {
+
+        if (!NetworkUtils.isConnectedMobile(this)
+                && !NetworkUtils.isConnectedWifi(this)) {
+
+            dialogView.viewNotifKosong(
+                    this,
+                    "Pastikan anda telah terhubung ke internet.",
+                    ""
+            );
+            return false;
+        }
+
+        if (!NetworkUtils.isConnectedFast(this)) {
+            dialogView.viewNotifKosong(
+                    this,
+                    "Koneksi internet tidak stabil.",
+                    ""
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    public void hitungJarakAbsensi() {
+
+        if (!isInternetValid()) return;
+
+        double latUser = latGMap;
+        double lngUser = lngGMap;
+
+        rbLat = String.valueOf(latUser);
+        rbLng = String.valueOf(lngUser);
+
+        double radius = getRadiusAbsensi(eKelompok);
+
+        // 1️⃣ Cek lokasi utama
+        double jarakUtama = cariJarakTerdekat(
+                latList, lngList, latUser, lngUser
+        );
+
+        if (jarakUtama != JARAK_TIDAK_VALID && jarakUtama <= radius) {
+            totalJarak = jarakUtama;
+            return;
+        }
+
+        // 2️⃣ Cek lokasi exception
+        double jarakException = cariJarakTerdekat(
+                latListExc, lngListExc, latUser, lngUser
+        );
+
+        if (jarakException != JARAK_TIDAK_VALID && jarakException <= radius) {
+            totalJarak = jarakException;
+        } else {
+            totalJarak = JARAK_TIDAK_VALID;
+        }
+    }
+
+
+
+
 
     private Double getDistance(Double latitudeTujuan, Double longitudeTujuan, Double latitudeUser, Double longitudeUser) {
         /* VARIABLE */

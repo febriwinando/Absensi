@@ -10,6 +10,8 @@ import static go.pemkott.appsandroidmobiletebingtinggi.konstanta.TimeFormat.hari
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -17,6 +19,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -96,9 +99,7 @@ public class DashboardVersiOne extends AppCompatActivity {
     TextView tvNamaUser, tvJamPulang, tvJamMasuk, tvTanggalHariIni;
     public static int jenisabsensi;
     DialogView dialogView = new DialogView(DashboardVersiOne.this);
-    private static final String CAMERA_PERMISSION = Manifest.permission.CAMERA;
-    private static final String LOCATION_PERMISSION =  Manifest.permission.ACCESS_FINE_LOCATION;
-    private static  String READ_STORAGE_PERMISSION;
+
     ProgressBar pgSingkronLokasi, pgSingkronKegiatan;
     ImageView ivSingkronLokasi, ivSingkronKegiatan;
     CircleImageView ciUser;
@@ -110,6 +111,23 @@ public class DashboardVersiOne extends AppCompatActivity {
     SessionManager session;
 
     String userid;
+    private static final int REQ_NOTIFICATION = 1001;
+    private static final int REQ_APP_PERMISSION = 1002;
+
+    private static final String CAMERA_PERMISSION =
+            Manifest.permission.CAMERA;
+
+    private static final String LOCATION_PERMISSION =
+            Manifest.permission.ACCESS_FINE_LOCATION;
+
+//    private static final String READ_STORAGE_PERMISSION =
+//            Manifest.permission.READ_EXTERNAL_STORAGE;
+
+    private static final String READ_STORAGE_PERMISSION =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                    ? Manifest.permission.READ_MEDIA_IMAGES
+                    : Manifest.permission.READ_EXTERNAL_STORAGE;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +139,22 @@ public class DashboardVersiOne extends AppCompatActivity {
         window.setStatusBarColor(this.getResources().getColor(R.color.background_color));
         window.setNavigationBarColor(getResources().getColor(R.color.background_color));
         setContentView(R.layout.activity_dashboard_versi_one);
+
+//        createNotificationChannel();
+//        requestNotificationPermission();
+//        requestAppPermissions();
+
+
+        createNotificationChannel(); // aman, tidak muncul dialog
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission();
+        } else {
+            requestAppPermissions(); // Android < 13
+        }
+
         session = new SessionManager(this);
         userid = session.getPegawaiId();
-
-
-        READ_STORAGE_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
 
         dashboardVersiOne = this;
 
@@ -253,7 +282,7 @@ public class DashboardVersiOne extends AppCompatActivity {
         Glide.with(this)
                 .load( "https://absensi.tebingtinggikota.go.id/storage/"+fotoProfile )
                 .into( ciUser );
-        showPermissionDialog();
+//        showPermissionDialog();
 
         cvJadwal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -349,21 +378,162 @@ public class DashboardVersiOne extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
     }
-    private void showPermissionDialog() {
 
-        if (ContextCompat.checkSelfPermission(this,CAMERA_PERMISSION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this,READ_STORAGE_PERMISSION)  == PackageManager.PERMISSION_GRANTED
-        ){
-            Toast.makeText(this, "Permission accepted", Toast.LENGTH_SHORT).show();
 
-        }else {
-            int REQUEST_CODE = 11;
-            ActivityCompat.requestPermissions(this, new String[]{ CAMERA_PERMISSION , LOCATION_PERMISSION , READ_STORAGE_PERMISSION }, REQUEST_CODE);
+//    @Override
+//    public void onRequestPermissionsResult(
+//            int requestCode,
+//            @NonNull String[] permissions,
+//            @NonNull int[] grantResults) {
+//
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//
+//        if (requestCode == REQ_NOTIFICATION) {
+//
+//            if (grantResults.length > 0
+//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                Log.d("NOTIF Aplikasi", "Izin notifikasi diberikan");
+//
+//            } else {
+//
+//                Log.w("NOTIF Aplikasi", "Izin notifikasi ditolak");
+//                // Optional: arahkan ke settings
+//            }
+//
+//        } else if (requestCode == REQ_APP_PERMISSION) {
+//
+//            boolean allGranted = true;
+//
+//            for (int result : grantResults) {
+//                if (result != PackageManager.PERMISSION_GRANTED) {
+//                    allGranted = false;
+//                    break;
+//                }
+//            }
+//
+//            if (allGranted) {
+//                Toast.makeText(this, "Semua permission diberikan", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(this, "Sebagian permission ditolak", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQ_NOTIFICATION) {
+
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Log.d("NOTIF", "Izin notifikasi diberikan");
+
+            } else {
+                Log.w("NOTIF", "Izin notifikasi ditolak");
+            }
+
+            // ⚠️ APAPUN HASILNYA → LANJUT
+            requestAppPermissions();
         }
 
+        else if (requestCode == REQ_APP_PERMISSION) {
+
+            boolean allGranted = true;
+
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+
+            if (allGranted) {
+                Toast.makeText(this, "Semua permission diberikan", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Sebagian permission ditolak", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
     }
+
+
+    private void requestNotificationPermission() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        1001
+                );
+            }
+        }
+    }
+
+    private void createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel(
+                    "default_channel",
+                    "Notifikasi Umum",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+            channel.setDescription("Notifikasi aplikasi absensi");
+
+            NotificationManager manager =
+                    getSystemService(NotificationManager.class);
+
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    private void requestAppPermissions() {
+
+        List<String> permissionsNeeded = new ArrayList<>();
+
+        if (ContextCompat.checkSelfPermission(this, CAMERA_PERMISSION)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(CAMERA_PERMISSION);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(LOCATION_PERMISSION);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, READ_STORAGE_PERMISSION)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(READ_STORAGE_PERMISSION);
+        }
+
+        if (!permissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissionsNeeded.toArray(new String[0]),
+                    REQ_APP_PERMISSION
+            );
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -386,20 +556,14 @@ public class DashboardVersiOne extends AppCompatActivity {
         tvJamMasuk.setText("--:--");
         tvJamPulang.setText("--:--");
 
-//        Cursor getPresence = databaseHelper.getPresenceByEmployeeAndDate(sEmployee_id, toDay);
-//
-//        if (getPresence != null && getPresence.moveToFirst()) {
-//            String jamMasuk = getPresence.getString(getPresence.getColumnIndexOrThrow(DatabaseHelper.P_JAM_MASUK));
-//            String jamPulang = getPresence.getString(getPresence.getColumnIndexOrThrow(DatabaseHelper.P_JAM_PULANG));
-//
-//            if (jamMasuk != null && !jamMasuk.isEmpty()) {
-//                tvJamMasuk.setText(jamMasuk);
-//            }
-//
-//            if (jamPulang != null && !jamPulang.isEmpty()) {
-//                tvJamPulang.setText(jamPulang);
-//            }
-//        }
+        createNotificationChannel(); // aman, tidak muncul dialog
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission();
+        } else {
+            requestAppPermissions(); // Android < 13
+        }
+
     }
 
 

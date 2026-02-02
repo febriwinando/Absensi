@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import go.pemkott.appsandroidmobiletebingtinggi.NewDashboard.DashboardVersiOne;
 import go.pemkott.appsandroidmobiletebingtinggi.R;
 import go.pemkott.appsandroidmobiletebingtinggi.api.HttpService;
+import go.pemkott.appsandroidmobiletebingtinggi.api.ResponsePOJO;
 import go.pemkott.appsandroidmobiletebingtinggi.api.RetroClient;
 import go.pemkott.appsandroidmobiletebingtinggi.database.DatabaseHelper;
 import go.pemkott.appsandroidmobiletebingtinggi.dialogview.DialogView;
@@ -323,7 +324,7 @@ public class DownloadDataActivity extends AppCompatActivity {
                                         w.getPulang()
                                 );
                             }
-                            runOnUiThread(() -> finishFlow());
+                            runOnUiThread(() -> sendFcmTokenToServer());
                         });
                     }
 
@@ -334,6 +335,38 @@ public class DownloadDataActivity extends AppCompatActivity {
                 });
     }
 
+
+    private void sendFcmTokenToServer() {
+        updateUI("menyelesaikan proses...");
+        SessionManager session = new SessionManager(this);
+        String pegawaiId = session.getPegawaiId();
+        String fcmToken  = session.getFcmToken();
+
+        if (pegawaiId == null || pegawaiId.equals("0") || fcmToken == null) {
+            Log.w("FCM", "Pegawai ID / FCM Token belum siap, skip update");
+            return;
+        }
+
+        Call<ResponsePOJO> call = RetroClient.getInstance()
+                .getApi()
+                .updateFcmToken(pegawaiId, fcmToken);
+
+        call.enqueue(new Callback<ResponsePOJO>() {
+            @Override
+            public void onResponse(Call<ResponsePOJO> call, Response<ResponsePOJO> response) {
+                executor.execute(() -> {
+                    runOnUiThread(() -> finishFlow());
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponsePOJO> call, Throwable t) {
+                Log.e("FCM", "Error update token: " + t.getMessage());
+            }
+        });
+    }
+
+
     /* =============================
        FINISH
        ============================= */
@@ -342,6 +375,9 @@ public class DownloadDataActivity extends AppCompatActivity {
         startActivity(new Intent(this, DashboardVersiOne.class));
         finish();
     }
+
+
+
 
     /* =============================
        HELPER
