@@ -29,7 +29,7 @@ android {
         applicationId = "go.pemkott.appsandroidmobiletebingtinggi"
         minSdk = 24
         targetSdk = 36
-        versionCode = 156
+        versionCode = 1
         versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.google.services)
     implementation(libs.firebase.analytics)
+    implementation(libs.app.update.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

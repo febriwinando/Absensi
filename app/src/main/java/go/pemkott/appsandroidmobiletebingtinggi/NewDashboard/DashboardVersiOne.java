@@ -14,6 +14,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -47,6 +48,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -127,6 +132,8 @@ public class DashboardVersiOne extends AppCompatActivity {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
                     ? Manifest.permission.READ_MEDIA_IMAGES
                     : Manifest.permission.READ_EXTERNAL_STORAGE;
+    private AppUpdateManager appUpdateManager;
+    private static final int REQ_UPDATE = 2001;
 
 
     @Override
@@ -152,6 +159,9 @@ public class DashboardVersiOne extends AppCompatActivity {
         } else {
             requestAppPermissions(); // Android < 13
         }
+
+        checkAppUpdate();
+
 
         session = new SessionManager(this);
         userid = session.getPegawaiId();
@@ -382,45 +392,45 @@ public class DashboardVersiOne extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public void onRequestPermissionsResult(
-//            int requestCode,
-//            @NonNull String[] permissions,
-//            @NonNull int[] grantResults) {
-//
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        if (requestCode == REQ_NOTIFICATION) {
-//
-//            if (grantResults.length > 0
-//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                Log.d("NOTIF Aplikasi", "Izin notifikasi diberikan");
-//
-//            } else {
-//
-//                Log.w("NOTIF Aplikasi", "Izin notifikasi ditolak");
-//                // Optional: arahkan ke settings
-//            }
-//
-//        } else if (requestCode == REQ_APP_PERMISSION) {
-//
-//            boolean allGranted = true;
-//
-//            for (int result : grantResults) {
-//                if (result != PackageManager.PERMISSION_GRANTED) {
-//                    allGranted = false;
-//                    break;
-//                }
-//            }
-//
-//            if (allGranted) {
-//                Toast.makeText(this, "Semua permission diberikan", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(this, "Sebagian permission ditolak", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_UPDATE) {
+            if (resultCode != RESULT_OK) {
+                finish();
+            }
+        }
+    }
+
+    private void checkAppUpdate() {
+
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+
+        appUpdateManager.getAppUpdateInfo()
+                .addOnSuccessListener(appUpdateInfo -> {
+
+                    Log.d("UPDATE Versi aplikasi",
+                            "Availability: " + appUpdateInfo.updateAvailability()
+                                    + " | InstallStatus: " + appUpdateInfo.installStatus());
+                    if (appUpdateInfo.updateAvailability()
+                            == UpdateAvailability.UPDATE_AVAILABLE
+                            && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+
+                        try {
+                            appUpdateManager.startUpdateFlowForResult(
+                                    appUpdateInfo,
+                                    AppUpdateType.IMMEDIATE,
+                                    this,
+                                    REQ_UPDATE
+                            );
+                        } catch (IntentSender.SendIntentException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onRequestPermissionsResult(
@@ -542,16 +552,9 @@ public class DashboardVersiOne extends AppCompatActivity {
 
         dataValidasi(sVerifikator, sEmployee_id);
 
+        checkAppUpdate();
 
-        int version = 0;
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = pInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        checkupdate(version);
+//        checkupdate(version);
 
         tvJamMasuk.setText("--:--");
         tvJamPulang.setText("--:--");
@@ -596,36 +599,36 @@ public class DashboardVersiOne extends AppCompatActivity {
     }
 
 
-    public void checkupdate(int version){
-
-        Call<List<CheckUpdate>> callCheckUpdate = httpService.getCheckUpdate("https://absensi.tebingtinggikota.go.id/api/updateapp");
-        callCheckUpdate.enqueue(new Callback<List<CheckUpdate>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<CheckUpdate>> call, @NonNull Response<List<CheckUpdate>> response) {
-                if (!response.isSuccessful()) {
-                    return;
-                }
-                List<CheckUpdate> checkUpdates = response.body();
-                for (CheckUpdate checkUpdate : checkUpdates) {
-                    if (checkUpdate.getVersion() > version) {
-                        final String appPackageName = checkUpdate.getNamapackage();
-                        try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                        } catch (android.content.ActivityNotFoundException anfe) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<CheckUpdate>> call, @NonNull Throwable t) {
-                dialogView.viewNotifKosong(DashboardVersiOne.this, "Gagal menghubungkan, ", "mohon periksa jaringan internet anda.");
-
-            }
-        });
-    }
+//    public void checkupdate(int version){
+//
+//        Call<List<CheckUpdate>> callCheckUpdate = httpService.getCheckUpdate("https://absensi.tebingtinggikota.go.id/api/updateapp");
+//        callCheckUpdate.enqueue(new Callback<List<CheckUpdate>>() {
+//            @Override
+//            public void onResponse(@NonNull Call<List<CheckUpdate>> call, @NonNull Response<List<CheckUpdate>> response) {
+//                if (!response.isSuccessful()) {
+//                    return;
+//                }
+//                List<CheckUpdate> checkUpdates = response.body();
+//                for (CheckUpdate checkUpdate : checkUpdates) {
+//                    if (checkUpdate.getVersion() > version) {
+//                        final String appPackageName = checkUpdate.getNamapackage();
+//                        try {
+//                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+//                        } catch (android.content.ActivityNotFoundException anfe) {
+//                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<List<CheckUpdate>> call, @NonNull Throwable t) {
+//                dialogView.viewNotifKosong(DashboardVersiOne.this, "Gagal menghubungkan, ", "mohon periksa jaringan internet anda.");
+//
+//            }
+//        });
+//    }
 
     public void checkGPS(){
         if(!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
