@@ -510,28 +510,6 @@ public class IzinSakitFinalActivity extends AppCompatActivity implements OnMapRe
                 );
 
 
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadizinsakitmasuk(
-//                fotoTaging,
-//                ketKehadiran,
-//                eJabatan,
-//                sEmployeID,
-//                timetableid,
-//                rbTanggal,
-//                rbJam,
-//                "sk",
-//                status,
-//                rbLat,
-//                rbLng,
-//                rbKet,
-//                mins,
-//                eOPD,
-//                jampegawai,
-//                valid,
-//                lampiran,
-//                ekslampiran,
-//                rbFakeGPS
-//        );
-
         call.enqueue(new Callback<ResponsePOJO>() {
             @Override
             public void onResponse(@NonNull Call<ResponsePOJO> call, @NonNull Response<ResponsePOJO> response) {
@@ -620,28 +598,6 @@ public class IzinSakitFinalActivity extends AppCompatActivity implements OnMapRe
                         textPart(ekslampiran),
                         textPart(rbFakeGPS)
                 );
-//
-//        Call<ResponsePOJO> call = RetroClient.getInstance().getApi().uploadizinsakitpulang(
-//                fotoTaging,
-//                ketKehadiran,
-//                eJabatan,
-//                sEmployeID,
-//                timetableid,
-//                rbTanggal,
-//                rbJam,
-//                "sk",
-//                status,
-//                rbLat,
-//                rbLng,
-//                rbKet,
-//                mins,
-//                eOPD,
-//                jampegawai,
-//                valid,
-//                lampiran,
-//                ekslampiran,
-//                rbFakeGPS
-//        );
 
         call.enqueue(new Callback<ResponsePOJO>() {
             @Override

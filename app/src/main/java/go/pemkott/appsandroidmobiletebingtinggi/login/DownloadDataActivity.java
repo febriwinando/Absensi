@@ -172,7 +172,7 @@ public class DownloadDataActivity extends AppCompatActivity {
                                 k.getAlamat(), k.getLet(), k.getLng()
                         );
                     }
-                    runOnUiThread(() -> stepTimetable());
+                    runOnUiThread(() -> koordinat_e());
                 });
             }
 
@@ -181,6 +181,39 @@ public class DownloadDataActivity extends AppCompatActivity {
                 errorStop(t.getMessage());
             }
         });
+    }
+
+
+        private void koordinat_e() {
+
+            updateUI("Mengunduh koordinat pegawai ...");
+            String url = "https://absensi.tebingtinggikota.go.id/api/koordinatemployee?id=" + employeeId;
+
+            api.getUrlKoordinat(url, "Bearer " + token,
+                            RequestBody.create("", MediaType.parse("application/json")))
+                    .enqueue(new Callback<List<Koordinat>>() {
+
+                        @Override
+                        public void onResponse(Call<List<Koordinat>> call, Response<List<Koordinat>> response) {
+                            if (!response.isSuccessful() || response.body() == null) {
+                                errorStop("Gagal unduh koordinat pegawai");
+                                return;
+                            }
+
+                            executor.execute(() -> {
+                                for (Koordinat koordinat : response.body()) {
+                                    db.insertDataKoordinatEmployee(koordinat.getId(), employeeId, koordinat.getAlamat(), koordinat.getLet(), koordinat.getLng());
+                                }
+                                runOnUiThread(() -> stepTimetable());
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Koordinat>> call, Throwable t) {
+                            errorStop(t.getMessage());
+                        }
+                    });
+
     }
 
     /* =============================

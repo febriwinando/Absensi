@@ -1049,32 +1049,32 @@ public class AbsenSiftActivity extends AppCompatActivity implements OnMapReadyCa
 
         byte[] imageBytes = ambilFoto.compressToMax80KB(file);
         MultipartBody.Part fotoPart = prepareFilePart("fototaging", imageBytes);
-
-        Log.d("ABSEN_MASUK_PAGI", "===== REQUEST PARAMETER =====");
-        Log.d("ABSEN_MASUK_PAGI", "absensi      : " + String.valueOf(absensi));
-        Log.d("ABSEN_MASUK_PAGI", "eselon       : " + String.valueOf(eselon));
-        Log.d("ABSEN_MASUK_PAGI", "idpegawai    : " + String.valueOf(idpegawai));
-        Log.d("ABSEN_MASUK_PAGI", "timetableid  : " + String.valueOf(timetableid));
-        Log.d("ABSEN_MASUK_PAGI", "tanggal      : " + String.valueOf(tanggal));
-        Log.d("ABSEN_MASUK_PAGI", "jam          : " + String.valueOf(jam));
-        Log.d("ABSEN_MASUK_PAGI", "posisi       : " + String.valueOf(posisi));
-        Log.d("ABSEN_MASUK_PAGI", "status       : " + String.valueOf(status));
-        Log.d("ABSEN_MASUK_PAGI", "lat          : " + String.valueOf(lat));
-        Log.d("ABSEN_MASUK_PAGI", "lng          : " + String.valueOf(lng));
-        Log.d("ABSEN_MASUK_PAGI", "eOPD         : " + String.valueOf(eOPD));
-        Log.d("ABSEN_MASUK_PAGI", "jampegawai   : " + String.valueOf(jampegawai));
-        Log.d("ABSEN_MASUK_PAGI", "validasi     : " + String.valueOf(validasi));
-        Log.d("ABSEN_MASUK_PAGI", "rbFakeGPS    : " + String.valueOf(rbFakeGPS));
-        Log.d("ABSEN_MASUK_PAGI", "batasWaktu   : " + String.valueOf(batasWaktu));
-        Log.d("ABSEN_MASUK_PAGI", "masuksift    : " + String.valueOf(masuksift));
-        Log.d("ABSEN_MASUK_PAGI", "pulangsift   : " + String.valueOf(pulangsift));
-        Log.d("ABSEN_MASUK_PAGI", "inisialsift  : " + String.valueOf(inisialsift));
-        Log.d("ABSEN_MASUK_PAGI", "tipesift     : " + String.valueOf(tipesift));
-        Log.d("ABSEN_MASUK_PAGI", "idsift       : " + String.valueOf(idsift));
-        Log.d("ABSEN_MASUK_PAGI", "ket          : " + String.valueOf(ket));
-        Log.d("ABSEN_MASUK_PAGI", "terlambat    : " + String.valueOf(terlambat));
-        Log.d("ABSEN_MASUK_PAGI", "fotoPart     : " + (fotoPart != null ? "ADA" : "NULL"));
-        Log.d("ABSEN_MASUK_PAGI", "==============================");
+//
+//        Log.d("ABSEN_MASUK_PAGI", "===== REQUEST PARAMETER =====");
+//        Log.d("ABSEN_MASUK_PAGI", "absensi      : " + String.valueOf(absensi));
+//        Log.d("ABSEN_MASUK_PAGI", "eselon       : " + String.valueOf(eselon));
+//        Log.d("ABSEN_MASUK_PAGI", "idpegawai    : " + String.valueOf(idpegawai));
+//        Log.d("ABSEN_MASUK_PAGI", "timetableid  : " + String.valueOf(timetableid));
+//        Log.d("ABSEN_MASUK_PAGI", "tanggal      : " + String.valueOf(tanggal));
+//        Log.d("ABSEN_MASUK_PAGI", "jam          : " + String.valueOf(jam));
+//        Log.d("ABSEN_MASUK_PAGI", "posisi       : " + String.valueOf(posisi));
+//        Log.d("ABSEN_MASUK_PAGI", "status       : " + String.valueOf(status));
+//        Log.d("ABSEN_MASUK_PAGI", "lat          : " + String.valueOf(lat));
+//        Log.d("ABSEN_MASUK_PAGI", "lng          : " + String.valueOf(lng));
+//        Log.d("ABSEN_MASUK_PAGI", "eOPD         : " + String.valueOf(eOPD));
+//        Log.d("ABSEN_MASUK_PAGI", "jampegawai   : " + String.valueOf(jampegawai));
+//        Log.d("ABSEN_MASUK_PAGI", "validasi     : " + String.valueOf(validasi));
+//        Log.d("ABSEN_MASUK_PAGI", "rbFakeGPS    : " + String.valueOf(rbFakeGPS));
+//        Log.d("ABSEN_MASUK_PAGI", "batasWaktu   : " + String.valueOf(batasWaktu));
+//        Log.d("ABSEN_MASUK_PAGI", "masuksift    : " + String.valueOf(masuksift));
+//        Log.d("ABSEN_MASUK_PAGI", "pulangsift   : " + String.valueOf(pulangsift));
+//        Log.d("ABSEN_MASUK_PAGI", "inisialsift  : " + String.valueOf(inisialsift));
+//        Log.d("ABSEN_MASUK_PAGI", "tipesift     : " + String.valueOf(tipesift));
+//        Log.d("ABSEN_MASUK_PAGI", "idsift       : " + String.valueOf(idsift));
+//        Log.d("ABSEN_MASUK_PAGI", "ket          : " + String.valueOf(ket));
+//        Log.d("ABSEN_MASUK_PAGI", "terlambat    : " + String.valueOf(terlambat));
+//        Log.d("ABSEN_MASUK_PAGI", "fotoPart     : " + (fotoPart != null ? "ADA" : "NULL"));
+//        Log.d("ABSEN_MASUK_PAGI", "==============================");
 
         Call<ResponsePOJO> call =
                 RetroClient.getInstance().getApi().absensiftMasukMalam(

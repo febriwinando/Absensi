@@ -69,11 +69,11 @@ public interface HttpService {
     // ==============================
     @Headers({"Content-Type: application/json"})
     @POST
-    Call<List<KegiatanIzin>> getUrlKegiatan(@Url String url, @Header("Authorization")String token );
+    Call<List<KegiatanIzin>> getUrlKegiatan(@Url String url, @Header("Authorization")String token , @Body RequestBody empty );
 
     @Headers({"Content-Type: application/json"})
     @POST
-    Call<List<KegiatanIzin>> getUrlKegiatan(@Url String url, @Header("Authorization")String token, @Body RequestBody empty );
+    Call<List<Koordinat>> getUrlKoordinat(@Url String url, @Header("Authorization")String token, @Body RequestBody empty);
 
     @Headers({"Content-Type: application/json"})
     @POST
