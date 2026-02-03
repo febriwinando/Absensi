@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">Absensi</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="already_have_an_account">Already Have An Account?</string>
@@ -80,11 +78,9 @@
     <string name="s_sore">S: Sore</string>
     <string name="p_pagi">P: Pagi</string>
     <string name="keterangan">Keterangan:</string>
-
     <string name="tfe_od_app_name" translation_description="Object Detection demo app [CHAR_LIMIT=40]">TFL Detect</string>
     <string name="tfe_od_camera_error" translation_description="Error regarding camera support[CHAR_LIMIT=40]">This device doesn\'t support Camera2 API.</string>
     <string name="cari_rekap_kehadiran">Cari Rekap Kehadiran</string>
-
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDpoOACMXG6YJoY-OD1z9JhPD56z-efFpE</string>
 
 </resources>
