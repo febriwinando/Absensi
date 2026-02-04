@@ -19,7 +19,7 @@ public class RetrofitBuilder {
 
         if(retrofit ==null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                    .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
                     .build();

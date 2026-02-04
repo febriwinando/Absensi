@@ -88,7 +88,7 @@ String userId;
 
         jadwalSiftActivity = this;
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         holderAPI = retrofit.create(HttpService.class);
@@ -130,7 +130,7 @@ String userId;
 
     public void unduhDataSiftOPD(){
         databaseHelper.deleteJamSift();
-        Call<List<WaktuSift>> jadwalSiftPegawai = holderAPI.getTestSift("https://absensi.kotakukecil.go.id/api/testsift?eOPD="+eOPD);
+        Call<List<WaktuSift>> jadwalSiftPegawai = holderAPI.getTestSift("https://absensi.tebingtinggikota.go.id/api/testsift?eOPD="+eOPD);
         jadwalSiftPegawai.enqueue(new Callback<List<WaktuSift>>() {
             @Override
             public void onResponse(@NonNull Call<List<WaktuSift>> call, @NonNull Response<List<WaktuSift>> response) {
@@ -407,7 +407,7 @@ String userId;
             databaseHelper.deleteJadwalSift(sEmployeID, bulan, tahun);
         }
 
-        Call<ArrayList<JadwalSift>> jadwalSiftPegawai = holderAPI.getJadwalSifts("https://absensi.kotakukecil.go.id/api/jadwalsift?ide="+sEmployeID+"&bulan="+bulan+"&tahun="+tahun);
+        Call<ArrayList<JadwalSift>> jadwalSiftPegawai = holderAPI.getJadwalSifts("https://absensi.tebingtinggikota.go.id/api/jadwalsift?ide="+sEmployeID+"&bulan="+bulan+"&tahun="+tahun);
         jadwalSiftPegawai.enqueue(new Callback<ArrayList<JadwalSift>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<JadwalSift>> call, @NonNull Response<ArrayList<JadwalSift>> response) {

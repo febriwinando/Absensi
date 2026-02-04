@@ -11,7 +11,5 @@
 
 
     <include layout="@layout/content_dashboard_one"/>
-    <include layout="@layout/bottom_sheet_kehadiran_one"/>
-    <include layout="@layout/bottom_sheet_izin_one"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

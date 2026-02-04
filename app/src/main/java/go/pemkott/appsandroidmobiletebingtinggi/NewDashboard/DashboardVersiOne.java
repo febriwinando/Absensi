@@ -89,11 +89,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DashboardVersiOne extends AppCompatActivity {
 
-    private BottomSheetBehavior sheetBehavior, sheetBehaviorIzin;
-    CardView cvKehadiran, cvKehadiranKantor, cvTugasLapangan, cvJadwal, cvLokasi, cvKegiatan, cvMenuIzin, cvMenuPerjalananDinas,
-            cvCuti, cvKeperluanPribadi, cvSakit;
+//    private BottomSheetBehavior sheetBehavior, sheetBehaviorIzin;
+    CardView cvKehadiran, cvJadwal, cvLokasi, cvKegiatan, cvMenuIzin, cvMenuPerjalananDinas;
 
-    View vOpenBottomSheet, vOpenBottomSheetIzin;
     LocationManager manager;
     DatabaseHelper databaseHelper;
     HttpService httpService;
@@ -165,7 +163,7 @@ public class DashboardVersiOne extends AppCompatActivity {
         datauser();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -173,10 +171,10 @@ public class DashboardVersiOne extends AppCompatActivity {
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         cvKehadiran = findViewById(R.id.cvKehadiran);
-        vOpenBottomSheet = findViewById(R.id.vOpenBottomSheet);
-        vOpenBottomSheetIzin = findViewById(R.id.vOpenBottomSheetIzin);
-        cvKehadiranKantor = findViewById(R.id.cvKehadiranKantor);
-        cvTugasLapangan = findViewById(R.id.cvTugasLapangan);
+//        vOpenBottomSheet = findViewById(R.id.vOpenBottomSheet);
+//        vOpenBottomSheetIzin = findViewById(R.id.vOpenBottomSheetIzin);
+//        cvKehadiranKantor = findViewById(R.id.cvKehadiranKantor);
+//        cvTugasLapangan = findViewById(R.id.cvTugasLapangan);
         tvNamaUser = findViewById(R.id.tvNamaUser);
         ciUser = findViewById(R.id.ciUser);
         cvJadwal = findViewById(R.id.cvJadwal);
@@ -187,9 +185,6 @@ public class DashboardVersiOne extends AppCompatActivity {
         ivSingkronKegiatan = findViewById(R.id.ivSingkronKegiatan);
         cvMenuIzin = findViewById(R.id.cvMenuIzin);
         cvMenuPerjalananDinas = findViewById(R.id.cvMenuPerjalananDinas);
-        cvCuti = findViewById(R.id.cvCuti);
-        cvKeperluanPribadi = findViewById(R.id.cvKeperluanPribadi);
-        cvSakit = findViewById(R.id.cvSakit);
         clVerifikasi = findViewById(R.id.clVerifikasi);
         clCariRekap = findViewById(R.id.clCariRekap);
         tvTanggalHariIni = findViewById(R.id.tvTanggalHariIni);
@@ -219,20 +214,9 @@ public class DashboardVersiOne extends AppCompatActivity {
             }
         });
 
-        cvKehadiranKantor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jenisabsensi = 1;
-                Intent kehadiranIntent = new Intent(DashboardVersiOne.this, CameraxActivity.class);
-                kehadiranIntent.putExtra("aktivitas", "kehadiran");
-                startActivity(kehadiranIntent);
-            }
-        });
-
         cvKehadiran.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (statusSift.equals("0")){
                     bukaKehadiran();
                 }else{
@@ -245,36 +229,10 @@ public class DashboardVersiOne extends AppCompatActivity {
             }
         });
 
-        cvTugasLapangan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jenisabsensi = 2;
-                startActivity(new Intent(DashboardVersiOne.this, TugasLapanganActivity.class));
-
-            }
-        });
-
-        vOpenBottomSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bukaKehadiran();
-
-
-            }
-        });
-
-        vOpenBottomSheetIzin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                bukaMenuIzin();
-            }
-        });
 
         tvNamaUser.setText(sUsername);
         Glide.with(this)
-                .load( "https://absensi.kotakukecil.go.id/storage/"+fotoProfile )
+                .load( "https://absensi.tebingtinggikota.go.id/storage/"+fotoProfile )
                 .into( ciUser );
 
         cvJadwal.setOnClickListener(new View.OnClickListener() {
@@ -315,7 +273,7 @@ public class DashboardVersiOne extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (statusSift.equals("0")){
-                    bukaMenuIzin();
+                    bukaIzin();
                 }else{
                     jenisabsensi = 8;
                     Intent intentJadwalSifting = new Intent(DashboardVersiOne.this, JadwalIzinSiftActivity.class);
@@ -332,30 +290,6 @@ public class DashboardVersiOne extends AppCompatActivity {
             }
         });
 
-        cvCuti.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jenisabsensi = 4;
-                startActivity(new Intent(DashboardVersiOne.this, CutiActivity.class));
-
-            }
-        });
-
-        cvKeperluanPribadi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jenisabsensi = 5;
-                startActivity(new Intent(DashboardVersiOne.this, KeperluanPribadiActivity.class));
-            }
-        });
-
-        cvSakit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jenisabsensi = 6;
-                startActivity(new Intent(DashboardVersiOne.this, SakitActivity.class));
-            }
-        });
 
         clVerifikasi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -371,13 +305,17 @@ public class DashboardVersiOne extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        setUpReferences();
-        setUpReferencesIzin();
 
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
 
+    private void bukaKehadiran() {
+        KehadiranBottomSheet bottomSheet = new KehadiranBottomSheet();
+        bottomSheet.show(getSupportFragmentManager(), "KEHADIRAN_BOTTOM_SHEET");
+    }
 
+    private void bukaIzin() {
+        IzinBottomSheet bottomSheet = new IzinBottomSheet();
+        bottomSheet.show(getSupportFragmentManager(), "IZIN_BOTTOM_SHEET");
     }
 
 
@@ -561,7 +499,7 @@ public class DashboardVersiOne extends AppCompatActivity {
 
     public void dataValidasi(String verifikator, String idE){
         if (verifikator.equals("verifikator1") || verifikator.equals("verifikator2")){
-            Call<List<ValidasiData>> callKegiatan = httpService.getUrlListValidasi("https://absensi.kotakukecil.go.id/api/newVeriFragment?verifikator="+verifikator+"&id="+idE);
+            Call<List<ValidasiData>> callKegiatan = httpService.getUrlListValidasi("https://absensi.tebingtinggikota.go.id/api/newVeriFragment?verifikator="+verifikator+"&id="+idE);
             callKegiatan.enqueue(new Callback<List<ValidasiData>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<ValidasiData>> call, @NonNull Response<List<ValidasiData>> response) {
@@ -643,76 +581,76 @@ public class DashboardVersiOne extends AppCompatActivity {
         }
     }
 
-    private void setUpReferences() {
-        LinearLayout layoutBottomSheet = findViewById(R.id.bottom_sheet_kehadiran_one);
-        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//    private void setUpReferences() {
+//        LinearLayout layoutBottomSheet = findViewById(R.id.bottom_sheet_kehadiran_one);
+//        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//
+//        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                if (newState == BottomSheetBehavior.STATE_EXPANDED){
+//                    Animation fadeInAnimation = AnimationUtils.loadAnimation(DashboardVersiOne.this, R.anim.fade_in);
+//                    vOpenBottomSheet.startAnimation(fadeInAnimation);
+//                    vOpenBottomSheet.setVisibility(View.VISIBLE);
+//                }else if (newState == BottomSheetBehavior.STATE_COLLAPSED){
+//                    vOpenBottomSheet.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                if (slideOffset > 0) {
+//                    vOpenBottomSheet.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//    }
 
-        sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED){
-                    Animation fadeInAnimation = AnimationUtils.loadAnimation(DashboardVersiOne.this, R.anim.fade_in);
-                    vOpenBottomSheet.startAnimation(fadeInAnimation);
-                    vOpenBottomSheet.setVisibility(View.VISIBLE);
-                }else if (newState == BottomSheetBehavior.STATE_COLLAPSED){
-                    vOpenBottomSheet.setVisibility(View.INVISIBLE);
-                }
-            }
 
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset > 0) {
-                    vOpenBottomSheet.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-    }
+//    private void setUpReferencesIzin() {
+//        LinearLayout layoutBottomSheetIzin = findViewById(R.id.bottom_sheet_izin_one);
+//        sheetBehaviorIzin = BottomSheetBehavior.from(layoutBottomSheetIzin);
+//
+//        sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//        sheetBehaviorIzin.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                if (newState == BottomSheetBehavior.STATE_EXPANDED){
+//                    Animation fadeInAnimation = AnimationUtils.loadAnimation(DashboardVersiOne.this, R.anim.fade_in);
+//                    vOpenBottomSheetIzin.startAnimation(fadeInAnimation);
+//                    vOpenBottomSheetIzin.setVisibility(View.VISIBLE);
+//                }else if (newState == BottomSheetBehavior.STATE_COLLAPSED){
+//                    vOpenBottomSheetIzin.setVisibility(View.INVISIBLE);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//                if (slideOffset > 0) {
+//                    vOpenBottomSheetIzin.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//    }
 
-
-    private void setUpReferencesIzin() {
-        LinearLayout layoutBottomSheetIzin = findViewById(R.id.bottom_sheet_izin_one);
-        sheetBehaviorIzin = BottomSheetBehavior.from(layoutBottomSheetIzin);
-
-        sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        sheetBehaviorIzin.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED){
-                    Animation fadeInAnimation = AnimationUtils.loadAnimation(DashboardVersiOne.this, R.anim.fade_in);
-                    vOpenBottomSheetIzin.startAnimation(fadeInAnimation);
-                    vOpenBottomSheetIzin.setVisibility(View.VISIBLE);
-                }else if (newState == BottomSheetBehavior.STATE_COLLAPSED){
-                    vOpenBottomSheetIzin.setVisibility(View.INVISIBLE);
-
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset > 0) {
-                    vOpenBottomSheetIzin.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-    }
-
-    private void bukaKehadiran() {
-            if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-    }
-
-    private void bukaMenuIzin() {
-        if (sheetBehaviorIzin.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (sheetBehaviorIzin.getState() == BottomSheetBehavior.STATE_COLLAPSED){
-            sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_EXPANDED);
-
-        }
-    }
+//    private void bukaKehadiran() {
+//            if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+//                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//            } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+//                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//            }
+//    }
+//
+//    private void bukaMenuIzin() {
+//        if (sheetBehaviorIzin.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+//            sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//        } else if (sheetBehaviorIzin.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+//            sheetBehaviorIzin.setState(BottomSheetBehavior.STATE_EXPANDED);
+//
+//        }
+//    }
 
     List<TimeTebleSetting> timeTable = new ArrayList<>();
 
@@ -765,13 +703,13 @@ public class DashboardVersiOne extends AppCompatActivity {
                 progressBarSingkron.setVisibility(View.VISIBLE);
                 btnSingkronJadwalKerja.setVisibility(View.GONE);
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                        .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 HttpService holderAPI = retrofit.create(HttpService.class);
 
 
-                Call<List<TimeTebleSetting>> callKegiatan = holderAPI.getUrlTimeTableSetting("https://absensi.kotakukecil.go.id/api/timetable?employee_id="+sEmployee_id, "Bearer "+sToken);
+                Call<List<TimeTebleSetting>> callKegiatan = holderAPI.getUrlTimeTableSetting("https://absensi.tebingtinggikota.go.id/api/timetable?employee_id="+sEmployee_id, "Bearer "+sToken);
                 callKegiatan.enqueue(new Callback<List<TimeTebleSetting>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<TimeTebleSetting>> call, @NonNull Response<List<TimeTebleSetting>> response) {
@@ -820,12 +758,12 @@ public class DashboardVersiOne extends AppCompatActivity {
     public void koordinatOPD(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpService holderAPI = retrofit.create(HttpService.class);
 
-        Call<List<Koordinat>> calllokasi = holderAPI.getUrlKoordinat("https://absensi.kotakukecil.go.id/api/koordinat?opdid="+sOPD);
+        Call<List<Koordinat>> calllokasi = holderAPI.getUrlKoordinat("https://absensi.tebingtinggikota.go.id/api/koordinat?opdid="+sOPD);
         calllokasi.enqueue(new Callback<List<Koordinat>>() {
             @Override
             public void onResponse(@NonNull Call<List<Koordinat>> call, @NonNull Response<List<Koordinat>> response) {
@@ -859,13 +797,13 @@ public class DashboardVersiOne extends AppCompatActivity {
     public void koordintaEmployee(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpService holderAPI = retrofit.create(HttpService.class);
 
 
-        Call<List<Koordinat>> callKegiatan = holderAPI.getUrlKoordinat("https://absensi.kotakukecil.go.id/api/koordinatemployee?id="+sEmployee_id);
+        Call<List<Koordinat>> callKegiatan = holderAPI.getUrlKoordinat("https://absensi.tebingtinggikota.go.id/api/koordinatemployee?id="+sEmployee_id);
         callKegiatan.enqueue(new Callback<List<Koordinat>>() {
             @Override
             public void onResponse(@NonNull Call<List<Koordinat>> call, @NonNull Response<List<Koordinat>> response) {
@@ -914,12 +852,12 @@ public class DashboardVersiOne extends AppCompatActivity {
 
     public void singkronKegiatan(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakukecil.go.id/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpService holderAPI = retrofit.create(HttpService.class);
 
-        Call<List<KegiatanIzin>> callKegiatan = holderAPI.getUrlKegiatanNew("https://absensi.kotakukecil.go.id/api/kegiatannew?opd="+sOPD);
+        Call<List<KegiatanIzin>> callKegiatan = holderAPI.getUrlKegiatanNew("https://absensi.tebingtinggikota.go.id/api/kegiatannew?opd="+sOPD);
         callKegiatan.enqueue(new Callback<List<KegiatanIzin>>() {
 
             @Override
