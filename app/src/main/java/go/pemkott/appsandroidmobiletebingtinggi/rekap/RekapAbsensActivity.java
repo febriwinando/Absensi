@@ -91,7 +91,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecil.com/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         holderAPI = retrofit.create(HttpService.class);
@@ -227,7 +227,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
         Dialog dialogproses = new Dialog(RekapAbsensActivity.this, R.style.DialogStyle);
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
-        Call<List<RekapServer>> callRekapAbsensi = holderAPI.getUrlRekapServer("https://absensi.kotakecil.com/api/rekapserver?id="+idE+"&dtgl="+dariTanggal+"&stgl="+sampaiTanggal);
+        Call<List<RekapServer>> callRekapAbsensi = holderAPI.getUrlRekapServer("https://absensi.tebingtinggikota.go.id/api/rekapserver?id="+idE+"&dtgl="+dariTanggal+"&stgl="+sampaiTanggal);
         callRekapAbsensi.enqueue(new Callback<List<RekapServer>>() {
             @Override
             public void onResponse(Call<List<RekapServer>> call, Response<List<RekapServer>> response) {
@@ -406,7 +406,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
             tvTagFotoRekapMasuk.setVisibility(View.GONE);
         }else{
             Glide.with(this)
-                    .load( "https://absensi.kotakecil.com/uploads-img-absensi/" + data.getPhoto_tagging_masuk())
+                    .load( "https://absensi.tebingtinggikota.go.id/uploads-img-absensi/" + data.getPhoto_tagging_masuk())
                     .into( ivValidasiRekapMasuk );
         }
 
@@ -417,7 +417,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
             if (data.getEkstensi_masuk().equals("img")){
 
                 Glide.with(this)
-                        .load( "https://absensi.kotakecil.com/uploads-img-lampiran/" + data.getLampiran_masuk())
+                        .load( "https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/" + data.getLampiran_masuk())
                         .into( ivLampiranValidasiRekapMasuk );
 
                 ivLampiranValidasiRekapMasuk.setVisibility(View.VISIBLE);
@@ -425,7 +425,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
                 if(NetworkUtils.isConnected(RekapAbsensActivity.this)){
                     webview.setVisibility(View.VISIBLE);
                     ivLampiranValidasiRekapMasuk.setVisibility(View.GONE);
-                    String pdfurl="https://absensi.kotakecil.com/uploads-img-lampiran/"+data.getLampiran_masuk();
+                    String pdfurl="https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/"+data.getLampiran_masuk();
                     webview.loadUrl("https://docs.google.com/gview?embedded=true&url="+pdfurl);
                     webview.setWebViewClient(new WebViewClient());
                     webview.getSettings().setSupportZoom(true);
@@ -441,7 +441,7 @@ public class RekapAbsensActivity extends AppCompatActivity {
 
         }else{
             Glide.with(this)
-                    .load( "https://absensi.kotakecil.com/uploads-img-absensi/" + data.getPhoto_tagging_pulang())
+                    .load( "https://absensi.tebingtinggikota.go.id/uploads-img-absensi/" + data.getPhoto_tagging_pulang())
                     .into( ivAktivitasRekapPulang );
         }
 
@@ -453,14 +453,14 @@ public class RekapAbsensActivity extends AppCompatActivity {
         }else{
             if (data.getEkstensi_pulang().equals("img")){
                 Glide.with(this)
-                        .load( "https://absensi.kotakecil.com/uploads-img-lampiran/" + data.getLampiran_pulang())
+                        .load( "https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/" + data.getLampiran_pulang())
                         .into( ivLampiranRekapPulang );
                 ivLampiranRekapPulang.setVisibility(View.VISIBLE);
             }else{
                 if (NetworkUtils.isConnected(RekapAbsensActivity.this)){
                     webviewpulang.setVisibility(View.VISIBLE);
                     ivLampiranRekapPulang.setVisibility(View.GONE);
-                    String pdfurl="https://absensi.kotakecil.com/uploads-img-lampiran/"+data.getLampiran_pulang();
+                    String pdfurl="https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/"+data.getLampiran_pulang();
                     webviewpulang.loadUrl("https://docs.google.com/gview?embedded=true&url="+pdfurl);
                     webviewpulang.setWebViewClient(new WebViewClient());
                     webviewpulang.getSettings().setSupportZoom(true);

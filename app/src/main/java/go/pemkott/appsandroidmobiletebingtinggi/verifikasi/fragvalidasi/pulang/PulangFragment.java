@@ -76,7 +76,7 @@ public class PulangFragment extends Fragment {
         ivBackValidasi = view.findViewById(R.id.ivBackValidasi);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecil.com/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -118,7 +118,7 @@ public class PulangFragment extends Fragment {
 
     public void dataRekapServerV1(String idE){
 
-        Call<List<RekapPulangFragment>> callKegiatan = holderAPI.getRekapPulangFragment("https://absensi.kotakecil.com/api/verifikatorpertamapulang?id="+idE);
+        Call<List<RekapPulangFragment>> callKegiatan = holderAPI.getRekapPulangFragment("https://absensi.tebingtinggikota.go.id/api/verifikatorpertamapulang?id="+idE);
         callKegiatan.enqueue(new Callback<List<RekapPulangFragment>>() {
             @Override
             public void onResponse(Call<List<RekapPulangFragment>> call, Response<List<RekapPulangFragment>> response) {
@@ -157,7 +157,7 @@ public class PulangFragment extends Fragment {
         dialogproses.setContentView(R.layout.view_proses);
         dialogproses.setCancelable(false);
 
-        Call<List<RekapPulangKeduaFragment>> callKegiatanKedua = holderAPI.getRekapPulangKeduaFragment("https://absensi.kotakecil.com/api/verifikatorkeduapulang?id="+idE);
+        Call<List<RekapPulangKeduaFragment>> callKegiatanKedua = holderAPI.getRekapPulangKeduaFragment("https://absensi.tebingtinggikota.go.id/api/verifikatorkeduapulang?id="+idE);
         callKegiatanKedua.enqueue(new Callback<List<RekapPulangKeduaFragment>>() {
             @Override
             public void onResponse(Call<List<RekapPulangKeduaFragment>> call, Response<List<RekapPulangKeduaFragment>> response) {
@@ -254,7 +254,7 @@ public class PulangFragment extends Fragment {
             tagFotoTaging.setVisibility(View.GONE);
         }else {
             Glide.with(this)
-                    .load("https://absensi.kotakecil.com/uploads-img-absensi/" + data.getPhoto_tagging_pulang())
+                    .load("https://absensi.tebingtinggikota.go.id/uploads-img-absensi/" + data.getPhoto_tagging_pulang())
                     .into(fototaging);
 
             tagFotoTaging.setText("# Foto Aktivitas Masuk");
@@ -268,14 +268,14 @@ public class PulangFragment extends Fragment {
 
                 if (data.getEkstensi_pulang().equals("img")){
                     Glide.with(this)
-                            .load( "https://absensi.kotakecil.com/uploads-img-lampiran/" + data.getLampiran_pulang())
+                            .load( "https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/" + data.getLampiran_pulang())
                             .into( fotolampiran );
                     fotolampiran.setVisibility(View.VISIBLE);
 
                 }else{
                     viewLampiranpdf.setVisibility(View.VISIBLE);
                     fotolampiran.setVisibility(View.GONE);
-                    String pdfurl="https://absensi.kotakecil.com/uploads-img-lampiran/"+data.getLampiran_pulang();
+                    String pdfurl="https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/"+data.getLampiran_pulang();
                     viewLampiranpdf.loadUrl("https://docs.google.com/gview?embedded=true&url="+pdfurl);
                     viewLampiranpdf.setWebViewClient(new WebViewClient());
                     viewLampiranpdf.getSettings().setSupportZoom(true);
@@ -372,7 +372,7 @@ public class PulangFragment extends Fragment {
             tagFotoTaging.setVisibility(View.GONE);
         }else {
             Glide.with(this)
-                    .load("https://absensi.kotakecil.com/uploads-img-absensi/" + data.getPhoto_tagging_pulang())
+                    .load("https://absensi.tebingtinggikota.go.id/uploads-img-absensi/" + data.getPhoto_tagging_pulang())
                     .into(fototaging);
 
             tagFotoTaging.setText("# Foto Aktivitas Pulang");
@@ -388,14 +388,14 @@ public class PulangFragment extends Fragment {
 
                 if (data.getEkstensi_pulang().equals("img")){
                     Glide.with(this)
-                            .load( "https://absensi.kotakecil.com/uploads-img-lampiran/" + data.getLampiran_pulang())
+                            .load( "https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/" + data.getLampiran_pulang())
                             .into( fotolampiran );
                     fotolampiran.setVisibility(View.VISIBLE);
 
                 }else{
                     viewLampiranpdf.setVisibility(View.VISIBLE);
                     fotolampiran.setVisibility(View.GONE);
-                    String pdfurl="https://absensi.kotakecil.com/uploads-img-lampiran/"+data.getLampiran_pulang();
+                    String pdfurl="https://absensi.tebingtinggikota.go.id/uploads-img-lampiran/"+data.getLampiran_pulang();
                     viewLampiranpdf.loadUrl("https://docs.google.com/gview?embedded=true&url="+pdfurl);
                     viewLampiranpdf.setWebViewClient(new WebViewClient());
                     viewLampiranpdf.getSettings().setSupportZoom(true);
@@ -518,7 +518,7 @@ public class PulangFragment extends Fragment {
         }
 
 
-        Call<List<ValidasiModel>> callKegiatan = holderAPI.getUrlHasilValidasiMasukPertama("https://absensi.kotakecil.com/api/validasipulangpertama?id="+idabsen+"&tahap="+validator+"&statusvalidasi="+statusvalidasi+"&ctt="+cttValidator);
+        Call<List<ValidasiModel>> callKegiatan = holderAPI.getUrlHasilValidasiMasukPertama("https://absensi.tebingtinggikota.go.id/api/validasipulangpertama?id="+idabsen+"&tahap="+validator+"&statusvalidasi="+statusvalidasi+"&ctt="+cttValidator);
         callKegiatan.enqueue(new Callback<List<ValidasiModel>>() {
             @Override
             public void onResponse(Call<List<ValidasiModel>> call, Response<List<ValidasiModel>> response) {

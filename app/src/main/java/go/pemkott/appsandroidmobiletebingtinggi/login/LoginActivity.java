@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         session = new SessionManager(this);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecil.com/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             dialogView.viewNotifKosong(LoginActivity.this, "Anda harus mengisi NIP/NIK Anda dan kata kunci terlebih dahulu.", "");
         }else{
             if (NetworkUtils.isConnected(this)){
-                URL_DATA = "https://absensi.kotakecil.com/api/login?";
+                URL_DATA = "https://absensi.tebingtinggikota.go.id/api/login?";
                 login_app();
             }else{
                 dialogView.viewNotifKosong(LoginActivity.this, "Mohon periksa koneksi internet Anda.", "");

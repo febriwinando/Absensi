@@ -85,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
         ivBack = findViewById(R.id.ivBack);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecil.com/api/")
+                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         holderAPI = retrofit.create(HttpService.class);
@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .into( civProfilPegawai );
         }else{
             Glide.with(this)
-                    .load( "https://absensi.kotakecil.com/storage/" +fotoProfile )
+                    .load( "https://absensi.tebingtinggikota.go.id/storage/" +fotoProfile )
                     .into( civProfilPegawai );
         }
 
@@ -241,7 +241,7 @@ public class ProfileActivity extends AppCompatActivity {
                 } else{
                     btnGantiPass.setVisibility(View.GONE);
                     pbGantiPass.setVisibility(View.VISIBLE);
-                    Call<List<Updatep>> update = holderAPI.getUrlUpdatep("https://absensi.kotakecil.com/api/updatep?"
+                    Call<List<Updatep>> update = holderAPI.getUrlUpdatep("https://absensi.tebingtinggikota.go.id/api/updatep?"
                             +"employee_id="+sEmployee_id
                             +"&old="+etPasswordSebelum.getText()
                             +"&new="+etNewPassword.getText()
