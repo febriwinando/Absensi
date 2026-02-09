@@ -43,6 +43,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -234,18 +235,6 @@ public class KeperluanPribadiFinalActivity extends AppCompatActivity implements 
         Bitmap preview = BitmapFactory.decodeFile(file.getAbsolutePath());
         ivFinalKegiatan.setImageBitmap(preview);
 
-//        String myDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()+ "/eabsensi";
-//        String fileName = intent.getStringExtra("fileName");
-//        file = new File(myDir, fileName);
-//        Bitmap gambardeteksi = BitmapFactory.decodeFile(file.getAbsolutePath());
-//        ivFinalKegiatan.setImageBitmap(gambardeteksi);
-//        Bitmap selectedBitmap = ambilFoto.compressBitmapTo80KB(file);
-//
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        selectedBitmap.compress(Bitmap.CompressFormat.JPEG,90, byteArrayOutputStream);
-//        byte[] imageInByte = byteArrayOutputStream.toByteArray();
-//        fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
-
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R){
             requestPermission();
         }
@@ -255,6 +244,13 @@ public class KeperluanPribadiFinalActivity extends AppCompatActivity implements 
         radioSelectedKehadiran = findViewById(selected);
 
         startLocationUpdates();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
     }
 
 
@@ -904,22 +900,16 @@ public class KeperluanPribadiFinalActivity extends AppCompatActivity implements 
     }
 
     public void backFinalDinasLuar(View view){
-        onBackPressed();
+
+        stopLocationUpdates();
+        kegiatans.clear();
+        finish();
     }
 
     protected void onResume() {
         super.onResume();
         rbTanggal = SIMPLE_FORMAT_TANGGAL.format(new Date());
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        stopLocationUpdates();
-        kegiatans.clear();
-        finish();
-    }
-
 
 
     public void handlerProgressDialog(){

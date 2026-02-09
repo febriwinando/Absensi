@@ -41,6 +41,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -229,6 +230,12 @@ File file;
         byte[] imageInByte = byteArrayOutputStream.toByteArray();
         fotoTaging =  Base64.encodeToString(imageInByte,Base64.DEFAULT);
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
 
     }
 
@@ -245,6 +252,8 @@ File file;
                 uploadImages();
             }
         }
+
+
     }
 
 
@@ -872,19 +881,20 @@ File file;
     }
 
     public void backFinalDinasLuar(View view){
-        onBackPressed();
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
+
+        stopLocationUpdates();
+        kegiatans.clear();
+        finish();
     }
 
     protected void onResume() {
         super.onResume();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        stopLocationUpdates();
-        kegiatans.clear();
-        finish();
     }
 
 

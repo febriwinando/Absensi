@@ -44,6 +44,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -304,6 +305,12 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
             mockLocationsEnabled = false;
         }
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+            }
+        });
     }
 
 
@@ -508,40 +515,6 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
             lampiranPart = prepareFilePart("lampiran", imageBytesLampiran);
             Log.d("TugasLapanganFinalActivity", "JPG");
         }
-//        Log.d("IZIN_SAKIT_SHIFT", "========== REQUEST IZIN SAKIT SHIFT MASUK ==========");
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "fotoPart        : " + (fotoPart != null ? "ADA" : "NULL"));
-//        Log.d("IZIN_SAKIT_SHIFT", "lampiranPart    : " + (lampiranPart != null ? "ADA" : "NULL"));
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "ketKehadiran    : " + String.valueOf(ketKehadiran));
-//        Log.d("IZIN_SAKIT_SHIFT", "eJabatan        : " + String.valueOf(eJabatan));
-//        Log.d("IZIN_SAKIT_SHIFT", "employee_id     : " + String.valueOf(sEmployeID));
-//        Log.d("IZIN_SAKIT_SHIFT", "timetable_id    : " + String.valueOf(timetableid));
-//        Log.d("IZIN_SAKIT_SHIFT", "tanggal         : " + String.valueOf(rbTanggal));
-//        Log.d("IZIN_SAKIT_SHIFT", "jam_masuk       : " + String.valueOf(rbJam));
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "absensi         : sk");
-//        Log.d("IZIN_SAKIT_SHIFT", "status_masuk    : " + String.valueOf(status));
-//        Log.d("IZIN_SAKIT_SHIFT", "lat             : " + String.valueOf(rbLat));
-//        Log.d("IZIN_SAKIT_SHIFT", "lng             : " + String.valueOf(rbLng));
-//        Log.d("IZIN_SAKIT_SHIFT", "keterangan      : " + String.valueOf(rbKet));
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "terlambat(min)  : " + String.valueOf(mins));
-//        Log.d("IZIN_SAKIT_SHIFT", "opd             : " + String.valueOf(eOPD));
-//        Log.d("IZIN_SAKIT_SHIFT", "jam_kantor      : " + String.valueOf(jampegawai));
-//        Log.d("IZIN_SAKIT_SHIFT", "valid_masuk     : " + String.valueOf(valid));
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "ekslampiran     : " + String.valueOf(ekslampiran));
-//        Log.d("IZIN_SAKIT_SHIFT", "fakegps         : " + String.valueOf(rbFakeGPS));
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "idsift          : " + String.valueOf(idsift));
-//        Log.d("IZIN_SAKIT_SHIFT", "inisialsift     : " + String.valueOf(inisialsift));
-//        Log.d("IZIN_SAKIT_SHIFT", "tipesift        : " + String.valueOf(tipesift));
-//        Log.d("IZIN_SAKIT_SHIFT", "masuksift       : " + String.valueOf(masuksift));
-//        Log.d("IZIN_SAKIT_SHIFT", "pulangsift      : " + String.valueOf(pulangsift));
-//
-//        Log.d("IZIN_SAKIT_SHIFT", "====================================================");
-
 
         Call<ResponsePOJO> call =
                 RetroClient.getInstance().getApi().uploadizinsakitsiftmasuk(
@@ -1252,17 +1225,11 @@ public class IzinSakitSiftFinalActivity extends AppCompatActivity implements OnM
     }
 
     public void backFinalDinasLuar(View view){
-        onBackPressed();
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
         stopLocationUpdates();
         kegiatans.clear();
         finish();
     }
+
 
 
 

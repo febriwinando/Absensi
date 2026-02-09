@@ -49,6 +49,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -1169,22 +1170,12 @@ public class IzinCutiSiftFinalActivity extends AppCompatActivity implements OnMa
     }
 
     public void backFinalDinasLuar(View view){
-        onBackPressed();
-    }
 
-    protected void onResume() {
-        super.onResume();
-//        rbTanggal = SIMPLE_FORMAT_TANGGAL.format(new Date());
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
         stopLocationUpdates();
         kegiatans.clear();
         finish();
     }
-
 
 
     public void handlerProgressDialog(){
