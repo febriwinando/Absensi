@@ -75,18 +75,18 @@
                             android:text="Nama"
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:text=" : "
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:id="@+id/tvNamaRekapValid"
                             android:textColor="@color/font"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_weight="1"
                             />
                     </TableRow>
@@ -97,18 +97,18 @@
                             android:text="Tanggal"
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:text=" : "
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:id="@+id/tvTanggalRekapValid"
                             android:textColor="@color/font"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_weight="1"
                             />
                     </TableRow>
@@ -119,7 +119,7 @@
                             android:text="Pukul"
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:text=" : "
@@ -130,7 +130,7 @@
                         <TextView
                             android:id="@+id/tvJamRekapValid"
                             android:textColor="@color/font"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_weight="1"
                             />
                     </TableRow>
@@ -143,7 +143,7 @@
                             android:id="@+id/tvFieldRekapValid"
                             android:text="Aktivitas"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
 
                             />
@@ -152,13 +152,13 @@
                             android:text=" : "
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:id="@+id/tvAktivitasRekapValid"
                             android:text="melaksanakan tugas"
                             android:textColor="@color/font"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             android:layout_weight="1"
                             />
                     </TableRow>
@@ -171,13 +171,13 @@
                             android:text="Kegiatan"
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:text=" : "
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
 
                         <TextView
@@ -185,7 +185,7 @@
                             android:layout_weight="1"
                             android:text="melaksanakan tugas"
                             android:textColor="@color/font"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </TableRow>
 
                     <TableRow
@@ -195,13 +195,13 @@
                             android:text="Lokasi"
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
                         <TextView
                             android:text=" : "
                             android:textStyle="bold"
                             android:textColor="@color/font_highlight"
-                            android:textSize="12sp"
+                            android:textSize="14sp"
                             />
 
                         <TextView
@@ -209,7 +209,7 @@
                             android:layout_weight="1"
                             android:text="melaksanakan tugas"
                             android:textColor="@color/font"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </TableRow>
 
                 </TableLayout>
@@ -221,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:text="Aktivitas Absensi Masuk"
                     android:layout_margin="10dp"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/font"
                     android:id="@+id/tvTagFotoRekapValid"
@@ -245,7 +245,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="Lampiran Absensi Masuk"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/font"
                     android:id="@+id/tvTagLampiranRekapValid"
