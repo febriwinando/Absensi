@@ -84,7 +84,7 @@ public class CalendarJadwalSiftActivity extends AppCompatActivity {
 
         jadwalSiftActivity = this;
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.tebingtinggikota.go.id/api/")
+                .baseUrl("https://absensi.kotakecol.gov/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         holderAPI = retrofit.create(HttpService.class);
@@ -429,7 +429,7 @@ public class CalendarJadwalSiftActivity extends AppCompatActivity {
             databaseHelper.deleteJadwalSift(sEmployeID, bulan, tahun);
         }
 
-        Call<ArrayList<JadwalSift>> jadwalSiftPegawai = holderAPI.getJadwalSifts("https://absensi.tebingtinggikota.go.id/api/jadwalsift?ide="+sEmployeID+"&bulan="+bulan+"&tahun="+tahun);
+        Call<ArrayList<JadwalSift>> jadwalSiftPegawai = holderAPI.getJadwalSifts("https://absensi.kotakecol.gov/api/jadwalsift?ide="+sEmployeID+"&bulan="+bulan+"&tahun="+tahun);
         jadwalSiftPegawai.enqueue(new Callback<ArrayList<JadwalSift>>() {
 
             @Override
