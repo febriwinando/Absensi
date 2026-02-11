@@ -91,7 +91,7 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
 
         jadwalIzinSiftActivity = this;
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecol.gov/api/")
+                .baseUrl("https://absensi.kotakecil.gov/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         holderAPI = retrofit.create(HttpService.class);
@@ -121,7 +121,7 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
 
     public void unduhDataSiftOPD(){
         databaseHelper.deleteJamSift();
-        Call<List<WaktuSift>> jadwalSiftPegawai = holderAPI.getTestSift("https://absensi.kotakecol.gov/api/testsift?eOPD="+eOPD);
+        Call<List<WaktuSift>> jadwalSiftPegawai = holderAPI.getTestSift("https://absensi.kotakecil.gov/api/testsift?eOPD="+eOPD);
         jadwalSiftPegawai.enqueue(new Callback<List<WaktuSift>>() {
             @Override
             public void onResponse(@NonNull Call<List<WaktuSift>> call, @NonNull Response<List<WaktuSift>> response) {
@@ -480,7 +480,7 @@ public class JadwalIzinSiftActivity extends AppCompatActivity {
             databaseHelper.deleteJadwalSift(sEmployeID, bulan, tahun);
         }
 
-        Call<ArrayList<JadwalSift>> jadwalSiftPegawai = holderAPI.getJadwalSifts("https://absensi.kotakecol.gov/api/jadwalsift?ide="+sEmployeID+"&bulan="+bulan+"&tahun="+tahun);
+        Call<ArrayList<JadwalSift>> jadwalSiftPegawai = holderAPI.getJadwalSifts("https://absensi.kotakecil.gov/api/jadwalsift?ide="+sEmployeID+"&bulan="+bulan+"&tahun="+tahun);
         jadwalSiftPegawai.enqueue(new Callback<ArrayList<JadwalSift>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<JadwalSift>> call, @NonNull Response<ArrayList<JadwalSift>> response) {

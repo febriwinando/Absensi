@@ -96,7 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String token = session.getToken();
         DatabaseHelper db = new DatabaseHelper(this);
         
-        String url = "https://absensi.kotakecol.gov/api/timetable?employee_id=" + employeeId;
+        String url = "https://absensi.kotakecil.gov/api/timetable?employee_id=" + employeeId;
 
         api.getUrlTimeTable(url, "Bearer " + token,
                         RequestBody.create("", MediaType.parse("application/json")))
@@ -137,7 +137,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String token = session.getToken();
         DatabaseHelper db = new DatabaseHelper(this);
 
-        String url = "https://absensi.kotakecol.gov/api/koordinatemployee?id=" + employeeId;
+        String url = "https://absensi.kotakecil.gov/api/koordinatemployee?id=" + employeeId;
         api.getUrlKoordinat(url, "Bearer " + token,
                         RequestBody.create("", MediaType.parse("application/json")))
                 .enqueue(new Callback<List<Koordinat>>() {

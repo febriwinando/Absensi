@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetroClient {
 
 
-private static final String BASE_URL="https://absensi.kotakecol.gov/api/";
+private static final String BASE_URL="https://absensi.kotakecil.gov/api/";
     private static RetroClient myClient;
     private final Retrofit retrofit;
 

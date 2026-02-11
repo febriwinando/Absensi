@@ -155,7 +155,7 @@ public class DownloadDataActivity extends AppCompatActivity {
     private void stepKoordinatOPD() {
         updateUI("Mengunduh koordinat OPD...");
         api.getUrlKoordinat(
-                "https://absensi.kotakecol.gov/api/koordinat",
+                "https://absensi.kotakecil.gov/api/koordinat",
                 RequestBody.create("", MediaType.parse("application/json"))
         ).enqueue(new Callback<List<Koordinat>>() {
 
@@ -188,7 +188,7 @@ public class DownloadDataActivity extends AppCompatActivity {
         private void koordinat_e() {
 
             updateUI("Mengunduh koordinat pegawai ...");
-            String url = "https://absensi.kotakecol.gov/api/koordinatemployee?id=" + employeeId;
+            String url = "https://absensi.kotakecil.gov/api/koordinatemployee?id=" + employeeId;
 
             api.getUrlKoordinat(url, "Bearer " + token,
                             RequestBody.create("", MediaType.parse("application/json")))
@@ -222,7 +222,7 @@ public class DownloadDataActivity extends AppCompatActivity {
        ============================= */
     private void stepTimetable() {
         updateUI("Mengunduh timetable...");
-        String url = "https://absensi.kotakecol.gov/api/timetable?employee_id=" + employeeId;
+        String url = "https://absensi.kotakecil.gov/api/timetable?employee_id=" + employeeId;
 
         api.getUrlTimeTable(url, "Bearer " + token,
                         RequestBody.create("", MediaType.parse("application/json")))
@@ -263,7 +263,7 @@ public class DownloadDataActivity extends AppCompatActivity {
        ============================= */
     private void stepKegiatan() {
         updateUI("Mengunduh kegiatan...");
-        String url = "https://absensi.kotakecol.gov/api/kegiatannew?opd=" + opd;
+        String url = "https://absensi.kotakecil.gov/api/kegiatannew?opd=" + opd;
 
         api.getUrlKegiatan(url, "Bearer " + token,
                         RequestBody.create("", MediaType.parse("application/json")))
@@ -300,7 +300,7 @@ public class DownloadDataActivity extends AppCompatActivity {
        ============================= */
     private void stepSift() {
         updateUI("Mengunduh jam sift...");
-        String url = "https://absensi.kotakecol.gov/api/testsift?eOPD=" + opd;
+        String url = "https://absensi.kotakecil.gov/api/testsift?eOPD=" + opd;
 
         api.getTestSift(url,
                         RequestBody.create("", MediaType.parse("application/json")))

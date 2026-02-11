@@ -163,7 +163,7 @@ public class DashboardVersiOne extends AppCompatActivity {
         datauser();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecol.gov/api/")
+                .baseUrl("https://absensi.kotakecil.gov/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -232,7 +232,7 @@ public class DashboardVersiOne extends AppCompatActivity {
 
         tvNamaUser.setText(sUsername);
         Glide.with(this)
-                .load( "https://absensi.kotakecol.gov/storage/"+fotoProfile )
+                .load( "https://absensi.kotakecil.gov/storage/"+fotoProfile )
                 .into( ciUser );
 
         cvJadwal.setOnClickListener(new View.OnClickListener() {
@@ -499,7 +499,7 @@ public class DashboardVersiOne extends AppCompatActivity {
 
     public void dataValidasi(String verifikator, String idE){
         if (verifikator.equals("verifikator1") || verifikator.equals("verifikator2")){
-            Call<List<ValidasiData>> callKegiatan = httpService.getUrlListValidasi("https://absensi.kotakecol.gov/api/newVeriFragment?verifikator="+verifikator+"&id="+idE);
+            Call<List<ValidasiData>> callKegiatan = httpService.getUrlListValidasi("https://absensi.kotakecil.gov/api/newVeriFragment?verifikator="+verifikator+"&id="+idE);
             callKegiatan.enqueue(new Callback<List<ValidasiData>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<ValidasiData>> call, @NonNull Response<List<ValidasiData>> response) {
@@ -703,13 +703,13 @@ public class DashboardVersiOne extends AppCompatActivity {
                 progressBarSingkron.setVisibility(View.VISIBLE);
                 btnSingkronJadwalKerja.setVisibility(View.GONE);
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://absensi.kotakecol.gov/api/")
+                        .baseUrl("https://absensi.kotakecil.gov/api/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 HttpService holderAPI = retrofit.create(HttpService.class);
 
 
-                Call<List<TimeTebleSetting>> callKegiatan = holderAPI.getUrlTimeTableSetting("https://absensi.kotakecol.gov/api/timetable?employee_id="+sEmployee_id, "Bearer "+sToken);
+                Call<List<TimeTebleSetting>> callKegiatan = holderAPI.getUrlTimeTableSetting("https://absensi.kotakecil.gov/api/timetable?employee_id="+sEmployee_id, "Bearer "+sToken);
                 callKegiatan.enqueue(new Callback<List<TimeTebleSetting>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<TimeTebleSetting>> call, @NonNull Response<List<TimeTebleSetting>> response) {
@@ -758,12 +758,12 @@ public class DashboardVersiOne extends AppCompatActivity {
     public void koordinatOPD(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecol.gov/api/")
+                .baseUrl("https://absensi.kotakecil.gov/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpService holderAPI = retrofit.create(HttpService.class);
 
-        Call<List<Koordinat>> calllokasi = holderAPI.getUrlKoordinat("https://absensi.kotakecol.gov/api/koordinat?opdid="+sOPD);
+        Call<List<Koordinat>> calllokasi = holderAPI.getUrlKoordinat("https://absensi.kotakecil.gov/api/koordinat?opdid="+sOPD);
         calllokasi.enqueue(new Callback<List<Koordinat>>() {
             @Override
             public void onResponse(@NonNull Call<List<Koordinat>> call, @NonNull Response<List<Koordinat>> response) {
@@ -797,13 +797,13 @@ public class DashboardVersiOne extends AppCompatActivity {
     public void koordintaEmployee(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecol.gov/api/")
+                .baseUrl("https://absensi.kotakecil.gov/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpService holderAPI = retrofit.create(HttpService.class);
 
 
-        Call<List<Koordinat>> callKegiatan = holderAPI.getUrlKoordinat("https://absensi.kotakecol.gov/api/koordinatemployee?id="+sEmployee_id);
+        Call<List<Koordinat>> callKegiatan = holderAPI.getUrlKoordinat("https://absensi.kotakecil.gov/api/koordinatemployee?id="+sEmployee_id);
         callKegiatan.enqueue(new Callback<List<Koordinat>>() {
             @Override
             public void onResponse(@NonNull Call<List<Koordinat>> call, @NonNull Response<List<Koordinat>> response) {
@@ -852,12 +852,12 @@ public class DashboardVersiOne extends AppCompatActivity {
 
     public void singkronKegiatan(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://absensi.kotakecol.gov/api/")
+                .baseUrl("https://absensi.kotakecil.gov/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpService holderAPI = retrofit.create(HttpService.class);
 
-        Call<List<KegiatanIzin>> callKegiatan = holderAPI.getUrlKegiatanNew("https://absensi.kotakecol.gov/api/kegiatannew?opd="+sOPD);
+        Call<List<KegiatanIzin>> callKegiatan = holderAPI.getUrlKegiatanNew("https://absensi.kotakecil.gov/api/kegiatannew?opd="+sOPD);
         callKegiatan.enqueue(new Callback<List<KegiatanIzin>>() {
 
             @Override
